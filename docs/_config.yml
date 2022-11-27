@@ -18,7 +18,7 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Jacob Pearson - Product Owner, Producer, AFOL, nerd
+title: Jacob Pearson
 email: jacob@jacobpearson.com
 description: >- # this means to ignore newlines until "baseurl:"
   Personal site of Jacob Pearson, Product Owner, Digital Producer from Auckland, New Zealand.
