@@ -14,7 +14,10 @@ permalink: /contact/
     </p>
   </div>
 
-  <form action="https://formspree.io/f/mkoenbjv" method="POST" class="contact-form">
+  <form id="contact-form" action="https://formspree.io/f/mkoenbjv" method="POST" class="contact-form">
+    {% raw %}<input name="subject" type="hidden" value="New submission from {{ name }}" />{% endraw %}
+    <input type="text" name="_gotcha" style="display:none" />
+
     <div class="form-group">
       <label for="name">Name</label>
       <input type="text" id="name" name="name" required placeholder="Your name">
@@ -30,3 +33,21 @@ permalink: /contact/
     <button type="submit" class="btn-primary">Send message →</button>
   </form>
 </div>
+
+<script src="https://www.google.com/recaptcha/api.js?render=6Lfl9e8sAAAAAKW4FJuwGK2aaEWdlWZfO1wrk_8H"></script>
+<script>
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var form = this;
+    grecaptcha.ready(function() {
+      grecaptcha.execute('6Lfl9e8sAAAAAKW4FJuwGK2aaEWdlWZfO1wrk_8H', { action: 'submit' }).then(function(token) {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'g-recaptcha-response';
+        input.value = token;
+        form.appendChild(input);
+        form.submit();
+      });
+    });
+  });
+</script>
