@@ -1,0 +1,19 @@
+title: Jacob Pearson
+description: Product manager based in Auckland, NZ.
+url: "https://jacobpearson.com"
+baseurl: ""
+
+author:
+  name: Jacob Pearson
+  email: jacob@jacobpearson.com
+  location: Auckland, NZ
+
+# Build settings
+markdown: kramdown
+permalink: /blog/:slug/
+
+# Exclude from build
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - README.md

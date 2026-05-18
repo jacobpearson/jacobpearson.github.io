@@ -1,0 +1,86 @@
+---
+layout: default
+---
+
+<div class="article-wrap">
+
+  <header class="article-header">
+    <a href="/blog" class="article-back">← Blog</a>
+    <div class="article-tag">{{ page.category | default: "Article" }}</div>
+    <h1 class="article-title">{{ page.title }}</h1>
+    {% if page.lede %}
+    <p class="article-lede">{{ page.lede }}</p>
+    {% endif %}
+    <div class="article-meta">
+      <span>{{ site.author.name }}</span>
+      <div class="article-meta-divider"></div>
+      <span>{{ page.date | date: "%B %Y" }}</span>
+      <div class="article-meta-divider"></div>
+      <span>{{ page.read_time | default: "5" }} min read</span>
+    </div>
+  </header>
+
+  <div class="article-body-wrap">
+
+    <article class="article-body">
+      {{ content }}
+    </article>
+
+    <aside class="article-sidebar">
+
+      {% if page.tags %}
+      <div class="sidebar-block">
+        <div class="sidebar-label">Topics</div>
+        <div class="sidebar-tags">
+          {% for tag in page.tags %}
+          <a href="/blog/tag/{{ tag | slugify }}" class="sidebar-tag">{{ tag }}</a>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if page.toc %}
+      <div class="sidebar-block">
+        <div class="sidebar-label">In this article</div>
+        <ul class="toc-list">
+          {% for item in page.toc %}
+          <li><a href="#{{ item.id }}">{{ item.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+    </aside>
+
+  </div>
+
+  <!-- Prev / Next navigation -->
+  <div class="article-footer">
+    <div class="article-footer-inner">
+      {% if page.previous.url %}
+      <a href="{{ page.previous.url }}" class="next-prev-card">
+        <div class="next-prev-direction">← Previous</div>
+        <div class="next-prev-title">{{ page.previous.title }}</div>
+      </a>
+      {% else %}
+      <div class="next-prev-card" style="opacity:0.3; pointer-events:none;">
+        <div class="next-prev-direction">← Previous</div>
+        <div class="next-prev-title">No earlier posts</div>
+      </div>
+      {% endif %}
+
+      {% if page.next.url %}
+      <a href="{{ page.next.url }}" class="next-prev-card" style="text-align:right;">
+        <div class="next-prev-direction" style="justify-content:flex-end;">Next →</div>
+        <div class="next-prev-title">{{ page.next.title }}</div>
+      </a>
+      {% else %}
+      <div class="next-prev-card" style="text-align:right; opacity:0.3; pointer-events:none;">
+        <div class="next-prev-direction" style="justify-content:flex-end;">Next →</div>
+        <div class="next-prev-title">No later posts</div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>

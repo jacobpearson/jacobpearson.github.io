@@ -1,0 +1,58 @@
+---
+layout: default
+title: Product Manager
+description: Product manager based in Auckland, NZ. Writing about product management, delivery, and AI tooling.
+---
+
+<!-- ─── HERO ─────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="container">
+    <h1 class="hero-headline">Solving problems<br>and <em>making<br>things work.</em></h1>
+    <p class="hero-bio">
+      I'm a product manager with a passion for delivering projects that matter.
+      I write here about product management, delivery, AI tooling, and whatever I'm currently building.
+      For the full career picture, find me on <a href="https://www.linkedin.com/in/jacobpearson" target="_blank">LinkedIn</a>.
+    </p>
+    <p class="hero-aside">Based in Auckland, NZ · 50+ cats fostered · still only keeping four</p>
+    <a href="/blog" class="hero-cta">Read the blog →</a>
+  </div>
+</section>
+
+<!-- ─── LATEST POSTS ──────────────────────────────────────── -->
+<section class="posts-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-title">Latest writing</span>
+      <a href="/blog" class="section-link">All posts →</a>
+    </div>
+    <div class="posts-grid">
+      {% for post in site.posts limit:3 %}
+      <a href="{{ post.url }}" class="post-card">
+        <div class="post-meta">
+          <span class="post-tag">{{ post.category | default: "Article" }}</span>
+          <span class="post-date">{{ post.date | date: "%b %Y" }}</span>
+        </div>
+        <h2 class="post-title">{{ post.title }}</h2>
+        <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+        <span class="post-readmore">Read more →</span>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT STRIP ─────────────────────────────────────── -->
+<section class="contact-strip">
+  <div class="container">
+    <div class="contact-inner">
+      <div>
+        <h2 class="contact-headline">Got a project?<br><em>Let's talk.</em></h2>
+        <p class="contact-sub">Based in Auckland. Open to conversations about product, consulting, or interesting problems.</p>
+      </div>
+      <div class="contact-actions">
+        <a href="/contact" class="btn-primary">Get in touch →</a>
+        <a href="https://www.linkedin.com/in/jacobpearson" target="_blank" class="btn-secondary">LinkedIn ↗</a>
+      </div>
+    </div>
+  </div>
+</section>

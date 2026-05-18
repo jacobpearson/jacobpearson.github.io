@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+</head>
+<body data-theme="light">
+
+  {% include nav.html %}
+
+  {{ content }}
+
+  {% include footer.html %}
+
+  <script>
+    (function() {
+      const saved = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const theme = saved || (prefersDark ? 'dark' : 'light');
+      document.body.setAttribute('data-theme', theme);
+      document.getElementById('theme-icon').textContent = theme === 'dark' ? '○' : '◐';
+    })();
+
+    function toggleTheme() {
+      const current = document.body.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.body.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      document.getElementById('theme-icon').textContent = next === 'dark' ? '○' : '◐';
+    }
+  </script>
+
+  {% if page.layout == 'post' %}
+  <script>
+    const headings = document.querySelectorAll('article h2[id]');
+    const tocLinks = document.querySelectorAll('.toc-list a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      headings.forEach(h => {
+        if (window.scrollY >= h.offsetTop - 120) current = h.id;
+      });
+      tocLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+  {% endif %}
+
+</body>
+</html>
