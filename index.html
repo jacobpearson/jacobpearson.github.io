@@ -13,8 +13,8 @@ description: Product manager based in Auckland, NZ. Writing about product manage
       I write here about product management, delivery, AI tooling, and whatever I'm currently building.
       For the full career picture, find me on <a href="https://www.linkedin.com/in/jacobpearson" target="_blank">LinkedIn</a>.
     </p>
-    <p class="hero-aside">Based in Auckland, NZ · 50+ cats fostered · still only keeping four</p>
-    <a href="/blog" class="hero-cta">Read the blog →</a>
+    <p class="hero-aside">Based in Auckland, NZ · 50+ cats fostered · Only kept four</p>
+    <a href="/portfolio" class="hero-cta">View portfolio →</a>
   </div>
 </section>
 
@@ -22,15 +22,14 @@ description: Product manager based in Auckland, NZ. Writing about product manage
 <section class="posts-section">
   <div class="container">
     <div class="section-header">
-      <span class="section-title">Latest writing</span>
-      <a href="/blog" class="section-link">All posts →</a>
+      <span class="section-title">Latest portfolio</span>
+      <a href="/portfolio" class="section-link">All work →</a>
     </div>
     <div class="posts-grid">
       {% for post in site.posts limit:3 %}
       <a href="{{ post.url }}" class="post-card">
         <div class="post-meta">
           <span class="post-tag">{{ post.category | default: "Article" }}</span>
-          <span class="post-date">{{ post.date | date: "%b %Y" }}</span>
         </div>
         <h2 class="post-title">{{ post.title }}</h2>
         <p class="post-excerpt">{{ post.excerpt | strip_html | truncatewords: 30 }}</p>

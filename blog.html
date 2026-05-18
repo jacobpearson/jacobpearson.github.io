@@ -1,14 +1,14 @@
 ---
 layout: default
-title: Blog
+title: Portfolio
 description: Writing about product management, delivery, AI tooling, and whatever I'm currently building.
-permalink: /blog/
+permalink: /portfolio/
 ---
 
 <div class="container">
 
   <div class="blog-header">
-    <h1>Writing</h1>
+    <h1>Portfolio</h1>
     <p>Notes on product management, delivery, AI tooling, and whatever I'm currently building.</p>
   </div>
 
@@ -19,7 +19,6 @@ permalink: /blog/
         <div class="blog-list-content">
           <div class="blog-list-meta">
             <span class="post-tag">{{ post.category | default: "Article" }}</span>
-            <span class="post-date">{{ post.date | date: "%d %b %Y" }}</span>
           </div>
           <div class="blog-list-title">{{ post.title }}</div>
           <div class="blog-list-excerpt">{{ post.excerpt | strip_html | truncatewords: 25 }}</div>

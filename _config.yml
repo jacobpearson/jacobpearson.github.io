@@ -10,7 +10,7 @@ author:
 
 # Build settings
 markdown: kramdown
-permalink: /blog/:slug/
+permalink: /portfolio/:slug/
 
 # Exclude from build
 exclude:
