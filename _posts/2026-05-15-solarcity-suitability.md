@@ -42,7 +42,7 @@ We then automated ingestion of power bill data — a customer could upload or fo
     <span class="screenshot-scroll-label">solarcity.co.nz — Your savings estimate</span>
   </div>
   <div class="screenshot-scroll-body">
-    <img src="/assets/images/solarcity-savings-estimate.jpg" alt="SolarCity personalised savings estimate page showing roof suitability assessment, savings comparison table, and 20-year power bill projection">
+    <img src="/assets/images/solarcity-savings-estimate.webp" alt="SolarCity personalised savings estimate page showing roof suitability assessment, savings comparison table, and 20-year power bill projection">
   </div>
 </div>
 

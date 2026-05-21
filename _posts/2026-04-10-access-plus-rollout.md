@@ -20,19 +20,19 @@ The replacement was Access+. Native iOS and Android apps, a new cloud API layer,
 <div class="carousel" aria-label="Access+ app screenshots">
   <div class="carousel-track">
     <div class="carousel-slide">
-      <img src="/assets/images/ict-access-plus-door-control.png" alt="Access+ Door Control — Badges screen with proximity unlock button for nearest door">
+      <img src="/assets/images/ict-access-plus-door-control.webp" alt="Access+ Door Control — Badges screen with proximity unlock button for nearest door">
     </div>
     <div class="carousel-slide">
-      <img src="/assets/images/ict-access-plus-guided-setup.png" alt="Access+ Guided Setup — onboarding flow showing how to unlock a door via reader tap">
+      <img src="/assets/images/ict-access-plus-guided-setup.webp" alt="Access+ Guided Setup — onboarding flow showing how to unlock a door via reader tap">
     </div>
     <div class="carousel-slide">
-      <img src="/assets/images/ict-access-plus-dashboard.png" alt="Access+ Dashboard — issues requiring attention, with controllers offline, alarms, and health status counts">
+      <img src="/assets/images/ict-access-plus-dashboard.webp" alt="Access+ Dashboard — issues requiring attention, with controllers offline, alarms, and health status counts">
     </div>
     <div class="carousel-slide">
-      <img src="/assets/images/ict-access-plus-visitor-calls.png" alt="Access+ Visitor Calls — video intercom incoming call with End and Unlock actions">
+      <img src="/assets/images/ict-access-plus-visitor-calls.webp" alt="Access+ Visitor Calls — video intercom incoming call with End and Unlock actions">
     </div>
     <div class="carousel-slide">
-      <img src="/assets/images/ict-access-plus-site-controls.png" alt="Access+ Site Controls — arm, force arm, stay arm, and instant arm options for building areas">
+      <img src="/assets/images/ict-access-plus-site-controls.webp" alt="Access+ Site Controls — arm, force arm, stay arm, and instant arm options for building areas">
     </div>
   </div>
   <div class="carousel-controls">
