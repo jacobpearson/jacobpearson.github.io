@@ -12,6 +12,10 @@ author:
 markdown: kramdown
 permalink: /portfolio/:slug/
 
+plugins:
+  - jekyll-sitemap
+  - jekyll-feed
+
 # Exclude from build
 exclude:
   - Gemfile

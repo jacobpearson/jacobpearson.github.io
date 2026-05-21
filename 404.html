@@ -1,0 +1,114 @@
+---
+layout: default
+title: "404 — Page Not Found"
+description: "This page doesn't exist. You sound just like my last product roadmap."
+permalink: /404.html
+---
+
+<style>
+  .error-wrap {
+    padding: 96px 0 80px;
+    max-width: 640px;
+  }
+
+  .error-code {
+    font-size: clamp(96px, 14vw, 160px);
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    line-height: 0.9;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .error-headline {
+    font-size: clamp(24px, 3.5vw, 40px);
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+  }
+
+  .meme-card {
+    border: 1px solid var(--border);
+    background: var(--bg-surface);
+    margin-bottom: 40px;
+    max-width: 480px;
+  }
+
+  .meme-line {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    gap: 16px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .meme-line:last-child { border-bottom: none; }
+
+  .meme-speaker {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    padding-top: 2px;
+  }
+
+  .meme-speaker.accent { color: var(--accent); }
+
+  .meme-text {
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text-primary);
+  }
+
+  .meme-text em {
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  .error-sub {
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+  }
+
+  .error-actions {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+</style>
+
+<div class="container">
+  <div class="error-wrap">
+
+    <div class="error-code">404</div>
+    <h1 class="error-headline">This page doesn't exist.</h1>
+
+    <div class="meme-card">
+      <div class="meme-line">
+        <span class="meme-speaker">THE SITE</span>
+        <p class="meme-text">Sir, it's not necessary or wise to be on this page. <em>It doesn't exist.</em></p>
+      </div>
+      <div class="meme-line">
+        <span class="meme-speaker accent">YOU</span>
+        <p class="meme-text">You sound just like my last product roadmap.</p>
+      </div>
+    </div>
+
+    <p class="error-sub">
+      Whatever you were looking for has either moved, been deleted, or never existed in the first place —
+      much like that Q3 milestone we were definitely going to hit.
+    </p>
+
+    <div class="error-actions">
+      <a href="/" class="btn-primary">← Back to home</a>
+      <a href="/blog" class="btn-secondary">Read the blog →</a>
+    </div>
+
+  </div>
+</div>
