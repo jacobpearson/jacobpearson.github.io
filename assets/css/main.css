@@ -970,3 +970,46 @@ footer {
   .article-footer-inner { grid-template-columns: 1fr; }
   .blog-list-item { grid-template-columns: 1fr; }
 }
+
+/* ─── ARTICLE BODY LINKS ────────────────────────────────── */
+.article-body a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  transition: opacity 0.15s;
+}
+.article-body a:hover { opacity: 0.75; }
+
+/* ─── INLINE CODE ───────────────────────────────────────── */
+.article-body code {
+  font-family: 'SF Mono', Monaco, Consolas, 'Courier New', monospace;
+  font-size: 0.85em;
+  color: var(--accent);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 1px 6px;
+}
+
+/* ─── CODE BLOCKS ───────────────────────────────────────── */
+.article-body pre {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 24px 0 32px;
+}
+.article-body pre code {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-primary);
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+/* ─── PORTRAIT FIGURE (phone screenshots) ───────────────── */
+.article-figure--portrait {
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
