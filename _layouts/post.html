@@ -5,7 +5,7 @@ layout: default
 <div class="article-wrap">
 
   <header class="article-header">
-    <a href="/portfolio" class="article-back">← Portfolio</a>
+    <a href="/blog" class="article-back">← Blog</a>
     <div class="article-tag">{{ page.category | default: "Article" }}</div>
     <h1 class="article-title">{{ page.title }}</h1>
     {% if page.lede %}
@@ -33,7 +33,7 @@ layout: default
         <div class="sidebar-label">Topics</div>
         <div class="sidebar-tags">
           {% for tag in page.tags %}
-          <a href="/portfolio" class="sidebar-tag">{{ tag }}</a>
+          <a href="/blog" class="sidebar-tag">{{ tag }}</a>
           {% endfor %}
         </div>
       </div>

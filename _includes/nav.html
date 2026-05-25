@@ -2,7 +2,8 @@
   <div class="nav-inner">
     <a href="/" class="nav-logo">jacobpearson<span>.</span>com</a>
     <ul class="nav-links">
-      <li><a href="/portfolio">Portfolio</a></li>
+      <li><a href="/about" {% if page.url contains '/about' %}class="active"{% endif %}>About</a></li>
+      <li><a href="/blog">Blog</a></li>
       <li><a href="/contact">Contact</a></li>
       <li>
         <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">

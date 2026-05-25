@@ -10,7 +10,7 @@ author:
 
 # Build settings
 markdown: kramdown
-permalink: /portfolio/:slug/
+permalink: /blog/:slug/
 
 plugins:
   - jekyll-sitemap
