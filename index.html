@@ -12,8 +12,7 @@ description: Product manager based in Auckland, NZ. Writing about product manage
       I'm a product manager with 20+ years of hands-on digital experience, from building AR activations in 2009 to integrating AI at API level today.
       I write here about product management, delivery, and whatever I'm currently building.
     </p>
-    <p class="hero-aside">Based in Auckland, NZ · 50+ cats fostered · somehow still only keeping four</p>
-    <div class="hero-cta-row">
+<div class="hero-cta-row">
       <a href="/about" class="hero-cta">About me →</a>
       <a href="/blog" class="hero-cta-secondary">Read the blog →</a>
     </div>
@@ -21,7 +20,7 @@ description: Product manager based in Auckland, NZ. Writing about product manage
 </section>
 
 <!-- ─── ABOUT STRIP ───────────────────────────────────────── -->
-<section class="about-strip">
+<section class="about-strip" data-reveal>
   <div class="container">
 
     <div class="section-header">
@@ -33,7 +32,7 @@ description: Product manager based in Auckland, NZ. Writing about product manage
 
       <div class="about-left">
         <p class="about-intro">
-          I'm what some people call a <strong>digital unicorn</strong>: a product person who can design the interface, write the brief, run the discovery, and ship the thing.
+          I've been called a <strong>digital unicorn</strong>: a product person who can design the interface, write the brief, run the discovery, and ship the thing.
         </p>
         <p class="about-body">
           I started in graphic design and IT support, moved into digital production at agencies, built SolarCity's website and lead generators from scratch, and then owning a portfolio of 8–10 products at a global security systems company, spanning firmware, mobile apps, APIs, and web portals simultaneously.
@@ -144,7 +143,7 @@ description: Product manager based in Auckland, NZ. Writing about product manage
     </div>
     <div class="posts-grid">
       {% for post in site.posts limit:3 %}
-      <a href="{{ post.url }}" class="post-card">
+      <a href="{{ post.url }}" class="post-card" data-reveal data-delay="{{ forloop.index }}">
         <div class="post-meta">
           <span class="post-tag">{{ post.category | default: "Article" }}</span>
           <span class="post-date">{{ post.date | date: "%b %Y" }}</span>
@@ -159,7 +158,7 @@ description: Product manager based in Auckland, NZ. Writing about product manage
 </section>
 
 <!-- ─── CONTACT STRIP ─────────────────────────────────────── -->
-<section class="contact-strip">
+<section class="contact-strip" data-reveal>
   <div class="container">
     <div class="contact-inner">
       <div>

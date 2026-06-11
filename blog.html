@@ -15,7 +15,7 @@ permalink: /blog/
   <div class="blog-list">
     <div class="blog-list-grid">
       {% for post in site.posts %}
-      <a href="{{ post.url }}" class="blog-list-item">
+      <a href="{{ post.url }}" class="blog-list-item" data-reveal>
         <div class="blog-list-content">
           <div class="blog-list-meta">
             <span class="post-tag">{{ post.category | default: "Article" }}</span>
