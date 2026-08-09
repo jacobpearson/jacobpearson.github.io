@@ -2,6 +2,7 @@ title: Jacob Pearson
 description: Product manager based in Auckland, NZ.
 url: "https://jacobpearson.com"
 baseurl: ""
+timezone: Pacific/Auckland
 
 author:
   name: Jacob Pearson
