@@ -4,13 +4,19 @@ title: "Adding HomePod Mini temperature and humidity to Home Assistant"
 date: 2026-05-21
 category: How-to
 lede: "The HomePod Mini has temperature and humidity sensors, but getting them into Home Assistant takes some wiring up. This is the method that worked — documented in one place, without the comment thread archaeology."
-read_time: 10
+read_time: 12
 tags: [How-to, Home Assistant, Apple, HomeKit, Automation]
 toc:
   - { id: "how-this-works", title: "How this works" }
   - { id: "home-assistant-setup", title: "Home Assistant setup" }
   - { id: "shortcuts-setup", title: "Shortcuts setup" }
+  - { id: "homepod-software-27-issue", title: "HomePod Software 27 issue" }
 ---
+
+<div class="callout">
+  <p><strong>Update, October 2026.</strong> If your HomePods or Apple TV have recently updated to HomePod Software 27 or tvOS 27, there's a bug that stops this setup from working.</p>
+  <a class="callout-link" href="#homepod-software-27-issue">Read about the issue and what you can do about it →</a>
+</div>
 
 I've struggled with this project in the past. The main guides are buried under dozens of comments, with more after — sometimes with conflicting advice. I'll try to document the best method I found in one place. If you have any issues or need clarification, [drop me a note](/contact) and I'll do my best to update it.
 
@@ -205,3 +211,32 @@ Confirm and close. Temperature readings from your HomePod are now being sent to 
 Repeat the same configuration with `device_class` set to `humidity` and `unit_of_measurement` set to `%`.
 
 That's it. Temperature and humidity values are now attached to the HomePod entry in Home Assistant.
+
+## HomePod Software 27 issue
+{: id="homepod-software-27-issue"}
+
+**What I experienced**
+
+I noticed the temperature and humidity values had stopped showing up in Home Assistant. Nothing at all. The Home Assistant automation was still flipping the switch, and I could see it change in the Home app, but no data was coming through.
+
+In Home Assistant's developer tools, each sensor's state was just "0", and it hadn't been updated in several days.
+
+I edited the shortcut to send a fixed value of 42 instead of the variable. Hitting play in the shortcut shows you exactly what will be sent, and it does actually reach Home Assistant. Setting the value to 10 from the developer tools worked too, because that's just a simple state change. The HomePods were still showing temperature and humidity in the Home app. The problem seemed to be sending the data when the shortcut wasn't triggered manually.
+
+**I should have Googled this first**
+
+- Apple released [HomePod Software 27](https://www.macrumors.com/2026/09/14/apple-releases-homepod-software-27/) on 14 September 2026, and HomePods install it automatically if automatic updates are on. [tvOS 27](https://en.wikipedia.org/wiki/TvOS) came out the same day.
+- During the tvOS 27 betas, someone [reported a bug](https://github.com/mpatfield/homebridge-dummy/issues/483) (Apple Feedback FB23893604): Home automations that use a URL action fail silently when the hub is on version 27. They said it still wasn't fixed in the release candidate.
+- A [MacRumors forum thread](https://forums.macrumors.com/threads/significant-bug-in-home-automations-using-shortcuts-that-require-network-connection.2486785/) goes into more detail. Automations run by the hub fail silently on network actions, including Get Contents of URL. The same shortcut works fine when you run it manually on an iPhone or iPad, or when the hub is on OS 26.
+
+**Where we are at now**
+
+- These are forum posts and bug reports from the betas. I haven't found anything confirming the bug made it into the final release, or that it's been fixed. It matches what I'm seeing, so it's my main suspect, but it's not proven.
+- [A similar bug turned up in 18.2](https://controllerforhomekit.com/bugs/urls-in-shortcuts), and Apple fixed it in 18.4. So Apple has fixed this kind of problem before. It just took months.
+
+**How to confirm and work around it**
+
+1. In the Home app, go to **Home Settings → Home Hubs & Bridges**. Note which device is the active hub, and whether auto-select is on.
+2. In **Home Settings → Software Update**, check which version each HomePod and Apple TV is running.
+3. If any hub is still on a 26 release, turn off auto-select and pick that device. During the 18.2 bug, [one person got their automations working again](https://discussions.apple.com/thread/255887574) by manually setting the hub to their Apple TV. Then toggle the switch and check whether the sensor updates.
+4. If every hub is on 27, you can't realistically downgrade. You could buy dedicated sensors, but that defeats the point of using the ones already in your HomePods. Otherwise, it's a matter of waiting for Apple to fix it.
