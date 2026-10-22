@@ -1,11 +1,11 @@
 ---
 layout: post
-title: "We're not all Sheldon Cooper: notes on hiring neurodivergent people"
+title: "We're not all Sheldon Cooper: notes on hiring neuro-divergent people"
 date: 2026-09-25
 category: Opinion
 read_time: 5
 tags: [Opinion, Neuro-diversity, Hiring]
-excerpt: "Notes from a meetup of neurodivergent professionals: the productivity numbers, working for head pats, when to disclose, and why what works for us works for everyone."
+excerpt: "Notes from a meetup of neuro-divergent professionals: the productivity numbers, working for head pats, when to disclose, and why what works for us works for everyone."
 toc:
   - { id: "the-number-that-stopped-me", title: "The number that stopped me" }
   - { id: "working-for-head-pats", title: "Working for head pats" }
@@ -14,7 +14,7 @@ toc:
   - { id: "ai", title: "AI" }
 ---
 
-Last Wednesday I went to a monthly meetup for neurodivergent professionals, where we can talk about our experiences and how we work.
+Last Wednesday I went to a monthly meetup for neuro-divergent professionals, where we can talk about our experiences and how we work.
 
 Some context. I'm on the spectrum, what was called Asperger's (I still use the word, but it cuts through and describes me perfectly). I've known I was different my whole life; I have letters from a child psychologist in the mid 80s saying I have a "large vocabulary for an 8 year old" which is as close as the 80s got to a diagnosis. It wasn't until a family member was diagnosed that I could put a label on it and understand how it has affected me.
 
@@ -25,7 +25,7 @@ JPMorgan Chase's Autism at Work programme came up. In one tech role, people hire
 
 Focus has a price, too. Running flat out all day can end in autistic burnout. For me it means I use my word budget and need calm time with nothing too socially taxing. I like my bus or train ride home because I get an hour to unfocus, frame the day properly and process it. Often it's just sitting with thoughts, other times it's listening to podcasts (shout-out to the [Imp and Skizz podcast](https://podcasts.apple.com/nz/podcast/imp-and-skizz-podcast/id1639033817)).
 
-The other thing that stood out was how fast neurodivergent people pick up new subjects. The example was someone who learned Java over a weekend.
+The other thing that stood out was how fast neuro-divergent people pick up new subjects. The example was someone who learned Java over a weekend.
 
 Access control was a brand new domain to me when I joined ICT and I really struggled with so many interconnected features and products, industry acronyms I didn't understand because I wasn't hands-on with the tools. Mobile credentials and the Protege GX thick client took longest - understanding card encryption, or the process to configure a door interlock. But with time they became what I was a domain expert for. So not a weekend to learn, but I got there.
 
@@ -48,7 +48,7 @@ At a minimum, I can use "Working for head pats" as a funny descriptor for how I 
 ## Telling people
 {: id="telling-people"}
 
-Disclosure came up. One guy got no responses to his applications with his neurodivergence on the first page of his CV, and only started getting replies once he moved it to the end. Others said it's a benefit to most employers, apart from the ones who are scared of it or don't know what it means.
+Disclosure came up. One guy got no responses to his applications with his neuro-divergence on the first page of his CV, and only started getting replies once he moved it to the end. Others said it's a benefit to most employers, apart from the ones who are scared of it or don't know what it means.
 
 I feel the employer out first. When I interviewed at ICT I had a feeling plenty of people there were on the spectrum, so I said I was too. I wouldn't do that everywhere.
 
