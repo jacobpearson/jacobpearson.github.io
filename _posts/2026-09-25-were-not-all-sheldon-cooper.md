@@ -4,43 +4,32 @@ title: "We're not all Sheldon Cooper: notes on hiring neurodivergent people"
 date: 2026-09-25
 category: Opinion
 read_time: 5
-tags: [Opinion, Neurodiversity, Hiring]
+tags: [Opinion, Neuro-diversity, Hiring]
 excerpt: "Notes from a meetup of neurodivergent professionals: the productivity numbers, working for head pats, when to disclose, and why what works for us works for everyone."
 toc:
   - { id: "the-number-that-stopped-me", title: "The number that stopped me" }
   - { id: "working-for-head-pats", title: "Working for head pats" }
-  - { id: "to-disclose-or-not", title: "To disclose or not" }
+  - { id: "telling-people", title: "Telling people" }
   - { id: "what-works-for-us-works-for-everyone", title: "What works for us works for everyone" }
-  - { id: "the-ai-twist", title: "The AI twist" }
-  - { id: "until-next-month", title: "Until next month" }
+  - { id: "ai", title: "AI" }
 ---
 
-Last Wednesday I went to a monthly meetup for neurodivergent professionals. It's a space to compare notes on how we actually work, and I came away with more to think about than I expected.
+Last Wednesday I went to a monthly meetup for neurodivergent professionals, where we can talk about our experiences and how we work.
 
-Some context first. I'm on the spectrum. When I was a kid, nobody had a name for it. I have letters from a child psychologist in the mid 80s saying I was different, which wasn't news to anyone, least of all me. I suspect NZ just hadn't seen enough cases yet. The name that eventually came along was Asperger's, and it's still the one I use. It took a family member's diagnosis, decades later, for me to recognise it in myself. Once I had the name, I could stop treating it as something to hide and start working out how to use it.
-
-Here are the bits from Wednesday I want to keep.
+Some context. I'm on the spectrum, what was called Asperger's (I still use the word, but it cuts through and describes me perfectly). I've known I was different my whole life; I have letters from a child psychologist in the mid 80s saying I have a "large vocabulary for an 8 year old" which is as close as the 80s got to a diagnosis. It wasn't until a family member was diagnosed that I could put a label on it and understand how it has affected me.
 
 ## The number that stopped me
 {: id="the-number-that-stopped-me"}
 
-Someone brought up JPMorgan Chase's Autism at Work programme. In one tech role, people hired through it were 90 to 140% more productive than colleagues who'd been doing the same job for five to ten years. With zero errors.
+JPMorgan Chase's Autism at Work programme came up. In one tech role, people hired through it were 90 to 140% more productive than colleagues who had been in the job for five to ten years. While that study has existed for some time, that's the first time I've seen it quantified and it really surprised me at the size of the gap between neuro-typical and neuro-spicy. I've always known that when I get the chance to focus I can get through a lot of work, but I had never seen anyone put numbers on it.
 
-I always knew we could produce a lot when we got room to focus. I'd just never seen anyone put a number on it.
+Focus has a price, too. Running flat out all day can end in autistic burnout. For me it means I use my word budget and need calm time with nothing too socially taxing. I like my bus or train ride home because I get an hour to unfocus, frame the day properly and process it. Often it's just sitting with thoughts, other times it's listening to podcasts (shout-out to the [Imp and Skizz podcast](https://podcasts.apple.com/nz/podcast/imp-and-skizz-podcast/id1639033817)).
 
-To be fair about the fine print: that's one role, at one bank, doing work that's easy to measure. It isn't a law of nature, and plenty of autistic people are tired of seeing it on every diversity slide deck.
+The other thing that stood out was how fast neurodivergent people pick up new subjects. The example was someone who learned Java over a weekend.
 
-There's another side to that focus, too. Running at full intensity all day has a cost, and ignoring it is how a lot of us end up in autistic burnout. For me, it shows up as a real need to unwind at the end of the day. I love my bus or train ride home. It's an hour where I can unfocus. By the time I get off, I've put the day in the right frame and filed it away.
+Access control was a brand new domain to me when I joined ICT and I really struggled with so many interconnected features and products, industry acronyms I didn't understand because I wasn't hands-on with the tools. Mobile credentials and the Protege GX thick client took longest - understanding card encryption, or the process to configure a door interlock. But with time they became what I was a domain expert for. So not a weekend to learn, but I got there.
 
-Still, the numbers match what I've seen, and the less-quoted finding interested me more.
-
-JPMorgan also found people in the programme picked up new skills fast. Their favourite example is someone who learned Java over a weekend.
-
-That one I recognise, with an asterisk. When I joined ICT, access control was a completely new domain to me, and I struggled. There were a lot of interconnected parts and a whole vocabulary of industry terms, and because I wasn't hands-on with the hardware, I couldn't learn it by poking at it. The two that took longest to click were mobile credentials, where a phone acts as your access card, and the Protege GX thick client. They're now the areas people come to me with.
-
-So not a weekend. But once something has my attention, I don't let go of it.
-
-JPMorgan's own video on the programme is below. Fair warning: it's very corporate.
+JPMorgan's video is below. It's very dry and corporate, but relevant.
 
 <div class="video-embed">
   <iframe src="https://www.youtube-nocookie.com/embed/IzH8atgPQww" title="JPMorgan Chase: Autism at Work" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -50,48 +39,31 @@ JPMorgan's own video on the programme is below. Fair warning: it's very corporat
 ## Working for head pats
 {: id="working-for-head-pats"}
 
-One theme kept coming up. We're very happy working on our own. Give us a problem and some room, and we'll go deep. But most of us also like knowing we're on the right track.
+Several people said they're happy to work on their own, but like some reinforcement that they're on the right track. Someone called it working for head pats. Someone else said gold stars.
 
-Someone called it working for head pats. Someone else said gold stars. That's me. I'm comfortable digging into areas I don't know well and keeping going without anyone checking in. I just like to come up for air now and then and hear "yep, right direction." It isn't neediness. It's cheap insurance against going very deep on the wrong thing.
+That's me too. I'm happy to dig into areas I'm inexperienced in and keep going. If I can pop up for air every now and then and get a bit of reassurance, that helps a lot. All that means for my manager is a check-in occasionally will help, I'll yell out when it's needed.
 
-For an employer, the cost is a five-minute check-in. Most people work better with one anyway.
+At a minimum, I can use "Working for head pats" as a funny descriptor for how I like to work during job interviews.
 
-## To disclose or not
-{: id="to-disclose-or-not"}
+## Telling people
+{: id="telling-people"}
 
-This was the conversation that stuck with me most.
+Disclosure came up. One guy got no responses to his applications with his neurodivergence on the first page of his CV, and only started getting replies once he moved it to the end. Others said it's a benefit to most employers, apart from the ones who are scared of it or don't know what it means.
 
-One attendee said he didn't get a single response to applications while his neurodivergence was on the first page of his CV. He moved it to the end, and the callbacks started. Same person, same experience, different page.
+I feel the employer out first. When I interviewed at ICT I had a feeling plenty of people there were on the spectrum, so I said I was too. I wouldn't do that everywhere.
 
-Others pointed out the irony. For most employers it's a benefit. The ones who react badly tend to be the ones who don't know much about it, or are nervous about what they don't know.
-
-My approach has been to feel out the employer first. When I interviewed at ICT, I had a hunch I wouldn't be the only one on the spectrum there, so I said I was too. It went fine. I wouldn't have said it everywhere.
-
-I understand why people hold back. For a lot of people, the reference point for autism is Sheldon Cooper. We're not all Sheldon. We're not unfeeling either. It's closer to the opposite: we feel everything, and a fair chunk of our energy goes into managing it.
+We're not all Sheldon Cooper. We're not unfeeling automatons, which seems to still be too commonly thought. We feel everything and have to manage all of it. We feel emotions and external stimuli at much higher, more intense volume than neuro-typical people, even if it's not always shown on the outside. While neuro-typical people can focus on the person in front of them talking when in a noisy room, I can't - I hear all the conversations, so separate meeting spaces are appreciated for any deeper discussions.
 
 ## What works for us works for everyone
 {: id="what-works-for-us-works-for-everyone"}
 
-This is the bit I'd want every hiring manager to read.
+You don't need to tiptoe around us. Be blunt. Treat us like we're German or Dutch and ask for what you want directly. If I'm doing mental gymnastics to work out what you mean we really should pivot - flowcharts and pictures are wonderful aids. The upside is that neuro-typicals benefit from the clarity of communication too.
 
-You don't need to tiptoe around us. Most of what helps neurodivergent staff is just good communication. Be direct. Treat us like we're German or Dutch. Ask the question you actually want answered.
+If you're an employer nervous about hiring someone like me, ask what they need and be direct about it. Not everything can be accommodated for in a modern office (private office with extra soundproofing), but not sitting under the blasting air-con is a good start, or not sitting them amongst a bunch of rowdy telesales people. All I needed at ICT was not to have constant foot traffic behind me - pretty easy really to accommodate, and we did later rearrange the office to avoid having people backing onto main walkways.
 
-If I'm doing mental gymnastics to work out what you mean, the message could be clearer. And if it's hard for me to parse, I'm probably not the only one in the room guessing.
+## AI
+{: id="ai"}
 
-Writing down what "done" looks like isn't a special accommodation. It's what good teams already do.
+Several people said they've had more compliments on their communication since AI came into the workplace. We use it to write instructions and messages that give neuro-typical people what they need. Neuro-typical people are now writing prompts that are direct and clear, which helps the neuro-diverse community too. Being cheap with your tokens, explaining clearly what you want and don't want... it's bliss for us humans, too.
 
-## The AI twist
-{: id="the-ai-twist"}
-
-The last topic got a laugh. A few people said they've been getting more compliments on their communication since AI tools turned up.
-
-We use AI to translate: turning our instructions and messages into something neurotypical colleagues find easier to take in, with the softening and context they expect.
-
-And it runs the other way too. To get anything useful out of an LLM, you have to say exactly what you mean. So neurotypical people are now getting daily practice at writing the way we've always wished they would. Prompting is accidental training in talking to autistic people.
-
-## Until next month
-{: id="until-next-month"}
-
-It was an excellent session, and I can't wait for the next one.
-
-If you're a hiring manager on the fence, don't be scared of it. Ask what someone needs, be direct, and hand out the occasional head pat. You'll likely get more than you bargained for.
+It was an excellent session and I can't wait for the next one.
