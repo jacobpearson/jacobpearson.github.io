@@ -83,3 +83,15 @@ body.page-loaded .article-meta{animation:page-enter 0.40s 0.30s ease both;}
 /* 10. Reduced motion — all animations fire instantly; fill-mode keeps elements visible */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-delay:0.01ms!important;transition-duration:0.01ms!important;}[data-reveal]{opacity:1!important;transform:none!important;}::view-transition-old(*),::view-transition-new(*){animation:none!important;}}
 .timeline-desc a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor;transition:opacity 0.15s;}.timeline-desc a:hover{opacity:0.75;}
+/* 11. Large text sizes — let the nav and article meta wrap instead of overflowing */
+.nav-inner{flex-wrap:wrap;column-gap:24px;row-gap:4px;height:auto;min-height:56px;padding-top:8px;padding-bottom:8px;}
+.nav-logo{white-space:nowrap;}
+.nav-links{flex-wrap:wrap;column-gap:24px;row-gap:4px;padding:0;margin:0;}
+.nav-links a{white-space:nowrap;}
+@media (max-width:768px){.nav-inner{column-gap:20px;}.nav-links{column-gap:20px;}}
+.article-meta{flex-wrap:wrap;row-gap:8px;}
+.article-meta > :not(.article-meta-divider){white-space:nowrap;}
+
+/* 12. Code wraps rather than scrolling off-screen */
+.article-body code{overflow-wrap:anywhere;word-break:break-word;}
+.article-body pre{white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:visible;}
