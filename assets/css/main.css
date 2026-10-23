@@ -82,3 +82,4 @@ body.page-loaded .article-meta{animation:page-enter 0.40s 0.30s ease both;}
 
 /* 10. Reduced motion — all animations fire instantly; fill-mode keeps elements visible */
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-delay:0.01ms!important;transition-duration:0.01ms!important;}[data-reveal]{opacity:1!important;transform:none!important;}::view-transition-old(*),::view-transition-new(*){animation:none!important;}}
+.timeline-desc a{color:var(--accent);text-decoration:none;border-bottom:1px solid currentColor;transition:opacity 0.15s;}.timeline-desc a:hover{opacity:0.75;}
