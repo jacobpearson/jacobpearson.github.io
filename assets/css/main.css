@@ -96,3 +96,33 @@ body.page-loaded .article-meta{animation:page-enter 0.40s 0.30s ease both;}
 .article-body code{overflow-wrap:anywhere;word-break:break-word;}
 .article-body pre{white-space:pre-wrap;overflow-wrap:anywhere;overflow-x:visible;}
 .scene-embed{margin:40px 0;border:1px solid var(--border);background:#0b0810;}.scene-embed iframe{display:block;width:100%;aspect-ratio:16/10;min-height:420px;border:0;}.scene-embed iframe:fullscreen{aspect-ratio:auto;min-height:0;}.scene-embed-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:10px 16px;background:var(--bg-surface);border-top:1px solid var(--border);}.scene-embed-hint{font-size:13px;color:var(--text-secondary);}.article-body .scene-embed-full,.scene-embed-full{display:inline-block;text-decoration:none;font-family:inherit;font-size:13px;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent);padding:6px 14px;cursor:pointer;transition:opacity 0.15s;}.scene-embed-full:hover{opacity:0.8;}@media (max-width:768px){.scene-embed iframe{aspect-ratio:3/4;min-height:0;}}.article-body blockquote{margin:32px 0;padding:20px 24px;overflow-wrap:anywhere;border-left:4px solid var(--accent);background:var(--bg-surface);}.article-body blockquote p{font-size:17px;line-height:1.7;font-style:italic;color:var(--text-primary);margin-bottom:12px;}.article-body blockquote p:last-child{margin-bottom:0;}.scene-embed--tall iframe{aspect-ratio:auto;height:760px;min-height:0;}@media (max-width:768px){.scene-embed--tall iframe{aspect-ratio:auto;height:640px;}}.phone-shot{margin:40px auto;width:min(375px,100%);}.phone-shot-screen{position:relative;aspect-ratio:375/760;border:10px solid #0d0d0f;border-radius:46px;overflow:hidden;background:#1c1b1a;box-shadow:0 20px 50px rgba(0,0,0,0.35);}.phone-shot-scroll{position:absolute;inset:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none;}.phone-shot-scroll::-webkit-scrollbar{display:none;}.phone-shot-scroll img{width:100%;display:block;}.phone-shot-head,.phone-shot-nav{position:absolute;left:0;width:100%;display:block;z-index:1;pointer-events:none;}.phone-shot-head{top:0;}.phone-shot-nav{bottom:0;}.phone-shot figcaption{text-align:center;font-size:13px;color:var(--text-secondary);margin-top:12px;}
+/* 13. Post preview images — screened-back backdrop behind nav + article header */
+html{overflow-x:clip;}
+.article-header--image{position:relative;isolation:isolate;}
+/* Header sits at the left of .article-wrap (max 1080px, border-box, 32px/20px padding), so offset back to the viewport's left edge */
+.article-hero-bg{--wrap-pad:32px;position:absolute;z-index:-1;top:-160px;bottom:0;left:calc(-1 * (max(0px, (100vw - 1080px) / 2) + var(--wrap-pad)));width:100vw;background-size:cover;background-position:center 35%;background-repeat:no-repeat;pointer-events:none;}
+.article-hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,color-mix(in srgb,var(--bg) 80%,transparent) 0%,color-mix(in srgb,var(--bg) 84%,transparent) 55%,var(--bg) 100%);}
+.article-hero-bg{filter:saturate(0.7);}
+.article-header--image{border-bottom-color:transparent;}
+.article-header--image .article-back:hover{color:var(--text-primary);}
+.article-image-credit{margin-top:20px;font-size:11px;color:var(--text-secondary);opacity:0.7;}
+body.has-post-image nav:not(.nav--scrolled){background:transparent;border-bottom-color:transparent;}
+@media (max-width:768px){body.has-post-image nav.nav--scrolled{background:var(--bg);border-bottom-color:var(--border);}}
+
+/* 14. Homepage post tiles — image above text */
+.post-card{overflow:hidden;}
+.post-card-image{display:block;width:calc(100% + 64px);max-width:none;height:auto;aspect-ratio:1200/630;object-fit:cover;margin:-32px -32px 0;background:var(--bg-surface);transition:transform 0.4s ease,filter 0.3s ease;filter:saturate(0.85);}
+.post-card:hover .post-card-image{transform:scale(1.03);filter:saturate(1);}
+
+/* 15. Hero typewriter */
+.visually-hidden{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+.hero-cursor{display:inline-block;width:0.08em;height:0.8em;margin-left:0.06em;vertical-align:-0.04em;background:var(--accent);animation:hero-blink 1.05s steps(1) infinite;}
+.hero-cursor.is-typing{animation:none;opacity:1;}
+@keyframes hero-blink{0%,50%{opacity:1;}50.01%,100%{opacity:0;}}
+
+/* 16. Blog list — thumbnail beside each post */
+.blog-list-item--image{grid-template-columns:220px 1fr auto;align-items:center;}
+.blog-list-image{display:block;width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover;background:var(--bg-surface);filter:saturate(0.85);transition:filter 0.3s ease;}
+.blog-list-item:hover .blog-list-image{filter:saturate(1);}
+@media (max-width:768px){.blog-list-item--image{grid-template-columns:1fr;gap:16px;}}
+@media (max-width:768px){.article-hero-bg{--wrap-pad:20px;}}

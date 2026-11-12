@@ -15,7 +15,10 @@ permalink: /blog/
   <div class="blog-list">
     <div class="blog-list-grid">
       {% for post in site.posts %}
-      <a href="{{ post.url }}" class="blog-list-item" data-reveal>
+      <a href="{{ post.url }}" class="blog-list-item{% if post.image %} blog-list-item--image{% endif %}" data-reveal>
+        {% if post.image %}
+        <img class="blog-list-image" src="{{ post.image | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+        {% endif %}
         <div class="blog-list-content">
           <div class="blog-list-meta">
             <span class="post-tag">{{ post.category | default: "Article" }}</span>

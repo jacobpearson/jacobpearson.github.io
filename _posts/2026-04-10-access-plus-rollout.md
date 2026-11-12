@@ -5,6 +5,8 @@ date: 2026-04-10
 category: Case Study
 lede: "ICT's legacy Protege Mobile app was built on deprecated frameworks the month it launched. I owned the full product rebuild — Access+ — from business case through to live releases on the App Store and Google Play."
 read_time: 7
+image: /assets/images/og/access-plus-rollout.jpg
+image_alt: "Three ICT Protege Access+ app screens: dashboard, door control and visitor calls"
 tags: [Case Study, Mobile, Product, Access Control]
 toc:
   - { id: "the-problem", title: "The problem" }

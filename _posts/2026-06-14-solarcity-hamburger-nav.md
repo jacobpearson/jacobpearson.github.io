@@ -5,6 +5,9 @@ date: 2026-06-14
 category: Case Study
 lede: "The desktop navigation was hidden behind a hamburger menu. Then we ran an experiment. The experiment took a week, and we should have done it sooner."
 read_time: 4
+image: /assets/images/og/solarcity-hamburger-nav.jpg
+image_alt: "A burger on a dark background"
+image_credit: "Photo by Rajasekhar R on Unsplash"
 tags: [Case Study, Digital, Experimentation, SolarCity]
 toc:
   - { id: "the-hypothesis", title: "The hypothesis" }

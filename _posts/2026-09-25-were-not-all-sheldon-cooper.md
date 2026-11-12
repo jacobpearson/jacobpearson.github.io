@@ -4,6 +4,9 @@ title: "We're not all Sheldon Cooper: notes on hiring neuro-divergent people"
 date: 2026-09-25
 category: Opinion
 read_time: 5
+image: /assets/images/og/were-not-all-sheldon-cooper.jpg
+image_alt: "Rainbow light streaks on a black background"
+image_credit: "Photo by Kenrick Mills on Unsplash"
 tags: [Opinion, Neuro-diversity, Hiring]
 excerpt: "Notes from a meetup of neuro-divergent professionals: the productivity numbers, working for head pats, when to disclose, and why what works for us works for everyone."
 toc:

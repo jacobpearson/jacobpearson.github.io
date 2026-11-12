@@ -3,7 +3,11 @@ layout: post
 title: "Experiments in AI"
 date: 2026-11-12
 category: Article
+lede: "The last few weeks I've been experimenting with AI, and come up with some cool results. A bit of fun, but also finally addressing the most draining of tasks - my own personal tech debt."
+excerpt: "The last few weeks I've been experimenting with AI, and come up with some cool results. A bit of fun, but also finally addressing the most draining of tasks - my own personal tech debt."
 read_time: 6
+image: /assets/images/og/experiments-in-ai.jpg
+image_alt: "An AI-built Amstrad desk scene from the homepage prototype"
 tags: [AI, Home Assistant, Claude, Self-hosting, Automation, Experimentation]
 toc:
   - { id: "new-homepage-prototype", title: "New homepage prototype" }
@@ -11,8 +15,6 @@ toc:
   - { id: "switching-to-obsidian", title: "Switching to Obsidian" }
   - { id: "the-problem-is-always-dns", title: "The problem is always DNS" }
 ---
-
-The last few weeks I've been experimenting with AI, and come up with some cool results. A bit of fun, but also finally addressing the most draining of tasks - my own personal tech debt.
 
 ## New homepage prototype
 I was watching [Claire Vo's recent video](https://youtu.be/1gYQc4CL_oo?si=xjj_PKJ8oJMqHwvW){:target="_blank" rel="noopener"} on Fable 5.2, and saw a prototype for an interactive 3d environment for a website homepage. It featured a typewriter that you can type on (and use twink to correct your mistakes!) turn on a writing timer, and play music.

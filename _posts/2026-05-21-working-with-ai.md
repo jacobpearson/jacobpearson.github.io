@@ -5,6 +5,9 @@ date: 2026-05-21
 category: Article
 lede: "Not in the 'asked ChatGPT to write an email' way — more like built a pipeline connecting six platforms, running LLM analysis, and publishing to Notion while I sleep. A rough account of how that happened, and what I've learned."
 read_time: 5
+image: /assets/images/og/working-with-ai.jpg
+image_alt: "A laptop glowing in a dark room"
+image_credit: "Photo by Ales Nesetril on Unsplash"
 tags: [Article, AI, Product, Automation]
 toc:
   - { id: "starting-out", title: "Starting out" }

@@ -5,6 +5,9 @@ date: 2026-05-15
 category: Case Study
 lede: "At SolarCity NZ, I led the build of a GIS-powered suitability tool that let homeowners check, qualify, and estimate their solar savings online — before ever speaking to anyone. Leads via the tool were 30% more likely to convert."
 read_time: 5
+image: /assets/images/og/solarcity-suitability.jpg
+image_alt: "A house with solar panels on its roof under a blue sky"
+image_credit: "Photo by Watt A Lot on Unsplash"
 tags: [Case Study, Digital, Product, Lead Generation]
 toc:
   - { id: "the-problem", title: "The problem" }

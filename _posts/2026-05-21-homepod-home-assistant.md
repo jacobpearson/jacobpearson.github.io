@@ -5,6 +5,9 @@ date: 2026-05-21
 category: How-to
 lede: "The HomePod Mini has temperature and humidity sensors, but getting them into Home Assistant takes some wiring up. This is the method that worked — documented in one place, without the comment thread archaeology."
 read_time: 12
+image: /assets/images/og/homepod-home-assistant.jpg
+image_alt: "A yellow HomePod mini on a wooden desk"
+image_credit: "Photo by Matúš Gocman on Unsplash"
 tags: [How-to, Home Assistant, Apple, HomeKit, Automation]
 toc:
   - { id: "how-this-works", title: "How this works" }

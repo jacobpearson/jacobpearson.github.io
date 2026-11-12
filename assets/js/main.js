@@ -89,6 +89,77 @@
 
       countEls.forEach(function (el) { countObserver.observe(el); });
     }
+
+    // ── Hero typewriter: rotate the orange phrase ─────────────────────────
+    var rotator = document.querySelector('.hero-rotator[data-phrases]');
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (rotator && !reduceMotion) {
+      var phrases;
+      try { phrases = JSON.parse(rotator.dataset.phrases); } catch (e) { phrases = null; }
+      if (phrases && phrases.length > 1) {
+        var headline = rotator.closest('.hero-headline');
+        var cursor = headline.querySelector('.hero-cursor');
+        var HOLD = 4000, DELETE_MS = 35, TYPE_MS = 65, GAP = 350;
+        var index = 0;
+
+        // Lock the headline height to the tallest phrase so nothing below jumps.
+        var lockHeight = function () {
+          var current = rotator.textContent;
+          headline.style.minHeight = '';
+          var tallest = 0;
+          phrases.forEach(function (p) {
+            rotator.textContent = p;
+            tallest = Math.max(tallest, headline.offsetHeight);
+          });
+          rotator.textContent = current;
+          headline.style.minHeight = tallest + 'px';
+        };
+        lockHeight();
+        var resizeTimer;
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(lockHeight, 150);
+        });
+
+        // Timer that waits while the tab is hidden.
+        var wait = function (ms, fn) {
+          setTimeout(function run() {
+            if (document.hidden) { setTimeout(run, 500); } else { fn(); }
+          }, ms);
+        };
+
+        var typing = function (on) { if (cursor) cursor.classList.toggle('is-typing', on); };
+
+        var erase = function () {
+          typing(true);
+          var text = rotator.textContent;
+          if (text.length) {
+            rotator.textContent = text.slice(0, -1);
+            wait(DELETE_MS, erase);
+          } else {
+            typing(false);
+            index = (index + 1) % phrases.length;
+            wait(GAP, type);
+          }
+        };
+
+        var type = function () {
+          typing(true);
+          var target = phrases[index];
+          var text = rotator.textContent;
+          if (text.length < target.length) {
+            rotator.textContent = target.slice(0, text.length + 1);
+            wait(TYPE_MS + Math.random() * 45, type);
+          } else {
+            typing(false);
+            wait(HOLD, erase);
+          }
+        };
+
+        // First phrase is already on screen: let the entrance animation finish, then hold.
+        wait(500 + HOLD, erase);
+      }
+    }
   }
 
   // Handle both deferred and already-loaded cases

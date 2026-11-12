@@ -5,6 +5,8 @@ date: 2026-05-05
 category: Case Study
 lede: "42Below's website was a masterpiece of Flash: impossible to update, invisible to search engines, and broken on every iPhone. In 2009, we rebuilt it from scratch."
 read_time: 3
+image: /assets/images/og/42below-website.jpg
+image_alt: "The rebuilt 42Below.com homepage from 2009"
 tags: [Case Study, Digital, Web, Marketing]
 toc:
   - { id: "the-brief", title: "The brief" }

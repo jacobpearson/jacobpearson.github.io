@@ -7,7 +7,10 @@ description: Product manager based in Auckland, NZ. Writing about product manage
 <!-- ─── HERO ─────────────────────────────────────────────── -->
 <section class="hero">
   <div class="container">
-    <h1 class="hero-headline">Solving problems<br>and <em>making<br>things work.</em></h1>
+    <h1 class="hero-headline">
+      <span class="visually-hidden">Solving problems and making things work.</span>
+      <span aria-hidden="true">Solving problems<br>and <em class="hero-rotator" data-phrases='["making things work.","shipping what matters.","untangling the mess.","automating the boring bits.","asking better questions."]'>making things work.</em><span class="hero-cursor"></span></span>
+    </h1>
     <p class="hero-bio">
       I'm a product manager with 20+ years of hands-on digital experience, from building AR activations in 2009 to integrating AI at API level today.
       I write here about product management, delivery, and whatever I'm currently building.
@@ -144,6 +147,9 @@ description: Product manager based in Auckland, NZ. Writing about product manage
     <div class="posts-grid">
       {% for post in site.posts limit:3 %}
       <a href="{{ post.url }}" class="post-card" data-reveal data-delay="{{ forloop.index }}">
+        {% if post.image %}
+        <img class="post-card-image" src="{{ post.image | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+        {% endif %}
         <div class="post-meta">
           <span class="post-tag">{{ post.category | default: "Article" }}</span>
           <span class="post-date">{{ post.date | date: "%b %Y" }}</span>

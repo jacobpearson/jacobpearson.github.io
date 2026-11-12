@@ -5,6 +5,9 @@ date: 2026-08-10
 category: How-to
 lede: "I wanted Claude to write my Home Assistant automations in plain English. Getting there meant tripping over an undocumented bug and a broken dependency chain first."
 read_time: 6
+image: /assets/images/og/claude-home-assistant-mcp.jpg
+image_alt: "A laptop showing code, surrounded by tech devices"
+image_credit: "Photo by Mahmudul Hasan on Unsplash"
 tags: [How-to, Home Assistant, Claude, MCP, Automation]
 toc:
   - { id: "attempt-1-the-remote-connector", title: "Attempt 1: the remote connector" }

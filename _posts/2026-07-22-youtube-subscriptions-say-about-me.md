@@ -5,6 +5,9 @@ date: 2026-07-22
 category: Personal
 lede: "594 subscriptions, and I couldn't have told you the number without asking an AI to count them. Turns out the list already knew a few things about me my CV doesn't say."
 read_time: 5
+image: /assets/images/og/youtube-subscriptions.jpg
+image_alt: "A hand holding a TV remote in front of a television"
+image_credit: "Photo by Jonas Leupe on Unsplash"
 tags: [Personal, AI]
 excerpt: "I asked Claude to read back 594 YouTube subscriptions like a horoscope. Here's what came out, and what it got right."
 toc:

@@ -4,6 +4,10 @@ url: "https://jacobpearson.com"
 baseurl: ""
 timezone: Pacific/Auckland
 
+# Fallback share image for pages without their own `image` (1200×630)
+default_image: /assets/images/og/default.jpg
+default_image_alt: "jacobpearson.com — product manager based in Auckland, NZ"
+
 author:
   name: Jacob Pearson
   email: jacob@jacobpearson.com
