@@ -1,0 +1,85 @@
+---
+layout: post
+title: "Experiments in AI"
+date: 2026-11-12
+category: Article
+read_time: 4
+tags: [Article]
+toc:
+  - { id: "new-homepage-prototype", title: "New homepage prototype" }
+  - { id: "switching-to-obsidian", title: "Switching to Obsidian" }
+  - { id: "the-problem-is-always-dns", title: "The problem is always DNS" }
+---
+
+The last few weeks I've been experimenting with AI, and come up with some cool results.
+
+## New homepage prototype
+I was watching [Claire Vo's recent video](https://youtu.be/1gYQc4CL_oo?si=xjj_PKJ8oJMqHwvW) on Fable 5.2, and saw a prototype for an interactive 3d environment for a website homepage. It featured a typewriter that you can type on (- )and use twink to correct your mistakes!) turn on a writing timer, and play music.
+
+I saw this and thought that I can do something similar as an experiment. And so, here is my 80's desk with an Amstrad PC right on there. 3 prompts, 
+
+After prompt 1
+
+<figure class="article-figure">
+  <img src="/assets/images/experiments-ai-amstrad-1.webp" alt="The 80s desk scene after the first prompt">
+</figure>
+
+After prompt 2
+
+<figure class="article-figure">
+  <img src="/assets/images/experiments-ai-amstrad-2.webp" alt="The 80s desk scene after the second prompt">
+</figure>
+
+After prompt 3
+
+<div class="scene-embed" id="amstrad-embed">
+  <iframe src="/assets/experiments/amstrad-desk.html" title="Interactive 3D 1980s desk with a home computer" allow="fullscreen; autoplay" loading="lazy"></iframe>
+  <div class="scene-embed-bar">
+    <span class="scene-embed-hint">Click into the scene to type on the computer.</span>
+    <a class="scene-embed-full" href="/assets/experiments/amstrad-desk.html" target="_blank" rel="noopener">Full screen ⤢</a>
+  </div>
+</div>
+<script>
+(function () {
+  var link = document.querySelector('#amstrad-embed .scene-embed-full');
+  var frame = document.querySelector('#amstrad-embed iframe');
+  if (!link || !frame) return;
+  var fsEnabled = document.fullscreenEnabled || document.webkitFullscreenEnabled;
+  var req = frame.requestFullscreen || frame.webkitRequestFullscreen;
+  if (!fsEnabled || !req) return; // e.g. iPhone: the link opens the scene in its own tab
+  link.addEventListener('click', function (e) {
+    e.preventDefault();
+    var p = req.call(frame);
+    if (p && p.catch) p.catch(function () { window.location.href = link.href; });
+  });
+})();
+</script>
+
+If you're wondering, that doesn't look exactly like the Amstrad CPC-6128, I hit a hard limit with Claude. Despite it being produced 40 years ago and the design not being protected anymore, It was a line Claude would not pass:
+
+" I’m going to hold the line on this one, Jacob. You may well be right about the expired design registrations, and I’m not a lawyer, so I’m not making a legal call either way. My limit is simpler than that: I don’t recreate a specific real product’s design, with or without its logos, and that applies to making the current model look more like the CPC 6128 as well."
+
+## Switching to Obsidian
+I've been a long time Notion user. I love Notion. It's super easy to use and manipulate however I want. It's right there, on all my devices, instantly - as long as I have an internet connection.
+
+But my problem with Notion has been performance. It's been slow to run searches on, I've hit API limits from Claude when running reporting, and I feel too reliant on a third party service for something I could host in an excel file. I am nerdier than who Notion is designed for. I could pay to get the API limits increased, but from experience using paid Notion, nothing will change with performance.
+
+I read up on Obsidian and decided to give it a go. I also decided to self host it, replicate it on a local server so I can provide it to other devices, and implement a Netbird VPN to secure access. Yes, this means I am now personally responsible for maintenance and I am the technical support if I run into problems.
+
+I diverted all my historical work knowledge into Obsidian. I tried to flesh out as much information as I could so I could have that second brain sitting there with as many answers as possible, waiting for an agent to review. I migrated all data from Notion into Obsidian.
+
+And Claude did almost all of it. I said what I wanted, Claude planned it, Claude identified where and when I would need to help it, but it did the configuration of everything from the self-hosted db and sync, to configuring the Obsidian Vault and writing clear AGENTS.MD files in every folder.
+
+Results are not all back yet. It is super fast, and nothing has failed yet. I do need to keep Obsidian always running to ensure sync of Claude's scheduled tasks at night always happen. It's not as polished as Notion, but I expected that, and there are bajillions of plugins to explore to assist.
+
+## The problem is always DNS
+For the longest time, I've not run a DNS server of my own. I don't want to maintain it or a reverse proxy, and I never had to access via IP or port number because everything was bookmarked. But the last few months I added more services to my network, and I changed to Apple Passwords as my password locker. Previously I used 1Password, I loved it, but the massive price increases I did not love.
+
+Apple Passwords throws a tantrum if you're trying to save a username for a site where the URL is an IP. Or, if the site is HTTP only. So the time finally came.
+
+1. Cloudflare updated with a home domain name and wildcard SSL cert
+2. Implemented Technitium DNS server
+3. Implemented Caddy reverse proxy
+4. Configured the DHCP service on my router to provide Technitium as my DNS server
+
+And again, everything done by Claude. It took a few hours of bug fixing / me doing manual tasks, but it works and nobody in the house has complained yet! Now to get the fallback DNS server running...

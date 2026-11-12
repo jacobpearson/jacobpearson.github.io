@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>The Desk, 1986 | Jacob Pearson</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Caveat:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --orange: #F25E0D;
+    --cool-white: #F7F7FF;
+    --navy: #1A1A2E;
+    --slate: #8890A0;
+    --border: #32324A;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; overflow: hidden; background: #0b0810; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: var(--cool-white); -webkit-font-smoothing: antialiased; }
+  #scene { position: fixed; inset: 0; display: block; width: 100%; height: 100%; touch-action: none; cursor: grab; outline: none; }
+  #scene.dragging { cursor: grabbing; }
+  #scene.link { cursor: pointer; }
+  .vignette { position: fixed; inset: 0; pointer-events: none; z-index: 2;
+    background: radial-gradient(ellipse at 50% 55%, rgba(0,0,0,0) 45%, rgba(4,2,8,0.72) 100%); }
+
+  .bar {
+    position: fixed; top: 0; left: 0; right: 0; height: 56px; z-index: 5;
+    display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+  }
+  .logo { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; color: var(--cool-white); text-decoration: none; }
+  .logo span { color: var(--orange); }
+  .views { display: flex; gap: 8px; }
+  .views button {
+    font: inherit; font-size: 13px; color: var(--cool-white);
+    background: rgba(16,12,22,0.7); border: 1px solid var(--border);
+    padding: 7px 14px; cursor: pointer; transition: border-color 0.15s, color 0.15s;
+  }
+  .views button:hover, .views button:focus-visible { border-color: var(--orange); color: var(--orange); outline: none; }
+
+  .foot {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+    display: flex; align-items: flex-end; justify-content: space-between; gap: 16px;
+    padding: 16px 24px; font-size: 12px; color: var(--slate);
+  }
+  .foot nav { display: flex; gap: 18px; }
+  .foot a { color: var(--slate); text-decoration: none; }
+  .foot a:hover { color: var(--orange); }
+
+  .card {
+    position: fixed; left: 0; right: 0; bottom: 64px; margin: 0 auto; width: fit-content; z-index: 6;
+    background: #14101c; border: 1px solid var(--border); border-left: 4px solid var(--orange);
+    padding: 16px 44px 16px 20px; min-width: 280px; max-width: calc(100vw - 32px);
+    display: none;
+  }
+  .card.show { display: block; }
+  .card small { display: block; font-size: 11px; color: var(--slate); margin-bottom: 6px; }
+  .card a { color: var(--orange); font-size: 16px; font-weight: 700; text-decoration: none; }
+  .card a:hover { text-decoration: underline; }
+  .card button { position: absolute; top: 6px; right: 8px; background: none; border: 0; color: var(--slate); font-size: 16px; cursor: pointer; }
+
+  .panel {
+    position: fixed; top: 56px; right: 24px; z-index: 5;
+    display: flex; align-items: center; gap: 14px; flex-wrap: wrap; justify-content: flex-end;
+    font-size: 12px; color: var(--slate);
+  }
+  .panel label { display: flex; align-items: center; gap: 8px; }
+  .panel button {
+    font: inherit; font-size: 12px; color: var(--cool-white); background: rgba(16,12,22,0.7);
+    border: 1px solid var(--border); padding: 5px 10px; cursor: pointer;
+  }
+  .panel button[aria-pressed="true"] { border-color: var(--orange); color: var(--orange); }
+  .panel input[type=range] { width: 96px; accent-color: var(--orange); }
+  .nogl { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; text-align: center; padding: 32px; z-index: 9; }
+  .nogl a { color: var(--orange); }
+    .hint-m { display: none; }
+  @media (max-width: 640px) { .hint { display: none; } .hint-m { display: block; } .foot { flex-direction: column; align-items: flex-start; gap: 10px; } .logo { font-size: 12px; } .views button { padding: 7px 10px; font-size: 12px; } .panel { right: 14px; left: 14px; gap: 10px; } .panel input[type=range] { width: 72px; } .bar, .foot { padding-left: 14px; padding-right: 14px; } }
+</style>
+</head>
+<body>
+
+<canvas id="scene" tabindex="0" aria-label="A 3D 1980s desk with a home computer. Use the links at the bottom of the page to navigate."></canvas>
+<div class="vignette"></div>
+
+<header class="bar">
+  <a class="logo" href="https://www.jacobpearson.com/" target="_top">jacobpearson<span>.</span>com</a>
+  <div class="views">
+    <button type="button" id="btnScreen">Screen</button>
+    <button type="button" id="btnKeys">Keyboard</button>
+    <button type="button" id="btnDesk">Desk</button>
+  </div>
+</header>
+
+<div class="panel" aria-label="Room controls">
+  <button type="button" id="btnMusic" aria-pressed="false">Music: off</button>
+  <label>Volume <input type="range" id="vol" min="0" max="100" value="60" aria-label="Audio volume"></label>
+  <label>Lamp <input type="range" id="lamp" min="0" max="100" value="70" aria-label="Desk lamp brightness"></label>
+</div>
+
+<div class="card" id="card" role="status">
+  <button type="button" id="cardClose" aria-label="Dismiss">×</button>
+  <small id="cardNote">Loaded.</small>
+  <a id="cardLink" href="#" target="_blank" rel="noopener">Open</a>
+</div>
+
+<footer class="foot">
+  <span class="hint-m">Drag to look around, pinch to zoom. Tap Screen, then tap a file or the keys.</span>
+  <span class="hint">Drag to look around. Scroll to zoom. Type, or click the keys and the files on screen.</span>
+  <nav aria-label="Site">
+    <a href="https://www.jacobpearson.com/blog/" target="_top">Blog</a>
+    <a href="https://www.jacobpearson.com/about/" target="_top">About</a>
+    <a href="https://www.jacobpearson.com/contact/" target="_top">Contact</a>
+    <a href="https://www.linkedin.com/in/jacobpearson" target="_blank" rel="noopener">LinkedIn</a>
+  </nav>
+</footer>
+
+<div class="nogl" id="nogl"><p>This page needs WebGL. Head to the <a href="https://www.jacobpearson.com/blog/" target="_top">blog</a> instead.</p></div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/geometries/RoundedBoxGeometry.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/environments/RoomEnvironment.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ─── CONFIG ──────────────────────────────────────────────
+     LIVE = true on the real site: commands navigate directly.
+     LIVE = false in this prototype: commands show a link card. */
+  var LIVE = false;
+  var SITE = 'https://www.jacobpearson.com';
+  var FILES = [
+    { n: 'BLOG',     d: 'Articles + case studies', u: SITE + '/blog/' },
+    { n: 'ABOUT',    d: 'Who I am',                u: SITE + '/about/' },
+    { n: 'CONTACT',  d: 'Get in touch',            u: SITE + '/contact/' },
+    { n: 'LINKEDIN', d: 'Career history',          u: 'https://www.linkedin.com/in/jacobpearson' }
+  ];
+
+  function noGL() { document.getElementById('nogl').style.display = 'flex'; }
+  if (!window.THREE || !window.WebGLRenderingContext) { noGL(); return; }
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ─── RENDERER / SCENE / CAMERA ─────────────────────────── */
+  var canvas = document.getElementById('scene');
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true }); }
+  catch (e) { noGL(); return; }
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  var scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x07050b);
+  scene.fog = new THREE.Fog(0x07050b, 34, 80);
+
+  // Soft studio reflections so plastics and metal pick up highlights
+  var ENV_I = 0.22;
+  if (THREE.RoomEnvironment && THREE.PMREMGenerator) {
+    try {
+      var pmrem = new THREE.PMREMGenerator(renderer);
+      scene.environment = pmrem.fromScene(new THREE.RoomEnvironment(), 0.04).texture;
+    } catch (e) { /* carry on without reflections */ }
+  }
+
+  var camera = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+  var VIEW_DESK = { p: new THREE.Vector3(3.6, 5.0, 12.2), t: new THREE.Vector3(0, 1.5, 0.2), w: 10.5 };
+  var VIEW_SCREEN = { p: new THREE.Vector3(0, 2.7, 5.9), t: new THREE.Vector3(0, 2.05, 0), w: 5.0 };
+  var VIEW_KEYS = { p: new THREE.Vector3(-0.4, 4.6, 5.6), t: new THREE.Vector3(-0.3, 0.8, 1.2), w: 6.6 };
+
+  var controls = new THREE.OrbitControls(camera, canvas);
+  controls.target.copy(VIEW_DESK.t);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.08;
+  controls.enablePan = false;
+  controls.minDistance = 3.0;
+  controls.maxDistance = 34;
+  controls.minPolarAngle = 0.3;
+  controls.maxPolarAngle = Math.PI / 2 - 0.04;
+  controls.minAzimuthAngle = -1.15;
+  controls.maxAzimuthAngle = 1.15;
+  controls.zoomSpeed = 0.8;
+  controls.update();
+
+  /* ─── HELPERS ───────────────────────────────────────────── */
+  function col(hex) { return new THREE.Color(hex).convertSRGBToLinear(); }
+  function mat(hex, opts) {
+    var o = { color: col(hex), roughness: 0.7, metalness: 0.0, envMapIntensity: ENV_I };
+    if (opts) for (var k in opts) o[k] = opts[k];
+    return new THREE.MeshStandardMaterial(o);
+  }
+  function glowMat(hex) { return new THREE.MeshBasicMaterial({ color: col(hex), toneMapped: false }); }
+  function add(m, x, y, z, parent) {
+    m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true;
+    (parent || scene).add(m); return m;
+  }
+  function box(w, h, d, material, x, y, z, parent) {
+    return add(new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material), x, y, z, parent);
+  }
+  function rbox(w, h, d, r, material, x, y, z, parent) {
+    var g = THREE.RoundedBoxGeometry ? new THREE.RoundedBoxGeometry(w, h, d, 4, r) : new THREE.BoxGeometry(w, h, d);
+    return add(new THREE.Mesh(g, material), x, y, z, parent);
+  }
+  function cyl(rt, rb, h, material, x, y, z, parent, seg) {
+    return add(new THREE.Mesh(new THREE.CylinderGeometry(rt, rb, h, seg || 28), material), x, y, z, parent);
+  }
+  function cable(points, radius, material) {
+    var curve = new THREE.CatmullRomCurve3(points.map(function (p) { return new THREE.Vector3(p[0], p[1], p[2]); }));
+    curve.curveType = 'centripetal';
+    var m = new THREE.Mesh(new THREE.TubeGeometry(curve, 80, radius, 10), material);
+    m.castShadow = true; m.receiveShadow = true; scene.add(m); return m;
+  }
+  // Pillow-shaped bulge for the picture tube
+  function tubeGeo(w, h, bulge) {
+    var g = new THREE.PlaneGeometry(w, h, 32, 22), p = g.attributes.position;
+    for (var i = 0; i < p.count; i++) {
+      var x = p.getX(i) / (w / 2), y = p.getY(i) / (h / 2);
+      p.setZ(i, bulge * (1 - x * x) * (1 - y * y));
+    }
+    g.computeVertexNormals(); return g;
+  }
+  function rrPath(c, x, y, w, h, r) {
+    c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r);
+    c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
+  }
+  function rng(seed) {
+    return function () {
+      seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+      var t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+  function canvasTex(w, h, draw) {
+    var c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    draw(c.getContext('2d'), w, h);
+    var t = new THREE.CanvasTexture(c);
+    t.encoding = THREE.sRGBEncoding;
+    t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    return t;
+  }
+
+  /* ─── AUDIO: key clacks and an original chiptune loop, all synthesised ─── */
+  var AC = null, master = null, sfxBus = null, musicBus = null, noiseBuf = null;
+  var gesture = false, volume = 0.6, musicOn = false, musicTimer = null, stepNo = 0, nextT = 0;
+  function audio() {
+    if (!gesture) return null;
+    if (!AC) {
+      var C = window.AudioContext || window.webkitAudioContext;
+      if (!C) return null;
+      try { AC = new C(); } catch (e) { return null; }
+      master = AC.createGain(); master.gain.value = volume; master.connect(AC.destination);
+      sfxBus = AC.createGain(); sfxBus.gain.value = 0.9; sfxBus.connect(master);
+      var lp = AC.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 5200; lp.connect(master);
+      musicBus = AC.createGain(); musicBus.gain.value = 0.32; musicBus.connect(lp);
+      noiseBuf = AC.createBuffer(1, AC.sampleRate, AC.sampleRate);
+      var d = noiseBuf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    }
+    if (AC.state === 'suspended') AC.resume();
+    return AC;
+  }
+  function noiseHit(t, dur, freq, q, gain, bus, type) {
+    var src = AC.createBufferSource(); src.buffer = noiseBuf;
+    var f = AC.createBiquadFilter(); f.type = type || 'bandpass'; f.frequency.value = freq; f.Q.value = q;
+    var g = AC.createGain(); g.gain.setValueAtTime(gain, t); g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+    src.connect(f); f.connect(g); g.connect(bus);
+    src.start(t, Math.random() * 0.8, dur + 0.02);
+  }
+  function tone(type, freq, t, dur, gain, bus, slideTo) {
+    var o = AC.createOscillator(); o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + dur);
+    var g = AC.createGain();
+    g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(gain, t + 0.006);
+    g.gain.setValueAtTime(gain, t + dur * 0.6); g.gain.exponentialRampToValueAtTime(0.0008, t + dur);
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t + dur + 0.02);
+  }
+  function clack(up, big) {
+    if (!audio()) return;
+    var t = AC.currentTime;
+    if (up) { noiseHit(t, 0.025, 3400 + Math.random() * 900, 1.4, 0.16, sfxBus); return; }
+    noiseHit(t, 0.045, (big ? 1500 : 2300) + Math.random() * 500, 1.1, 0.5, sfxBus);
+    tone('sine', big ? 110 : 150, t, 0.06, big ? 0.4 : 0.26, sfxBus, big ? 55 : 80);
+  }
+  // Sequencer: 8 bars of 16 steps. Chords Am, F, C, G, twice through, with two lead phrases.
+  var hz = function (m) { return 440 * Math.pow(2, (m - 69) / 12); };
+  var CHORDS = [[45, 57, 60, 64], [41, 53, 57, 60], [48, 55, 60, 64], [43, 55, 59, 62]];
+  var LEAD = [
+    [76, 0, 72, 74, 76, 0, 81, 0], [79, 0, 77, 76, 77, 0, 72, 0], [76, 0, 74, 72, 67, 0, 72, 74], [74, 0, 71, 0, 67, 69, 71, 0],
+    [72, 76, 81, 0, 79, 76, 0, 72], [69, 72, 77, 0, 76, 72, 0, 69], [67, 72, 76, 79, 0, 76, 74, 72], [71, 74, 79, 0, 74, 0, 71, 0]
+  ];
+  var STEP = 60 / 126 / 4;
+  function scheduleStep(n, t) {
+    var bar = Math.floor(n / 16) % 8, st = n % 16, ch = CHORDS[bar % 4];
+    if (st === 0 || st === 6 || st === 8 || st === 11 || st === 14) tone('triangle', hz(ch[0] - (st === 6 || st === 14 ? 0 : 12)), t, STEP * 1.8, 0.5, musicBus);
+    tone('square', hz(ch[1 + (st % 3)] + (st % 6 > 2 ? 12 : 0)), t, STEP * 0.9, 0.07, musicBus);
+    if (st % 2 === 0) { var m = LEAD[bar][st / 2]; if (m) tone('square', hz(m), t, STEP * (LEAD[bar][st / 2 + 1] ? 1.7 : 3.2), 0.16, musicBus); }
+    if (st % 8 === 0) tone('sine', 150, t, 0.12, 0.6, musicBus, 45);
+    if (st % 8 === 4) noiseHit(t, 0.11, 1800, 0.7, 0.3, musicBus);
+    if (st % 2 === 0) noiseHit(t, 0.03, 7000, 1, st % 4 === 2 ? 0.1 : 0.05, musicBus, 'highpass');
+  }
+  function setMusic(on) {
+    musicOn = on;
+    var b = document.getElementById('btnMusic');
+    b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? 'Music: on' : 'Music: off';
+    clearInterval(musicTimer); musicTimer = null;
+    if (!on || !audio()) { if (on) { musicOn = false; b.setAttribute('aria-pressed', 'false'); b.textContent = 'Music: off'; } return; }
+    stepNo = 0; nextT = AC.currentTime + 0.08;
+    musicTimer = setInterval(function () {
+      while (nextT < AC.currentTime + 0.2) { scheduleStep(stepNo++, nextT); nextT += STEP; }
+    }, 50);
+  }
+
+  /* ─── LIGHTS (lamp is added with the lamp model) ────────── */
+  scene.add(new THREE.HemisphereLight(col(0x8f86ff), col(0x1a0f24), 0.1));
+  var rim = new THREE.DirectionalLight(col(0x6a7dff), 0.22);
+  rim.position.set(-8, 7, -2);
+  scene.add(rim);
+
+  /* ─── ROOM ──────────────────────────────────────────────── */
+  var wallTex = canvasTex(1024, 1024, function (c, w, h) {
+    var r = rng(1986);
+    c.fillStyle = '#b9bde6'; c.fillRect(0, 0, w, h);
+    var cols = ['#ff5fa2', '#ffd23f', '#2ec4b6', '#7b5cd6', '#ff8c42', '#1a1a2e'];
+    for (var i = 0; i < 46; i++) {
+      var x = r() * w, y = r() * h, s = 18 + r() * 30, cc = cols[Math.floor(r() * cols.length)];
+      var kind = Math.floor(r() * 5);
+      c.save(); c.translate(x, y); c.rotate(r() * Math.PI * 2);
+      c.fillStyle = cc; c.strokeStyle = cc; c.lineWidth = 6; c.lineCap = 'round'; c.lineJoin = 'round';
+      if (kind === 0) { c.beginPath(); c.moveTo(0, -s); c.lineTo(s, s * 0.8); c.lineTo(-s, s * 0.8); c.closePath(); c.fill(); }
+      else if (kind === 1) { c.beginPath(); for (var k = 0; k < 5; k++) c.lineTo(k * s * 0.5 - s, (k % 2 ? -1 : 1) * s * 0.35); c.stroke(); }
+      else if (kind === 2) { c.beginPath(); c.arc(0, 0, s * 0.55, 0, Math.PI * 2); c.stroke(); }
+      else if (kind === 3) { for (var a = 0; a < 3; a++) for (var b = 0; b < 3; b++) { c.beginPath(); c.arc(a * 14 - 14, b * 14 - 14, 3.5, 0, Math.PI * 2); c.fill(); } }
+      else { c.fillRect(-s * 0.7, -5, s * 1.4, 10); }
+      c.restore();
+    }
+  });
+  wallTex.wrapS = wallTex.wrapT = THREE.RepeatWrapping;
+  wallTex.repeat.set(4, 2);
+  var wall = new THREE.Mesh(new THREE.PlaneGeometry(60, 30), mat(0xffffff, { map: wallTex, roughness: 1, envMapIntensity: 0 }));
+  wall.position.set(0, 7, -4.4); wall.receiveShadow = true; scene.add(wall);
+
+  var floor = new THREE.Mesh(new THREE.PlaneGeometry(60, 40), mat(0x3a2a5c, { roughness: 1, envMapIntensity: 0 }));
+  floor.rotation.x = -Math.PI / 2; floor.position.set(0, -7.5, 8); scene.add(floor);
+  box(60, 0.9, 0.2, mat(0xd9d2ee), 0, -7.05, -4.3);
+
+  // Desk: dark timber with a drawn grain
+  var woodTex = canvasTex(1024, 512, function (c, w, h) {
+    var r = rng(3);
+    c.fillStyle = '#5a3620'; c.fillRect(0, 0, w, h);
+    for (var i = 0; i < 260; i++) {
+      var y = r() * h, a = 0.04 + r() * 0.1;
+      c.strokeStyle = r() > 0.5 ? 'rgba(30,14,6,' + a + ')' : 'rgba(150,96,56,' + a + ')';
+      c.lineWidth = 0.6 + r() * 2.4;
+      c.beginPath(); c.moveTo(0, y);
+      for (var x = 0; x <= w; x += 64) c.lineTo(x, y + Math.sin(x * 0.006 + i) * 5 + (r() - 0.5) * 3);
+      c.stroke();
+    }
+  });
+  var wood = mat(0xffffff, { map: woodTex, roughness: 0.48, envMapIntensity: 0.35 });
+  var woodDark = mat(0x3a2215, { roughness: 0.6 });
+  rbox(17, 0.45, 8.4, 0.06, wood, 0, -0.225, 0);
+  box(16.6, 0.5, 0.25, woodDark, 0, -0.7, 3.9);
+  box(0.5, 7.1, 7.8, woodDark, -8.0, -4.0, 0);
+  box(0.5, 7.1, 7.8, woodDark, 8.0, -4.0, 0);
+
+  // Under the desk, at the back: invented board games and a carton
+  (function () {
+    var games = [['MOONBASE MIX-UP', '#2b3a8f', '#ffd23f'], ['CASTLE CAPERS', '#b3261e', '#f7f7ff'], ['TURBO TORTOISE', '#1f8a70', '#ffd23f'], ['WORD WOMBAT', '#f2a03d', '#1a1a2e']];
+    var y = -7.5, r = rng(21);
+    games.forEach(function (gm, i) {
+      var w = 3.1 - i * 0.14, h = 0.44, d = 2.1 - i * 0.1;
+      var side = canvasTex(512, 72, function (c, W, H) {
+        c.fillStyle = gm[1]; c.fillRect(0, 0, W, H);
+        c.fillStyle = gm[2]; c.fillRect(0, 0, 26, H); c.fillRect(W - 26, 0, 26, H);
+        c.font = 'bold 42px Helvetica, Arial, sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+        c.fillText(gm[0], W / 2, H / 2 + 3);
+      });
+      var top = canvasTex(512, 344, function (c, W, H) {
+        c.fillStyle = gm[1]; c.fillRect(0, 0, W, H);
+        c.strokeStyle = gm[2]; c.lineWidth = 10; c.strokeRect(16, 16, W - 32, H - 32);
+        c.fillStyle = gm[2]; c.textAlign = 'center'; c.textBaseline = 'middle';
+        c.font = 'bold 54px Helvetica, Arial, sans-serif';
+        var parts = gm[0].split(' '); c.fillText(parts[0], W / 2, 120); c.fillText(parts.slice(1).join(' '), W / 2, 184);
+        c.font = 'bold 20px Helvetica, Arial, sans-serif'; c.fillText('2 TO 4 PLAYERS  ·  AGES 8 AND UP', W / 2, 286);
+      });
+      var plain = mat(parseInt(gm[1].slice(1), 16), { roughness: 0.65 });
+      var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), [plain, plain, mat(0xffffff, { map: top, roughness: 0.6 }), plain, mat(0xffffff, { map: side, roughness: 0.6 }), plain]);
+      m.position.set(-3.6 + (r() - 0.5) * 0.35, y + h / 2, -2.5 + (r() - 0.5) * 0.2); m.rotation.y = (r() - 0.5) * 0.24;
+      m.castShadow = true; m.receiveShadow = true; scene.add(m);
+      y += h + 0.012;
+    });
+    var cardboard = mat(0xa07850, { roughness: 0.95, envMapIntensity: 0.05 });
+    var carton = new THREE.Group(); carton.position.set(2.4, -7.5, -2.4); carton.rotation.y = -0.18; scene.add(carton);
+    rbox(2.4, 1.7, 1.9, 0.03, cardboard, 0, 0.85, 0, carton);
+    box(0.34, 0.012, 1.92, mat(0xd8c7a0, { roughness: 0.5 }), 0, 1.705, 0, carton);
+    var lab = canvasTex(512, 256, function (c, W, H) {
+      c.clearRect(0, 0, W, H); c.fillStyle = '#20140a'; c.textAlign = 'center';
+      c.font = '600 96px Caveat, "Comic Sans MS", cursive'; c.fillText('TAPES', W / 2, 110);
+      c.font = '600 64px Caveat, "Comic Sans MS", cursive'; c.fillText('+ old comics', W / 2, 190);
+    });
+    var lm = new THREE.Mesh(new THREE.PlaneGeometry(1.7, 0.85), new THREE.MeshStandardMaterial({ map: lab, transparent: true, roughness: 0.9 }));
+    lm.position.set(0, 0.95, 0.958); carton.add(lm);
+    var under = new THREE.PointLight(col(0x8f86ff), 0.4, 10, 2); under.position.set(0, -4.6, 2.2); scene.add(under);
+  })();
+
+  // Poster: original space art
+  var posterTex = canvasTex(512, 704, function (c, w, h) {
+    var r = rng(77);
+    var g = c.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, '#0d0b2b'); g.addColorStop(1, '#3a1466');
+    c.fillStyle = g; c.fillRect(0, 0, w, h);
+    c.fillStyle = '#fff';
+    for (var i = 0; i < 160; i++) { var s = r() * 2.2 + 0.4; c.fillRect(r() * w, r() * h * 0.8, s, s); }
+    c.save(); c.translate(w * 0.5, h * 0.42); c.rotate(-0.3);
+    var R = 104;
+    var bands = [[1.34, 9, '#ffe9a8', 0.85], [1.47, 11, '#ffd23f', 0.95], [1.63, 14, '#ffb347', 0.9], [1.8, 4, '#ff8fb8', 0.75], [1.9, 9, '#c9a0ff', 0.65]];
+    function rings(a0, a1) {
+      bands.forEach(function (b) {
+        c.globalAlpha = b[3]; c.strokeStyle = b[2]; c.lineWidth = b[1];
+        c.beginPath(); c.ellipse(0, 0, R * b[0], R * b[0] * 0.27, 0, a0, a1); c.stroke();
+      });
+      c.globalAlpha = 1;
+    }
+    rings(Math.PI, Math.PI * 2);                    // far half, behind the planet
+    c.save(); c.beginPath(); c.arc(0, 0, R, 0, Math.PI * 2); c.clip();
+    var pg = c.createLinearGradient(0, -R, 0, R);
+    pg.addColorStop(0, '#ffb05c'); pg.addColorStop(0.55, '#ff7a59'); pg.addColorStop(1, '#ff5fa2');
+    c.fillStyle = pg; c.fillRect(-R, -R, R * 2, R * 2);
+    c.fillStyle = 'rgba(255,255,255,0.16)';
+    [[-66, 14], [-34, 8], [-6, 20], [34, 10], [60, 16]].forEach(function (b) { c.fillRect(-R, b[0], R * 2, b[1]); });
+    c.fillStyle = 'rgba(40,0,60,0.35)';             // shadow the rings cast across the globe
+    c.beginPath(); c.ellipse(0, 10, R * 1.5, R * 0.2, 0, 0, Math.PI); c.ellipse(0, 4, R * 1.5, R * 0.13, 0, Math.PI, 0, true); c.fill();
+    var sh = c.createRadialGradient(-R * 0.42, -R * 0.46, R * 0.15, 0, 0, R * 1.12);
+    sh.addColorStop(0, 'rgba(255,255,255,0.3)'); sh.addColorStop(0.42, 'rgba(0,0,0,0)'); sh.addColorStop(1, 'rgba(20,0,50,0.78)');
+    c.fillStyle = sh; c.fillRect(-R, -R, R * 2, R * 2);
+    c.restore();
+    rings(0, Math.PI);                              // near half, in front
+    c.restore();
+    c.fillStyle = '#2ec4b6'; c.fillRect(0, h - 120, w, 120);
+    c.fillStyle = '#0d0b2b'; c.font = 'bold 64px Helvetica, Arial, sans-serif'; c.textAlign = 'center';
+    c.fillText('EXPLORE!', w / 2, h - 42);
+    c.strokeStyle = '#f7f7ff'; c.lineWidth = 14; c.strokeRect(7, 7, w - 14, h - 14);
+  });
+  var poster = new THREE.Mesh(new THREE.PlaneGeometry(3.4, 4.7), mat(0xffffff, { map: posterTex, roughness: 0.6 }));
+  poster.position.set(-5.6, 6.4, -4.36); scene.add(poster);
+
+  // Pennant
+  (function () {
+    var s = new THREE.Shape();
+    s.moveTo(0, 0.8); s.lineTo(3.2, 0); s.lineTo(0, -0.8); s.closePath();
+    var p = new THREE.Mesh(new THREE.ShapeGeometry(s), mat(0xff5fa2, { side: THREE.DoubleSide }));
+    p.position.set(-2.6, 9.6, -4.36); p.rotation.z = -0.08; scene.add(p);
+    var band = new THREE.Mesh(new THREE.PlaneGeometry(0.28, 1.6), mat(0xffd23f));
+    band.position.set(-2.44, 9.61, -4.35); band.rotation.z = -0.08; scene.add(band);
+  })();
+
+  // Glow-in-the-dark stars (these really do glow now the lights are down)
+  (function () {
+    var s = new THREE.Shape();
+    for (var i = 0; i < 10; i++) {
+      var a = i / 10 * Math.PI * 2 + Math.PI / 2, rr = i % 2 ? 0.09 : 0.22;
+      if (i === 0) s.moveTo(Math.cos(a) * rr, Math.sin(a) * rr); else s.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
+    }
+    var g = new THREE.ShapeGeometry(s), m = glowMat(0xb9e86a);
+    var r = rng(42);
+    for (var k = 0; k < 22; k++) {
+      var st = new THREE.Mesh(g, m);
+      st.position.set(-1 + r() * 11, 8.2 + r() * 4.2, -4.37);
+      st.rotation.z = r() * 6; st.scale.setScalar(0.5 + r() * 0.9);
+      scene.add(st);
+    }
+  })();
+
+  // Shelf with books and a globe
+  (function () {
+    var g = new THREE.Group(); g.position.set(5.2, 6.2, -3.75); scene.add(g);
+    box(5.4, 0.16, 1.2, mat(0xe6e0f5), 0, 0, 0, g);
+    box(0.14, 0.7, 1.0, mat(0xff5fa2), -2.2, -0.42, 0, g);
+    box(0.14, 0.7, 1.0, mat(0xff5fa2), 2.2, -0.42, 0, g);
+    var cols = [0xff5fa2, 0x2ec4b6, 0xffd23f, 0x7b5cd6, 0xff8c42, 0x2ec4b6, 0xf7f7ff, 0x7b5cd6];
+    var x = -2.4, r = rng(9);
+    for (var i = 0; i < cols.length - 1; i++) {
+      var w = 0.2 + r() * 0.16, h = 1.1 + r() * 0.5;
+      rbox(w, h, 0.85, 0.02, mat(cols[i]), x + w / 2, 0.08 + h / 2, 0, g);
+      x += w + 0.02;
+    }
+    // Last book leans over and rests on a steel bookend
+    var lw = 0.26, lh = 1.4, th = 0.27; x += 0.02;
+    var lean = new THREE.Group(); lean.position.set(x + lw, 0.08, 0); lean.rotation.z = -th; g.add(lean);
+    rbox(lw, lh, 0.85, 0.02, mat(cols[cols.length - 1]), -lw / 2, lh / 2, 0, lean);
+    var bx = x + lw + lh * Math.sin(th);
+    var steel = mat(0x9aa0aa, { metalness: 0.9, roughness: 0.3, envMapIntensity: 1 });
+    box(0.04, 1.5, 0.7, steel, bx + 0.02, 0.08 + 0.75, 0, g);
+    box(0.55, 0.03, 0.7, steel, bx + 0.275, 0.095, 0, g);
+    cyl(0.32, 0.38, 0.08, mat(0x26262c), 1.7, 0.12, 0, g);
+    cyl(0.03, 0.03, 0.5, mat(0x26262c), 1.7, 0.35, 0, g);
+    add(new THREE.Mesh(new THREE.SphereGeometry(0.48, 32, 20), mat(0x2f7fd6, { roughness: 0.35 })), 1.7, 0.95, 0, g);
+  })();
+
+  /* ─── MONITOR ───────────────────────────────────────────── */
+  var caseMat = mat(0x34343b, { roughness: 0.5, envMapIntensity: 0.3 });
+  var caseDark = mat(0x1d1d22, { roughness: 0.55, envMapIntensity: 0.3 });
+  var mon = new THREE.Group(); mon.position.set(0, 0, -1.8); scene.add(mon);
+  rbox(2.8, 0.3, 2.3, 0.08, caseDark, 0, 0.15, 0.1, mon);
+  rbox(4.4, 3.6, 0.9, 0.16, caseMat, 0, 2.1, 1.36, mon);
+  rbox(3.9, 3.2, 2.9, 0.22, caseMat, 0, 2.05, -0.3, mon);
+  rbox(3.3, 2.5, 0.5, 0.12, caseDark, 0, 2.0, -1.85, mon);
+  for (var vi = 0; vi < 7; vi++) box(2.6, 0.03, 0.12, caseDark, 0, 3.66, -1.2 + vi * 0.27, mon);
+  // Recessed tube surround
+  var recess = new THREE.Mesh(new THREE.PlaneGeometry(3.9, 2.74), new THREE.MeshBasicMaterial({ color: 0x030305, toneMapped: false }));
+  recess.position.set(0, 2.3, 1.812); mon.add(recess);
+  box(4.0, 0.06, 0.05, caseDark, 0, 3.7, 1.82, mon); box(4.0, 0.06, 0.05, caseDark, 0, 0.9, 1.82, mon);
+  box(0.06, 2.86, 0.05, caseDark, -1.98, 2.3, 1.82, mon); box(0.06, 2.86, 0.05, caseDark, 1.98, 2.3, 1.82, mon);
+  rbox(0.34, 0.16, 0.08, 0.02, caseDark, 1.7, 0.58, 1.82, mon);
+  var led = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.06, 0.04), glowMat(0xff3b30));
+  led.position.set(1.25, 0.58, 1.82); mon.add(led);
+  cyl(0.09, 0.09, 0.06, caseDark, -1.7, 0.58, 1.82, mon).rotation.x = Math.PI / 2;
+  cyl(0.09, 0.09, 0.06, caseDark, -1.4, 0.58, 1.82, mon).rotation.x = Math.PI / 2;
+  box(0.7, 0.1, 0.03, mat(0xf25e0d, { roughness: 0.4 }), -0.6, 0.58, 1.815, mon);
+
+  /* ─── SCREEN (2D canvas rendered as a texture) ──────────── */
+  var COLS = 40, ROWS = 25, CELL = 16, BORDER = 40;
+  var BLUE = '#000080', YELLOW = '#ffff00';
+  var scr = document.createElement('canvas');
+  scr.width = COLS * CELL + BORDER * 2; scr.height = ROWS * CELL + BORDER * 2;
+  var sx = scr.getContext('2d');
+  var screenTex = new THREE.CanvasTexture(scr);
+  screenTex.encoding = THREE.sRGBEncoding;
+  screenTex.minFilter = THREE.LinearFilter; screenTex.magFilter = THREE.LinearFilter;
+  screenTex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  var screenMesh = new THREE.Mesh(tubeGeo(3.66, 2.44, 0.14), new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false }));
+  screenMesh.position.set(0, 2.3, 1.818); mon.add(screenMesh);
+  // Glass: faint reflection streak and darkened corners
+  var glassTex = canvasTex(512, 342, function (c, w, h) {
+    var v = c.createRadialGradient(w / 2, h / 2, h * 0.35, w / 2, h / 2, w * 0.68);
+    v.addColorStop(0, 'rgba(0,0,0,0)'); v.addColorStop(1, 'rgba(0,0,10,0.55)');
+    c.fillStyle = v; c.fillRect(0, 0, w, h);
+    var g = c.createLinearGradient(0, 0, w * 0.6, h);
+    g.addColorStop(0, 'rgba(255,255,255,0.10)'); g.addColorStop(0.35, 'rgba(255,255,255,0.02)'); g.addColorStop(0.36, 'rgba(255,255,255,0)');
+    c.fillStyle = g; c.fillRect(0, 0, w, h);
+  });
+  var glass = new THREE.Mesh(tubeGeo(3.66, 2.44, 0.14), new THREE.MeshBasicMaterial({ map: glassTex, transparent: true, toneMapped: false, depthWrite: false }));
+  glass.position.set(0, 2.3, 1.822); mon.add(glass);
+  var glow = new THREE.PointLight(col(0x3d55ff), 1.0, 6.5, 2);
+  glow.position.set(0, 2.2, 1.4); scene.add(glow);
+
+  var lines = [];       // { t: string, cmd: string|null }
+  var input = '';
+  var promptOn = false;
+  var cursorOn = true;
+  var hoverRow = -1;
+
+  function print(t, cmd) {
+    lines.push({ t: t || '', cmd: cmd || null });
+    while (lines.length > ROWS - 1) lines.shift();
+  }
+  function drawText(t, row, inverse) {
+    var y = BORDER + row * CELL;
+    if (inverse) { sx.fillStyle = YELLOW; sx.fillRect(BORDER, y, COLS * CELL, CELL); }
+    sx.fillStyle = inverse ? BLUE : YELLOW;
+    for (var i = 0; i < t.length && i < COLS; i++) {
+      var ch = t.charAt(i);
+      if (ch !== ' ') sx.fillText(ch, BORDER + i * CELL, y + 1);
+    }
+  }
+  function draw() {
+    sx.fillStyle = '#000'; sx.fillRect(0, 0, scr.width, scr.height);
+    sx.save(); rrPath(sx, 3, 3, scr.width - 6, scr.height - 6, 30); sx.clip();
+    sx.fillStyle = BLUE; sx.fillRect(0, 0, scr.width, scr.height);
+    sx.font = CELL + 'px "Press Start 2P", "Courier New", monospace';
+    sx.textBaseline = 'top'; sx.textAlign = 'left';
+    for (var i = 0; i < lines.length; i++) drawText(lines[i].t, i, lines[i].cmd && i === hoverRow);
+    if (promptOn) {
+      var row = lines.length;
+      drawText(input, row, false);
+      if (cursorOn) { sx.fillStyle = YELLOW; sx.fillRect(BORDER + Math.min(input.length, COLS - 1) * CELL, BORDER + row * CELL, CELL, CELL); }
+    }
+    sx.fillStyle = 'rgba(0,0,30,0.16)';
+    for (var y = 0; y < scr.height; y += 4) sx.fillRect(0, y, scr.width, 2);
+    sx.restore();
+    screenTex.needsUpdate = true;
+  }
+  function pad(s, n) { while (s.length < n) s += ' '; return s; }
+  function sleep(ms) { return new Promise(function (r) { setTimeout(r, reduceMotion ? 0 : ms); }); }
+
+  function catalogue() {
+    print(''); print('Drive A: user 0'); print('');
+    FILES.forEach(function (f) { print(pad(f.n, 8) + '.BAS  ' + f.d, f.n.toLowerCase()); });
+    print(''); print(' 42K free'); print('');
+  }
+  function help() {
+    print('');
+    print('CAT          list files');
+    print('RUN"name     open a page');
+    print('name         also opens a page');
+    print('LIST         show the program');
+    print('CLS          clear the screen');
+    print('');
+  }
+  function findFile(name) {
+    name = name.replace(/\.bas$/i, '').toUpperCase();
+    for (var i = 0; i < FILES.length; i++) if (FILES[i].n === name) return FILES[i];
+    return null;
+  }
+  var driveLed;
+  function go(f) {
+    print(''); print('Loading ' + f.n + '.BAS ...'); print('');
+    if (driveLed) { driveLed.material.color.copy(col(0xff3b30)); setTimeout(function () { driveLed.material.color.copy(col(0x3a0c0c)); }, 1400); }
+    if (LIVE) { setTimeout(function () { window.location.href = f.u; }, 600); return; }
+    var card = document.getElementById('card'), link = document.getElementById('cardLink');
+    document.getElementById('cardNote').textContent = f.n + '.BAS loaded. On the live site this jumps straight there.';
+    link.href = f.u; link.textContent = 'Open ' + f.u.replace('https://www.', '').replace('https://', '') + ' →';
+    card.classList.add('show');
+  }
+  function exec(raw) {
+    print(raw);
+    var c = raw.trim(), lc = c.toLowerCase(), m;
+    if (!c) { /* nothing */ }
+    else if (lc === 'cat' || lc === 'dir' || lc === 'ls') catalogue();
+    else if (lc === 'help' || lc === '?') help();
+    else if (lc === 'cls') { lines = []; }
+    else if (lc === 'list') {
+      print('10 REM jacobpearson.com');
+      print('20 PRINT "Solving problems and"');
+      print('30 PRINT "making things work."');
+      print('40 GOTO 20');
+    }
+    else if ((m = lc.match(/^(?:run|load)\s*["']?\s*([a-z.]+)["']?$/)) || (m = lc.match(/^([a-z.]+)$/))) {
+      var f = findFile(m[1]);
+      if (f) go(f); else print(/^(run|load)/.test(lc) ? m[1].toUpperCase() + ' not found' : 'Syntax error');
+    }
+    else print('Syntax error');
+    print('Ready');
+    draw();
+  }
+
+  async function boot() {
+    draw();
+    await sleep(500);
+    print('');
+    print(' JP 128K Microcomputer  (v3)');
+    print('');
+    print(' (c)2026 jacobpearson.com');
+    print('         Auckland, New Zealand');
+    print('');
+    print(' BASIC 1.1');
+    print('');
+    print('Ready');
+    promptOn = true; draw();
+    await sleep(700);
+    var auto = 'cat';
+    for (var i = 0; i < auto.length; i++) { input += auto.charAt(i); pressCode('Key' + auto.charAt(i).toUpperCase()); draw(); await sleep(190); }
+    await sleep(250);
+    pressCode('Enter');
+    var cmd = input; input = '';
+    print(cmd); catalogue();
+    print('Type BLOG and press ENTER,');
+    print('or click a file.');
+    print('Ready');
+    draw();
+  }
+
+  setInterval(function () { cursorOn = !cursorOn; draw(); }, 420);
+  if (document.fonts && document.fonts.load) document.fonts.load(CELL + 'px "Press Start 2P"').then(draw, draw);
+
+  /* ─── COMPUTER (keyboard unit with built-in disk drive) ─── */
+  var kb = new THREE.Group(); kb.position.set(0, 0, 1.7); kb.rotation.x = 0.07; scene.add(kb);
+  rbox(5.8, 0.42, 2.05, 0.07, caseMat, 0, 0.24, 0, kb);
+  rbox(5.8, 0.14, 0.3, 0.05, caseDark, 0, 0.49, -0.88, kb);
+  box(4.12, 0.03, 1.44, caseDark, -0.72, 0.445, 0.085, kb);
+  rbox(1.35, 0.26, 1.72, 0.05, caseDark, 2.12, 0.5, 0.1, kb);
+  box(0.03, 0.07, 1.05, new THREE.MeshBasicMaterial({ color: 0x020203 }), 2.8, 0.5, 0.1, kb);
+  rbox(0.95, 0.03, 0.12, 0.01, mat(0x4a4a53), 2.12, 0.64, 0.75, kb);
+  driveLed = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.03, 0.06), glowMat(0x3a0c0c));
+  driveLed.position.set(1.62, 0.64, 0.75); kb.add(driveLed);
+  box(0.6, 0.02, 0.08, mat(0xf25e0d, { roughness: 0.4 }), -2.5, 0.565, -0.88, kb);
+  // Sockets on the back edge
+  [[-2.3, 0.2], [-1.9, 0.2], [2.3, 0.2]].forEach(function (s) { rbox(0.26, 0.18, 0.12, 0.02, caseDark, s[0], 0.26, -1.04, kb); });
+
+  // Key layout: [code, legend, width, character typed when clicked, style]
+  var LAYOUT = [
+    [['Escape','ESC',1,null,'m'],['Digit1','1',1,'1'],['Digit2','2',1,'2'],['Digit3','3',1,'3'],['Digit4','4',1,'4'],['Digit5','5',1,'5'],['Digit6','6',1,'6'],['Digit7','7',1,'7'],['Digit8','8',1,'8'],['Digit9','9',1,'9'],['Digit0','0',1,'0'],['Minus','-',1,'-'],['Equal','"',1,'"'],['Delete','CLR',1,null,'m'],['Backspace','DEL',1,null,'m']],
+    [['Tab','TAB',1.5,null,'m'],['KeyQ','Q',1,'q'],['KeyW','W',1,'w'],['KeyE','E',1,'e'],['KeyR','R',1,'r'],['KeyT','T',1,'t'],['KeyY','Y',1,'y'],['KeyU','U',1,'u'],['KeyI','I',1,'i'],['KeyO','O',1,'o'],['KeyP','P',1,'p'],['BracketLeft','[',1,'['],['BracketRight',']',1,']'],['Enter','',1.5,null,'e']],
+    [['CapsLock','CAPS',1.75,null,'m'],['KeyA','A',1,'a'],['KeyS','S',1,'s'],['KeyD','D',1,'d'],['KeyF','F',1,'f'],['KeyG','G',1,'g'],['KeyH','H',1,'h'],['KeyJ','J',1,'j'],['KeyK','K',1,'k'],['KeyL','L',1,'l'],['Semicolon',';',1,';'],['Quote',':',1,':'],['Enter','ENTER',2.25,null,'e']],
+    [['ShiftLeft','SHIFT',2.25,null,'m'],['KeyZ','Z',1,'z'],['KeyX','X',1,'x'],['KeyC','C',1,'c'],['KeyV','V',1,'v'],['KeyB','B',1,'b'],['KeyN','N',1,'n'],['KeyM','M',1,'m'],['Comma',',',1,','],['Period','.',1,'.'],['Slash','?',1,'?'],['ShiftRight','SHIFT',2.75,null,'m']],
+    [['ControlLeft','CTRL',1.5,null,'m'],['AltLeft','COPY',1.5,null,'m'],['Space','',9,' '],['ArrowLeft','←',1.5,null,'m'],['ArrowRight','→',1.5,null,'m']]
+  ];
+  var KU = 0.262, KX0 = -0.72 - 7.5 * KU, KZ0 = 0.085 - 2 * KU;
+  var flat = []; LAYOUT.forEach(function (row) { row.forEach(function (k) { flat.push(k); }); });
+  var ATLAS_N = 8, ATLAS_C = 128;
+  var atlas = canvasTex(ATLAS_N * ATLAS_C, ATLAS_N * ATLAS_C, function (c) {
+    c.textAlign = 'center'; c.textBaseline = 'middle';
+    flat.forEach(function (k, i) {
+      var cx = (i % ATLAS_N) * ATLAS_C + ATLAS_C / 2, cy = Math.floor(i / ATLAS_N) * ATLAS_C + ATLAS_C / 2;
+      c.fillStyle = k[4] === 'e' ? '#fff5ee' : (k[4] === 'm' ? '#f0f0ea' : '#26262c');
+      c.font = 'bold ' + (k[1].length > 1 ? 34 : 70) + 'px Helvetica, Arial, sans-serif';
+      c.fillText(k[1], cx, cy + 4);
+    });
+  });
+  var legendMat = new THREE.MeshStandardMaterial({ map: atlas, transparent: true, roughness: 0.6, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 });
+  var capMats = { n: mat(0xd6d3c8, { roughness: 0.45, envMapIntensity: 0.4 }), m: mat(0x6c6c74, { roughness: 0.45, envMapIntensity: 0.4 }), e: mat(0xf25e0d, { roughness: 0.4, envMapIntensity: 0.4 }) };
+  var KEY_Y = 0.52, KEY_DOWN = 0.475;
+  var keysByCode = {}, caps = [];
+  var idx = 0;
+  LAYOUT.forEach(function (row, r) {
+    var x = KX0;
+    row.forEach(function (k) {
+      var w = k[2] * KU;
+      var g = new THREE.Group(); g.position.set(x + w / 2, KEY_Y, KZ0 + r * KU); kb.add(g);
+      var cap = rbox(w - 0.045, 0.13, KU - 0.045, 0.035, capMats[k[4] || 'n'], 0, 0, 0, g);
+      cap.userData.key = { code: k[0], ch: k[3], group: g };
+      caps.push(cap);
+      if (k[1]) {
+        var s = Math.min(w, KU) - 0.07;
+        var pg = new THREE.PlaneGeometry(k[1].length > 1 ? Math.min(w - 0.08, s * 1.5) : s, s);
+        var u0 = (idx % ATLAS_N) / ATLAS_N, v1 = 1 - Math.floor(idx / ATLAS_N) / ATLAS_N, du = 1 / ATLAS_N;
+        var cu = u0 + du / 2, hu = (k[1].length > 1 ? Math.min(w - 0.08, s * 1.5) / s : 1) * du / 2;
+        hu = Math.min(hu, du / 2);
+        pg.attributes.uv.set([cu - hu, v1, cu + hu, v1, cu - hu, v1 - du, cu + hu, v1 - du]);
+        var lg = new THREE.Mesh(pg, legendMat);
+        lg.rotation.x = -Math.PI / 2; lg.position.y = 0.0665; g.add(lg);
+      }
+      (keysByCode[k[0]] = keysByCode[k[0]] || []).push(g);
+      x += w; idx++;
+    });
+  });
+  function pressCode(code) {
+    var gs = keysByCode[code]; if (!gs) return;
+    clack(false, code === 'Space' || code === 'Enter');
+    setTimeout(function () { clack(true); }, 110);
+    gs.forEach(function (g) {
+      g.position.y = KEY_DOWN;
+      clearTimeout(g.userData.t);
+      g.userData.t = setTimeout(function () { g.position.y = KEY_Y; }, 110);
+    });
+  }
+
+  // One place that turns a key into an action, used by the real keyboard and by clicks on the 3D keys
+  function typeChar(ch) { if (input.length < COLS - 2) input += ch; cursorOn = true; draw(); }
+  function special(code) {
+    if (code === 'Enter') { var c = input; input = ''; exec(c); return true; }
+    if (code === 'Backspace') { input = input.slice(0, -1); draw(); return true; }
+    if (code === 'Delete' || code === 'Escape') { input = ''; document.getElementById('card').classList.remove('show'); draw(); return true; }
+    return false;
+  }
+
+  /* ─── CABLES ────────────────────────────────────────────── */
+  var cableBlack = mat(0x121214, { roughness: 0.5 }), cableGrey = mat(0x4a4a50, { roughness: 0.5 });
+  // Two leads from the back of the monitor round to the back of the computer
+  cable([[-0.9, 1.1, -4.05], [-1.6, 0.35, -4.2], [-2.7, 0.06, -3.4], [-2.95, 0.06, -1.6], [-2.85, 0.06, -0.1], [-2.5, 0.1, 0.45], [-2.3, 0.26, 0.67]], 0.055, cableGrey);
+  cable([[-0.5, 1.1, -4.05], [-1.3, 0.3, -4.25], [-2.5, 0.05, -3.5], [-2.7, 0.05, -1.7], [-2.5, 0.05, -0.2], [-2.1, 0.08, 0.4], [-1.9, 0.26, 0.67]], 0.04, cableBlack);
+  // Joystick lead into the back of the computer
+  cable([[4.36, 0.14, 1.12], [4.15, 0.05, 0.55], [3.6, 0.04, 0.22], [2.9, 0.05, 0.3], [2.45, 0.12, 0.5], [2.3, 0.26, 0.67]], 0.035, cableBlack);
+
+  /* ─── JOYSTICK ──────────────────────────────────────────── */
+  (function () {
+    var g = new THREE.Group(); g.position.set(4.7, 0, 1.9); g.rotation.y = -0.35; scene.add(g);
+    var black = mat(0x18181c, { roughness: 0.4, envMapIntensity: 0.4 });
+    var red = mat(0xd42222, { roughness: 0.28, envMapIntensity: 0.5 });
+    rbox(1.5, 0.34, 1.5, 0.08, black, 0, 0.17, 0, g);
+    cyl(0.34, 0.42, 0.14, black, 0, 0.41, 0, g);
+    // Rubber boot
+    add(new THREE.Mesh(new THREE.SphereGeometry(0.3, 24, 12, 0, Math.PI * 2, 0, Math.PI / 2), mat(0x101012, { roughness: 0.9 })), 0, 0.46, 0, g);
+    var stick = new THREE.Group(); stick.position.set(0, 0.45, 0); stick.rotation.z = 0.14; stick.rotation.x = -0.08; g.add(stick);
+    cyl(0.07, 0.07, 1.25, mat(0x2a2a30, { metalness: 0.8, roughness: 0.25, envMapIntensity: 0.8 }), 0, 0.62, 0, stick);
+    add(new THREE.Mesh(new THREE.SphereGeometry(0.24, 32, 20), red), 0, 1.3, 0, stick);
+    cyl(0.16, 0.16, 0.1, red, -0.48, 0.38, -0.48, g);
+    cyl(0.16, 0.16, 0.1, red, 0.48, 0.38, -0.48, g);
+    rbox(0.2, 0.14, 0.1, 0.02, black, 0, 0.14, -0.78, g);
+  })();
+
+  /* ─── TOY-BRICK SPACESHIP (original design) ─────────────── */
+  (function () {
+    var U = 0.26, H = 0.31, P = H / 3;
+    var g = new THREE.Group(); g.position.set(-5.7, 0, 2.4); g.rotation.y = 0.55; scene.add(g);
+    var po = { roughness: 0.22, envMapIntensity: 0.6 };
+    var white = mat(0xeeeee8, po), red = mat(0xc92020, po), dark = mat(0x222228, po);
+    var glassM = mat(0x3fe08a, { roughness: 0.05, transparent: true, opacity: 0.55, envMapIntensity: 1 });
+    var flame = glowMat(0xffa726);
+    var studGeo = new THREE.CylinderGeometry(U * 0.3, U * 0.3, 0.055, 16);
+    function brick(nx, nz, h, m, x, y, z, studs) {
+      rbox(nx * U - 0.008, h - 0.004, nz * U - 0.008, 0.012, m, x * U, y + h / 2, z * U, g);
+      if (studs !== false) for (var i = 0; i < nx; i++) for (var j = 0; j < nz; j++)
+        add(new THREE.Mesh(studGeo, m), (x - nx / 2 + 0.5 + i) * U, y + h + 0.025, (z - nz / 2 + 0.5 + j) * U, g);
+    }
+    var y0 = 0.16;
+    brick(1, 1, 0.16, dark, 3, 0, 0, false); brick(1, 1, 0.16, dark, -3, 0, 1.5, false); brick(1, 1, 0.16, dark, -3, 0, -1.5, false);
+    brick(10, 2, P, white, 0, y0, 0);
+    brick(4, 3, P, red, -3, y0, 2.5);
+    brick(4, 3, P, red, -3, y0, -2.5);
+    brick(2, 1, P, white, -4, y0 + P, 3.5);
+    brick(2, 1, P, white, -4, y0 + P, -3.5);
+    brick(6, 2, H, white, -2, y0 + P, 0);
+    brick(2, 2, H, red, 2, y0 + P, 0);
+    brick(2, 2, P, red, 4, y0 + P, 0);
+    brick(2, 2, H, glassM, 0, y0 + P + H, 0, false);
+    brick(2, 2, H, white, -2, y0 + P + H, 0);
+    brick(2, 2, P, red, -4, y0 + P + H, 0);
+    brick(1, 2, H * 2, red, -4.5, y0 + P + H + P, 0);
+    [-0.6, 0.6].forEach(function (z) {
+      cyl(0.12, 0.17, 0.4, dark, -5.3 * U, y0 + P + H / 2, z * U, g, 16).rotation.z = Math.PI / 2;
+      var f = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.04, 16), flame);
+      f.rotation.z = Math.PI / 2; f.position.set(-5.3 * U - 0.21, y0 + P + H / 2, z * U); g.add(f);
+    });
+    cyl(0.07, 0.07, 0.1, flame, 4.6 * U, y0 + P + P + 0.05, 0, g, 12);
+  })();
+
+  /* ─── MODEL STARSHIP ON A STAND (original design) ───────── */
+  (function () {
+    var g = new THREE.Group(); g.position.set(-5.6, 0, -2.0); g.rotation.y = 0.5; scene.add(g);
+    var black = mat(0x151518, { roughness: 0.35, envMapIntensity: 0.5 });
+    var hull = mat(0xd9dbe2, { roughness: 0.3, metalness: 0.25, envMapIntensity: 0.7 });
+    var trim = mat(0xf25e0d, { roughness: 0.35 });
+    cyl(0.75, 0.85, 0.14, black, 0, 0.07, 0, g, 40);
+    cyl(0.045, 0.045, 1.9, mat(0x9a9aa6, { metalness: 0.9, roughness: 0.2, envMapIntensity: 1 }), 0.15, 1.05, 0, g, 12).rotation.z = -0.16;
+    var ship = new THREE.Group(); ship.position.set(0.3, 2.1, 0); ship.rotation.z = 0.22; ship.rotation.x = 0.12; g.add(ship);
+    cyl(0.2, 0.3, 2.3, hull, 0, 0, 0, ship, 28).rotation.z = -Math.PI / 2;
+    var nose = add(new THREE.Mesh(new THREE.ConeGeometry(0.2, 0.75, 28), hull), 1.52, 0, 0, ship); nose.rotation.z = -Math.PI / 2;
+    cyl(0.245, 0.262, 0.16, trim, 0.35, 0, 0, ship, 28).rotation.z = -Math.PI / 2;
+    var cockpit = add(new THREE.Mesh(new THREE.SphereGeometry(0.17, 20, 14), mat(0x10141f, { roughness: 0.08, metalness: 0.4, envMapIntensity: 1.2 })), 0.85, 0.14, 0, ship);
+    cockpit.scale.set(1.8, 0.8, 0.9);
+    function fin(points, rx, y, z) {
+      var s = new THREE.Shape();
+      s.moveTo(points[0][0], points[0][1]);
+      for (var i = 1; i < points.length; i++) s.lineTo(points[i][0], points[i][1]);
+      s.closePath();
+      var m = add(new THREE.Mesh(new THREE.ExtrudeGeometry(s, { depth: 0.04, bevelEnabled: true, bevelSize: 0.01, bevelThickness: 0.01, bevelSegments: 2 }), hull), 0, y, z, ship);
+      m.rotation.x = rx; return m;
+    }
+    var wing = [[0.5, 0], [-1.05, 0], [-1.3, 1.25], [-0.95, 1.25]];
+    fin(wing, Math.PI / 2, 0.0, 0.18);
+    fin(wing, -Math.PI / 2, -0.05, -0.18);
+    fin([[-0.35, 0], [-1.1, 0], [-1.3, 0.75], [-1.0, 0.75]], 0, 0.2, -0.025);
+    cyl(0.3, 0.2, 0.26, black, -1.26, 0, 0, ship, 28).rotation.z = -Math.PI / 2;
+    var burn = new THREE.Mesh(new THREE.CircleGeometry(0.2, 24), glowMat(0x6fd6ff));
+    burn.rotation.y = -Math.PI / 2; burn.position.x = -1.395; ship.add(burn);
+    [1.22, -1.22].forEach(function (z) { cyl(0.07, 0.07, 0.8, trim, -1.05, -0.02, z, ship, 14).rotation.z = -Math.PI / 2; });
+  })();
+
+  /* ─── DESK LAMP (the key light) ─────────────────────────── */
+  var lampSpot, lampSpill, lampBulb;
+  function setLamp(level) {
+    var f = level / 0.7;
+    if (lampSpot) lampSpot.intensity = 3.4 * f;
+    if (lampSpill) lampSpill.intensity = 0.55 * f;
+    if (lampBulb) lampBulb.material.color.copy(col(0xffe2a8)).multiplyScalar(0.06 + 0.94 * Math.min(1, f));
+  }
+  (function () {
+    var teal = mat(0x1fa99c, { roughness: 0.3, metalness: 0.35, envMapIntensity: 0.6 });
+    var g = new THREE.Group(); g.position.set(6.3, 0, -2.4); scene.add(g);
+    cyl(0.7, 0.78, 0.16, teal, 0, 0.08, 0, g, 40);
+    var p1 = new THREE.Group(); p1.position.set(0, 0.12, 0); p1.rotation.z = -0.3; g.add(p1);
+    cyl(0.055, 0.055, 2.9, teal, 0, 1.45, 0, p1, 14);
+    add(new THREE.Mesh(new THREE.SphereGeometry(0.13, 20, 14), mat(0x1d1d22)), 0, 2.9, 0, p1);
+    var p2 = new THREE.Group(); p2.position.set(0, 2.9, 0); p2.rotation.z = 1.75; p1.add(p2);
+    cyl(0.055, 0.055, 2.3, teal, 0, 1.15, 0, p2, 14);
+    var p3 = new THREE.Group(); p3.position.set(0, 2.3, 0); p3.rotation.z = 0.75; p2.add(p3);
+    var shade = new THREE.Mesh(new THREE.ConeGeometry(0.75, 0.95, 40, 1, true), mat(0x1fa99c, { roughness: 0.3, metalness: 0.35, side: THREE.DoubleSide, envMapIntensity: 0.6 }));
+    shade.rotation.x = Math.PI; shade.position.set(0, 0.45, 0); shade.castShadow = true; p3.add(shade);
+    var bulb = new THREE.Mesh(new THREE.SphereGeometry(0.22, 20, 14), glowMat(0xffe2a8));
+    bulb.position.set(0, 0.55, 0); p3.add(bulb);
+    scene.updateMatrixWorld(true);
+    var wp = new THREE.Vector3(); bulb.getWorldPosition(wp);
+    var spot = new THREE.SpotLight(col(0xffb866), 3.4, 26, 0.82, 0.75, 1.4);
+    spot.position.copy(wp);
+    spot.target.position.set(1.2, 0, 1.0); scene.add(spot.target);
+    spot.castShadow = true; var sm = (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) ? 1024 : 2048; spot.shadow.mapSize.set(sm, sm); spot.shadow.bias = -0.0008; spot.shadow.normalBias = 0.02; spot.shadow.radius = 6;
+    spot.shadow.camera.near = 0.5; spot.shadow.camera.far = 26;
+    scene.add(spot);
+    // A little warm spill onto the wall behind
+    var spill = new THREE.PointLight(col(0xff9a4a), 0.55, 11, 2);
+    spill.position.set(wp.x - 0.4, wp.y - 0.2, wp.z - 0.3); scene.add(spill);
+    lampSpot = spot; lampSpill = spill; lampBulb = bulb;
+  })();
+
+  /* ─── CLOCK RADIO (shows the real time) ─────────────────── */
+  var clockCv = document.createElement('canvas'); clockCv.width = 256; clockCv.height = 96;
+  var clockTex = new THREE.CanvasTexture(clockCv); clockTex.encoding = THREE.sRGBEncoding;
+  function drawClock() {
+    var c = clockCv.getContext('2d'), d = new Date();
+    var hh = ('0' + d.getHours()).slice(-2), mm = ('0' + d.getMinutes()).slice(-2);
+    c.fillStyle = '#0c0304'; c.fillRect(0, 0, 256, 96);
+    c.font = '44px "Press Start 2P", "Courier New", monospace'; c.textAlign = 'center'; c.textBaseline = 'middle';
+    c.shadowColor = '#ff2a1a'; c.shadowBlur = 14; c.fillStyle = '#ff4a3a';
+    c.fillText(hh + ':' + mm, 128, 52);
+    c.shadowBlur = 0;
+    clockTex.needsUpdate = true;
+  }
+  (function () {
+    var g = new THREE.Group(); g.position.set(3.7, 0, -2.7); g.rotation.y = -0.3; scene.add(g);
+    rbox(2.1, 0.85, 1.1, 0.07, mat(0x5a3a24, { roughness: 0.5 }), 0, 0.425, 0, g);
+    rbox(1.96, 0.72, 0.04, 0.015, mat(0x131316, { roughness: 0.3, envMapIntensity: 0.6 }), 0, 0.425, 0.55, g);
+    var face = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 0.42), new THREE.MeshBasicMaterial({ map: clockTex, toneMapped: false }));
+    face.position.set(-0.38, 0.45, 0.573); g.add(face);
+    for (var i = 0; i < 6; i++) box(0.6, 0.03, 0.02, mat(0x3c3c44), 0.6, 0.2 + i * 0.09, 0.575, g);
+    for (var k = 0; k < 4; k++) rbox(0.22, 0.06, 0.16, 0.02, mat(0xcfcfc6), -0.7 + k * 0.3, 0.88, 0.2, g);
+    var cg = new THREE.PointLight(col(0xff3020), 0.25, 2.2, 2); cg.position.set(-0.38, 0.4, 0.9); g.add(cg);
+    drawClock(); setInterval(drawClock, 15000);
+    if (document.fonts && document.fonts.load) document.fonts.load('44px "Press Start 2P"').then(drawClock, drawClock);
+  })();
+
+  /* ─── CASSETTES, 3-INCH DISKS, PENCIL MUG ───────────────── */
+  (function () {
+    var r = rng(11);
+    var cols = [0xff5fa2, 0xffd23f, 0x2ec4b6, 0xf7f7ff];
+    for (var i = 0; i < 4; i++) {
+      var g = new THREE.Group(); g.position.set(6.2 + (r() - 0.5) * 0.15, 0.09 + i * 0.18, 0.5 + (r() - 0.5) * 0.15); g.rotation.y = 0.4 + (r() - 0.5) * 0.5; scene.add(g);
+      rbox(1.45, 0.17, 0.95, 0.025, mat(0x1c1c22, { roughness: 0.3, envMapIntensity: 0.6 }), 0, 0, 0, g);
+      box(1.2, 0.012, 0.5, mat(cols[i]), 0, 0.086, -0.1, g);
+      box(0.6, 0.014, 0.2, mat(0x1c1c22), 0, 0.087, -0.08, g);
+    }
+
+    // 3-inch hard-case disks: taller than wide, sliding metal shutter, written-on label
+    var shutter = mat(0xb8bcc6, { metalness: 0.9, roughness: 0.28, envMapIntensity: 1 });
+    function disk(x, y, z, ry, caseHex, text, stripe) {
+      var d = new THREE.Group(); d.position.set(x, y, z); d.rotation.y = ry; scene.add(d);
+      var body = mat(caseHex, { roughness: 0.42, envMapIntensity: 0.5 });
+      var T = 0.047;
+      rbox(0.88, 0.09, 1.1, 0.022, body, 0, 0, 0, d);
+      var tex = canvasTex(256, 208, function (c, w, h) {
+        c.fillStyle = '#f4efe2'; c.fillRect(0, 0, w, h);
+        c.fillStyle = stripe; c.fillRect(0, 0, w, 36);
+        c.fillStyle = '#1a1a2e'; c.font = 'bold 22px Helvetica, Arial, sans-serif'; c.textBaseline = 'middle'; c.fillText('SIDE A', 14, 19);
+        c.strokeStyle = 'rgba(40,40,60,0.25)'; c.lineWidth = 2;
+        for (var ly = 82; ly < h; ly += 40) { c.beginPath(); c.moveTo(14, ly); c.lineTo(w - 14, ly); c.stroke(); }
+        c.fillStyle = '#1b2a6b'; c.font = '600 40px Caveat, "Comic Sans MS", cursive'; c.textBaseline = 'alphabetic';
+        text.split('\n').forEach(function (t, i) { c.fillText(t, 16, 76 + i * 40); });
+      });
+      var label = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 0.58), mat(0xffffff, { map: tex, roughness: 0.8 }));
+      label.rotation.x = -Math.PI / 2; label.position.set(0, T, -0.2); d.add(label);
+      // Shutter window with the metal slide showing
+      box(0.4, 0.006, 0.3, mat(0x0c0c0e), 0, T - 0.002, 0.33, d);
+      box(0.3, 0.008, 0.26, shutter, -0.04, T, 0.33, d);
+      for (var k = 0; k < 5; k++) box(0.5, 0.01, 0.018, body, 0, T + 0.002, 0.2 + k * 0.012 - 0.06, d);
+      // Insertion arrow and write-protect holes
+      var tri = new THREE.Shape(); tri.moveTo(-0.06, 0); tri.lineTo(0.06, 0); tri.lineTo(0, 0.08); tri.closePath();
+      var arrow = new THREE.Mesh(new THREE.ShapeGeometry(tri), mat(0xd42222));
+      arrow.rotation.x = Math.PI / 2; arrow.position.set(0.3, T + 0.001, 0.44); d.add(arrow);
+      box(0.07, 0.006, 0.05, mat(0x0c0c0e), -0.36, T, -0.5, d);
+      box(0.07, 0.006, 0.05, mat(0x0c0c0e), 0.36, T, -0.5, d);
+      return d;
+    }
+    var loadFonts = (document.fonts && document.fonts.load) ? document.fonts.load('600 40px Caveat') : Promise.resolve();
+    loadFonts.then(mk, mk);
+    function mk() {
+      disk(-3.75, 0.045, 0.7, -0.2, 0xe8e2d0, 'GAMES 1', '#ff5fa2');
+      disk(-3.68, 0.137, 0.75, 0.12, 0x2a2a30, 'BASIC\nstuff', '#ffd23f');
+      disk(-3.8, 0.045, 2.9, 0.5, 0xbfd3e6, 'DO NOT\nWIPE!!', '#2ec4b6');
+    }
+
+    var mug = new THREE.Group(); mug.position.set(-3.5, 0, -2.2); mug.rotation.y = 0.6; scene.add(mug);
+    var ceramic = mat(0xffd23f, { roughness: 0.22, envMapIntensity: 0.7, side: THREE.DoubleSide });
+    var prof = [[0, 0], [0.31, 0], [0.33, 0.03], [0.37, 0.84], [0.355, 0.86], [0.335, 0.84], [0.3, 0.07], [0, 0.07]].map(function (q) { return new THREE.Vector2(q[0], q[1]); });
+    add(new THREE.Mesh(new THREE.LatheGeometry(prof, 40), ceramic), 0, 0, 0, mug);
+    var handle = add(new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.045, 12, 24, Math.PI), ceramic), 0.35, 0.44, 0, mug);
+    handle.rotation.z = -Math.PI / 2;
+    var pc = [0xff5fa2, 0x2ec4b6, 0x7b5cd6, 0xff8c42, 0xf7f7ff];
+    for (var p = 0; p < pc.length; p++) {
+      var a = p / pc.length * Math.PI * 2 + r() * 0.5, len = 1.25 + r() * 0.3;
+      var pivot = new THREE.Group(); pivot.position.set(Math.cos(a) * 0.14, 0.08, Math.sin(a) * 0.14); pivot.rotation.y = -a; mug.add(pivot);
+      var tilt = new THREE.Group(); tilt.rotation.z = -(0.2 + r() * 0.06); pivot.add(tilt);
+      cyl(0.04, 0.04, len, mat(pc[p], { roughness: 0.5 }), 0, len / 2, 0, tilt, 6);
+      add(new THREE.Mesh(new THREE.ConeGeometry(0.04, 0.14, 6), mat(0xe8c9a0)), 0, len + 0.07, 0, tilt);
+      add(new THREE.Mesh(new THREE.ConeGeometry(0.015, 0.05, 6), mat(0x2a2a30)), 0, len + 0.12, 0, tilt);
+    }
+  })();
+
+  /* ─── INPUT: REAL KEYBOARD ──────────────────────────────── */
+  window.addEventListener('keydown', function (e) {
+    gesture = true;
+    if (!promptOn || e.metaKey || e.ctrlKey || e.altKey) return;
+    var onControl = e.target && /^(BUTTON|A|INPUT|TEXTAREA)$/.test(e.target.tagName);
+    if (onControl && (e.key === 'Enter' || e.key === ' ' || e.key === 'Tab')) return;
+    pressCode(e.code);
+    if (e.key === 'Tab') return;
+    if (special(e.key)) { e.preventDefault(); return; }
+    if (e.key.length === 1) { typeChar(e.key); e.preventDefault(); }
+  });
+
+  /* ─── INPUT: POINTER (screen files and 3D keys) ─────────── */
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  var down = null;
+  function aim(ev) {
+    var rect = canvas.getBoundingClientRect();
+    ndc.set(((ev.clientX - rect.left) / rect.width) * 2 - 1, -((ev.clientY - rect.top) / rect.height) * 2 + 1);
+    ray.setFromCamera(ndc, camera);
+  }
+  function keyAt() { var hit = ray.intersectObjects(caps, false)[0]; return hit ? hit.object.userData.key : null; }
+  function rowAt() {
+    var hit = ray.intersectObject(screenMesh, false)[0];
+    if (!hit || !hit.uv) return -1;
+    var row = Math.floor(((1 - hit.uv.y) * scr.height - BORDER) / CELL);
+    return (lines[row] && lines[row].cmd) ? row : -1;
+  }
+  canvas.addEventListener('pointerdown', function (e) { gesture = true; down = { x: e.clientX, y: e.clientY }; canvas.classList.add('dragging'); canvas.focus({ preventScroll: true }); });
+  canvas.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch' || !promptOn) return;
+    aim(e);
+    var k = keyAt(), row = k ? -1 : rowAt();
+    if (row !== hoverRow) { hoverRow = row; draw(); }
+    canvas.classList.toggle('link', !!k || row >= 0);
+  });
+  window.addEventListener('pointerup', function (e) {
+    canvas.classList.remove('dragging');
+    if (!down) return;
+    var moved = Math.abs(e.clientX - down.x) + Math.abs(e.clientY - down.y);
+    down = null;
+    if (moved > 6 || !promptOn || e.target !== canvas) return;
+    aim(e);
+    var k = keyAt();
+    if (k) {
+      pressCode(k.code);
+      if (!special(k.code) && k.ch) typeChar(k.ch);
+      return;
+    }
+    var row = rowAt();
+    if (row >= 0) { var cmd = lines[row].cmd; input = ''; hoverRow = -1; pressCode('Enter'); exec(cmd); }
+  });
+
+  /* ─── CAMERA VIEWS ──────────────────────────────────────── */
+  var tween = null;
+  // On narrow screens, pull the camera back until the view's subject fits the width
+  function fitted(v) {
+    var d = v.p.clone().sub(v.t), dist = d.length();
+    var visibleW = 2 * dist * Math.tan(camera.fov * Math.PI / 360) * camera.aspect;
+    return v.t.clone().add(d.multiplyScalar(Math.max(1, v.w / visibleW)));
+  }
+  function flyTo(v) {
+    var p = fitted(v);
+    if (reduceMotion) { camera.position.copy(p); controls.target.copy(v.t); controls.update(); return; }
+    tween = { t0: performance.now(), dur: 1100, p0: camera.position.clone(), q0: controls.target.clone(), p1: p, q1: v.t };
+    controls.enabled = false;
+  }
+  function viewBtn(id, v) { document.getElementById(id).addEventListener('click', function () { flyTo(v); canvas.focus({ preventScroll: true }); }); }
+  viewBtn('btnScreen', VIEW_SCREEN); viewBtn('btnKeys', VIEW_KEYS); viewBtn('btnDesk', VIEW_DESK);
+  document.getElementById('cardClose').addEventListener('click', function () { document.getElementById('card').classList.remove('show'); canvas.focus({ preventScroll: true }); });
+
+  /* ─── ROOM CONTROLS ─────────────────────────────────────── */
+  document.getElementById('btnMusic').addEventListener('click', function () { gesture = true; setMusic(!musicOn); });
+  document.getElementById('vol').addEventListener('input', function () {
+    gesture = true; volume = this.value / 100;
+    if (audio()) master.gain.setTargetAtTime(volume, AC.currentTime, 0.02);
+  });
+  document.getElementById('lamp').addEventListener('input', function () { setLamp(this.value / 100); });
+  setLamp(0.7);
+
+  /* ─── RESIZE + LOOP ─────────────────────────────────────── */
+  function resize() {
+    var w = window.innerWidth, h = window.innerHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.fov = w < h ? 50 : 40;
+    camera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', resize);
+  resize();
+  camera.position.copy(fitted(VIEW_DESK)); controls.update();
+
+  function frame(now) {
+    if (tween) {
+      var k = Math.min(1, (now - tween.t0) / tween.dur);
+      var e = k < 0.5 ? 4 * k * k * k : 1 - Math.pow(-2 * k + 2, 3) / 2;
+      camera.position.lerpVectors(tween.p0, tween.p1, e);
+      controls.target.lerpVectors(tween.q0, tween.q1, e);
+      if (k >= 1) { tween = null; controls.enabled = true; }
+    }
+    controls.update();
+    glow.intensity = 1.0 + Math.sin(now * 0.013) * 0.05;
+    renderer.render(scene, camera);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  if (window.self === window.top) { try { canvas.focus({ preventScroll: true }); } catch (e) {} }
+  boot();
+})();
+</script>
+</body>
+</html>
