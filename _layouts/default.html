@@ -25,7 +25,7 @@
     document.documentElement.setAttribute('data-js', '1');
   </script>
   <meta name="view-transition" content="same-origin">
-  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}?v={{ site.time | date: '%s' }}">
   <link rel="icon" type="image/svg+xml" href="{{ '/assets/favicon.svg' | relative_url }}">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-GZTJ9CQKKZ"></script>
   <script>
@@ -43,7 +43,7 @@
 
   {% include footer.html %}
 
-  <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  <script src="{{ '/assets/js/main.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 
   {% if page.layout == 'post' %}
   <script>
