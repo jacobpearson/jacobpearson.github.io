@@ -4,7 +4,7 @@ title: "Experiments in AI"
 date: 2026-11-12
 category: Article
 read_time: 6
-tags: [How-to, Home Assistant, Claude, MCP, Automation, Experimentation]
+tags: [AI, Home Assistant, Claude, Self-hosting, Automation, Experimentation]
 toc:
   - { id: "new-homepage-prototype", title: "New homepage prototype" }
   - { id: "redesigning-home-assistants-dashboard", title: "Redesigning Home Assistant's Dashboard" }
