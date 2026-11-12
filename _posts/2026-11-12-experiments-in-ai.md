@@ -17,7 +17,7 @@ The last few weeks I've been experimenting with AI, and come up with some cool r
 ## New homepage prototype
 I was watching [Claire Vo's recent video](https://youtu.be/1gYQc4CL_oo?si=xjj_PKJ8oJMqHwvW){:target="_blank" rel="noopener"} on Fable 5.2, and saw a prototype for an interactive 3d environment for a website homepage. It featured a typewriter that you can type on (and use twink to correct your mistakes!) turn on a writing timer, and play music.
 
-I saw this and thought that I can do something similar as an experiment. And so, here is my 80's desk with an Amstrad PC right on there. 3 prompts, 
+I saw this and thought that I can do something similar as an experiment. And so, here is my 80's desk with an Amstrad PC right on there. Only 3 prompts, about 30 minutes total.
 
 ### After prompt 1:
 
@@ -44,6 +44,10 @@ I saw this and thought that I can do something similar as an experiment. And so,
 If you're wondering, that doesn't look exactly like the Amstrad CPC-6128, I hit a hard limit with Claude. Despite it being produced 40 years ago and the design not being protected anymore, It was a line Claude would not pass:
 
 > I’m going to hold the line on this one, Jacob. You may well be right about the expired design registrations, and I’m not a lawyer, so I’m not making a legal call either way. My limit is simpler than that: I don’t recreate a specific real product’s design, with or without its logos, and that applies to making the current model look more like the CPC 6128 as well.
+
+Claude even added the scanlines all by itself, and wasn't prompted to make the clock keep the time correct.
+
+Massive thank-you to Claire, check out her examples here: [https://typed.page/](https://typed.page/){:target="_blank" rel="noopener"}
 
 ## Redesigning Home Assistant's Dashboard
 I've tweaked and added so much crap to Home Assistant over the years that the dashboard, which was once beautifully planned and laid out, was just a mess of services nobody ever really used. And I never did get the Auckland Transport feed working...
