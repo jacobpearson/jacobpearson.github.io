@@ -1,0 +1,819 @@
+<!doctype html><html><head><meta charset=utf8><meta name="robots" content="noindex"><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Home Dashboard Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap">
+<style>
+:root{
+  /* Layout: one phone frame, dark and warm, with a notes column beside it on wide screens.
+     Wireframe fidelity: flat surfaces, amber means "on", blue means air and music. */
+  color-scheme:dark;
+  --stage:#0c0b0a; --bg:#131211; --surface:#1c1a18; --surface-2:#25221f; --surface-3:#312d29; --line:#2e2a26;
+  --text:#ece7df; --muted:#9a9187; --faint:#6a635b;
+  --amber:#e9b45f; --amber-tint:rgba(233,180,95,.16); --amber-fill:rgba(233,180,95,.42); --amber-ink:#2b1e08;
+  --blue:#8fb8cf; --blue-tint:rgba(143,184,207,.16); --blue-fill:rgba(143,184,207,.4); --blue-ink:#0f2230;
+  --green:#9cc29d; --rose:#e48a77;
+  --h-right:#37332e; --h-left:#292622; --h-gable:#24211e; --h-roof:#4d4741; --h-edge:#746c63; --h-ring:#3a3631;
+  --font:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--stage);color:var(--text);font:500 14px/1.4 var(--font);
+  padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+button{font:inherit;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:focus-visible,input:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+h1,h2,h3,p{margin:0}
+.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+
+.stage{height:100%;display:flex;align-items:center;justify-content:center;gap:36px}
+.phone{position:relative;flex:0 1 390px;min-width:0;height:min(820px,100%);background:var(--bg);border:1px solid var(--line);
+  border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.55)}
+.notes{flex:0 0 270px;color:var(--muted);font-size:12.5px;line-height:1.55;align-self:center;max-height:100%;overflow-y:auto}
+.notes h2{font-size:12px;letter-spacing:.09em;text-transform:uppercase;color:var(--text);margin-bottom:10px}
+.notes ul{margin:0 0 20px;padding-left:16px;display:grid;gap:6px}
+.notes code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--amber)}
+@media (max-width:760px){.notes{display:none}}
+
+/* Home */
+.home{position:absolute;inset:0;overflow-y:auto;padding:22px 16px 190px;display:grid;gap:22px;align-content:start}
+.head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center}
+.eyebrow{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+h1{font-size:22px;line-height:1.15;margin-top:3px;font-weight:700}
+.notif{position:relative;display:flex;align-items:center;gap:10px;padding:10px 14px 10px 10px;background:var(--surface);border:0;border-radius:16px;text-align:left;min-width:152px}
+.notif .ico{width:36px;height:36px;border-radius:11px}
+.notif b{display:block;font-size:13px;line-height:1.2}
+.notif .s{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.nbadge{position:absolute;top:-6px;left:-6px;min-width:20px;height:20px;border-radius:10px;background:var(--rose);color:#2a0f08;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 5px}
+.wx{display:grid;grid-template-columns:1fr auto;align-items:center;background:var(--surface);border-radius:20px;padding:14px 8px 8px 16px;min-height:128px;overflow:hidden}
+.wx .small{font-size:12px;color:var(--muted);font-weight:600}
+.wx .t{font-size:44px;font-weight:700;line-height:1;margin:10px 0 4px;font-variant-numeric:tabular-nums}
+.house3d{width:156px;height:101px;overflow:visible;display:block}
+.house3d .gr{fill:none;stroke:var(--h-ring);stroke-width:1.2}
+.house3d .shd{fill:rgba(0,0,0,.3)}
+.house3d .wr{fill:var(--h-right)}.house3d .wl{fill:var(--h-left)}.house3d .gb{fill:var(--h-gable)}.house3d .rf{fill:var(--h-roof)}
+.house3d .edge{stroke:var(--h-edge);stroke-width:1.3;fill:none;stroke-linejoin:round}
+.house3d .win{fill:#14120f}
+.house3d .glow{fill:var(--amber);opacity:var(--lit,.1)}
+.house3d.night{--lit:.95}
+.house3d .cl ellipse{fill:var(--surface-3)}
+.house3d .rain path{stroke:var(--blue);stroke-width:1.6;stroke-linecap:round;fill:none}
+.sec{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:10px}
+.sec h2{font-size:15px;font-weight:700}
+.sec .tag{font-size:11px;color:var(--faint);font-weight:600}
+.link{background:none;border:0;padding:4px 0;font-size:12px;font-weight:600;color:var(--muted);display:inline-flex;align-items:center;gap:2px}
+.link .i{width:16px;height:16px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{display:flex;align-items:center;gap:10px;padding:10px;background:var(--surface);border:0;border-radius:18px;text-align:left;min-width:0;-webkit-touch-callout:none;user-select:none;-webkit-user-select:none}
+.tile .ico{width:38px;height:38px;border-radius:12px}
+.tile .txt{min-width:0}
+.tile b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tile.on span{color:var(--text)}
+.tile.wide{grid-column:1/-1;padding:0;gap:0;background:var(--surface);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center}
+.tile-main{display:flex;align-items:center;gap:10px;padding:10px;background:none;border:0;text-align:left;min-width:0}
+.tile.wide .rbtn{margin-right:10px}
+.agenda{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ev{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;align-items:center;padding:10px 12px;background:var(--surface);border-radius:14px}
+.when{font-size:11px;color:var(--muted);font-weight:600;line-height:1.3;font-variant-numeric:tabular-nums}
+.when b{display:block;color:var(--text);font-size:13px}
+.ev .ttl{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.src{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:2px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.rooms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.room{display:grid;gap:12px;padding:14px;background:var(--surface);border:0;border-radius:18px;text-align:left;min-width:0}
+.room.wide{grid-column:1/-1}
+.room-main{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;background:none;border:0;padding:0;text-align:left}
+.room-top{display:flex;justify-content:space-between;align-items:center;color:var(--faint)}
+.room b{display:block;font-size:14px}
+.room .s{font-size:12px;color:var(--muted)}
+.room.wide .room-main>.i{color:var(--faint)}
+.bus{background:var(--surface);border-radius:18px;padding:14px;display:grid;gap:14px}
+.bl{display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center}
+.lc{display:inline-flex;align-items:center;justify-content:center;height:30px;border-radius:9px;background:var(--c);color:#17110a;font-weight:700;font-size:12px}
+.mins{display:flex;gap:14px;align-items:baseline;font-variant-numeric:tabular-nums}
+.mins b{font-size:19px}
+.mins small{font-size:11px;color:var(--muted);font-weight:600}
+.stopn{grid-column:2;font-size:11px;color:var(--muted);margin-top:-8px}
+.map-ph{position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;background:#17201f;border:1px solid var(--line)}
+.map-ph svg{position:absolute;inset:0;width:100%;height:100%}
+.wmap{position:relative;display:block;width:100%;padding:0;border:0;border-radius:18px;overflow:hidden;aspect-ratio:4/3;background:#16201f;text-align:left}
+.wmap svg{position:absolute;inset:0;width:100%;height:100%}
+.mchip{position:absolute;top:10px;left:10px;font-size:11px;font-weight:700;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:99px;color:var(--text)}
+
+/* Shared parts */
+.ico{width:40px;height:40px;border-radius:12px;background:var(--surface-3);display:grid;place-items:center;color:var(--muted);flex:none}
+.ico.on{background:var(--amber-tint);color:var(--amber)}
+.ico.blue.on{background:var(--blue-tint);color:var(--blue)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{height:36px;padding:0 14px;border-radius:99px;border:0;background:var(--surface-3);color:var(--text);font-size:13px;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.btn{height:36px;padding:0 14px;border-radius:12px;border:0;background:var(--surface-3);font-size:13px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap}
+.btn .i{width:18px;height:18px}
+.btn.primary{background:var(--text);color:var(--bg)}
+.btn[disabled]{opacity:.4;cursor:default}
+.sw{width:46px;height:28px;border-radius:99px;border:0;background:var(--surface-3);position:relative;padding:0;flex:none}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:var(--muted);transition:transform .2s,background .2s}
+.sw[aria-checked="true"]{background:var(--amber)}
+.sw[aria-checked="true"]::after{transform:translateX(18px);background:var(--amber-ink)}
+.sw.blue[aria-checked="true"]{background:var(--blue)}
+.sw.blue[aria-checked="true"]::after{background:var(--blue-ink)}
+.rng{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;margin:0}
+.rng::-webkit-slider-runnable-track{height:28px;border-radius:10px;background:linear-gradient(to right,var(--amber-fill) var(--v),var(--surface-3) var(--v))}
+.rng::-moz-range-track{height:28px;border-radius:10px;background:linear-gradient(to right,var(--amber-fill) var(--v),var(--surface-3) var(--v))}
+.rng::-webkit-slider-thumb{-webkit-appearance:none;width:6px;height:16px;margin-top:6px;border-radius:3px;background:var(--text);border:0}
+.rng::-moz-range-thumb{width:6px;height:16px;border-radius:3px;background:var(--text);border:0}
+.rng.blue::-webkit-slider-runnable-track{background:linear-gradient(to right,var(--blue-fill) var(--v),var(--surface-3) var(--v))}
+.rng.blue::-moz-range-track{background:linear-gradient(to right,var(--blue-fill) var(--v),var(--surface-3) var(--v))}
+.ptag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--surface-3);color:var(--muted);white-space:nowrap}
+
+/* Dock */
+.dock{position:absolute;left:0;right:0;bottom:0;padding:26px 12px 12px;display:grid;gap:10px;background:linear-gradient(to top,var(--bg) 58%,transparent);z-index:5}
+.mini{display:grid;grid-template-columns:44px minmax(0,1fr) auto auto;gap:10px;align-items:center;padding:10px;background:var(--surface-2);border-radius:18px;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.art{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#5b7f95,#2b3c4a)}
+.mini-info{background:none;border:0;padding:0;text-align:left;min-width:0}
+.mini-info b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-info span{font-size:12px;color:var(--muted)}
+.rbtn{width:40px;height:40px;border-radius:50%;border:0;background:transparent;display:grid;place-items:center}
+.rbtn.fill{background:var(--text);color:var(--bg)}
+.nav{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;padding:8px;background:var(--surface);border-radius:22px;border:1px solid var(--line)}
+.nb{position:relative;height:54px;border-radius:14px;border:0;background:transparent;color:var(--muted);display:grid;place-items:center;align-content:center;gap:2px;font-size:10.5px;font-weight:600}
+.nb.on{background:var(--amber-tint);color:var(--amber)}
+.nb.blue.on{background:var(--blue-tint);color:var(--blue)}
+.nb[aria-current="true"]{color:var(--text)}
+.nb .b{position:absolute;top:5px;right:9px;min-width:17px;height:17px;border-radius:9px;padding:0 4px;font-size:10.5px;font-weight:700;display:grid;place-items:center;background:var(--amber);color:var(--amber-ink)}
+.nb.blue .b{background:var(--blue);color:var(--blue-ink)}
+.nb .b.dotb{min-width:9px;width:9px;height:9px;padding:0;top:9px;right:15px;background:var(--rose)}
+
+/* Sheets */
+.layer{position:absolute;inset:0;z-index:20;pointer-events:none;visibility:hidden;transition:visibility 0s .32s}
+.layer.open{pointer-events:auto;visibility:visible;transition-delay:0s}
+.backdrop{position:absolute;inset:0;background:rgba(8,7,6,.58);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;transition:opacity .28s}
+.layer.open .backdrop{opacity:1}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-height:90%;display:flex;flex-direction:column;background:var(--surface);
+  border-radius:26px 26px 0 0;transform:translateY(103%);transition:transform .32s cubic-bezier(.2,.8,.2,1)}
+.layer.open .sheet{transform:none}
+.sheet.top{top:0;bottom:auto;border-radius:0 0 26px 26px;transform:translateY(-103%)}
+.layer.open .sheet.top{transform:none}
+.sheet.full{top:0;max-height:none;border-radius:0}
+.sheet-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 18px 8px 20px}
+.sheet-head h2{font-size:19px;font-weight:700}
+.acts{display:flex;align-items:center;gap:8px}
+.x{width:36px;height:36px;border-radius:50%;border:0;background:var(--surface-3);display:grid;place-items:center}
+.x .i{width:18px;height:18px}
+.sheet-body{overflow-y:auto;padding:6px 16px 26px;display:grid;gap:10px;align-content:start}
+.sum{font-size:12px;color:var(--muted);font-weight:600;padding:0 4px}
+.grp{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:10px 4px 0}
+.grp.tight{margin:0;color:var(--text);text-transform:none;letter-spacing:0;font-size:15px}
+.row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 12px;background:var(--surface-2);border-radius:14px;width:100%}
+.row .rng{grid-column:1/-1}
+.txt{min-width:0}
+.txt b{display:block;font-size:13.5px;font-weight:600}
+.txt b em{font-style:normal;font-size:10.5px;color:var(--faint);border:1px dashed var(--faint);border-radius:6px;padding:1px 5px;margin-left:6px;font-weight:600;white-space:nowrap}
+.txt span{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card{background:var(--surface-2);border-radius:18px;padding:14px;display:grid;gap:12px}
+.sub{font-size:12px;color:var(--muted);margin-top:2px}
+.lab{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.lab-row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.flood-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.pv{width:56px;height:56px;border-radius:14px;background:var(--surface-3);border:1px solid var(--line);flex:none}
+.pv.sm{width:40px;height:40px;border-radius:12px}
+.pv-on,.pv-white{background:#f4efe6}
+.pv-fade,.pv-smooth{background:linear-gradient(135deg,#d9423a,#e9b45f,#3f9a5c,#3b6fd6,#8a4fd0,#d9423a);background-size:300% 300%;animation:drift 6s ease-in-out infinite}
+.pv-smooth{animation-duration:14s}
+.pv-flash{background:#f4efe6;animation:blink 1.4s steps(1) infinite}
+.pv-strobe{background:#f4efe6;animation:blink 1s steps(1) infinite}
+.pv-boot{background:var(--surface-3);animation:blink 1s steps(1) infinite}
+@keyframes drift{0%,100%{background-position:0 50%}50%{background-position:100% 50%}}
+@keyframes blink{50%{opacity:.15}}
+.irline{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12px;color:var(--muted);font-weight:600}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--surface-3);border-radius:14px;padding:4px;gap:4px}
+.seg button{height:40px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-size:13px;font-weight:600}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.swgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.swc{height:46px;border-radius:12px;border:2px solid transparent;font-size:10.5px;font-weight:700;background:var(--c);color:var(--ink);padding:0 2px}
+.swc[aria-pressed="true"]{border-color:var(--text);box-shadow:0 0 0 2px var(--surface-2) inset}
+.more{background:none;border:0;padding:2px 0;color:var(--muted);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;justify-self:start}
+.more .i{width:16px;height:16px}
+.air-top{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:12px;align-items:center}
+.pwr{width:40px;height:40px;border-radius:50%;border:0;background:var(--surface-3);display:grid;place-items:center}
+.pwr[aria-pressed="true"]{background:var(--blue);color:var(--blue-ink)}
+.dim .opts{opacity:.5}
+.stepper{display:grid;grid-template-columns:44px 1fr 44px;align-items:center;background:var(--surface-3);border-radius:14px;height:48px;text-align:center}
+.stepper button{height:48px;border:0;background:transparent}
+.stepper b{font-size:18px;font-variant-numeric:tabular-nums}
+.stepper b small{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-top:-2px}
+.opts{display:grid;gap:12px}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.walln{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:12.5px;font-weight:600;color:var(--muted)}
+.vid{position:relative;aspect-ratio:16/9;border-radius:16px;overflow:hidden;background:repeating-linear-gradient(135deg,#1f1d1b 0 14px,#262320 14px 28px);border:1px solid var(--line);display:grid;place-items:center;color:var(--faint);font-size:12px;font-weight:600}
+.pill{position:absolute;top:10px;left:10px;display:flex;align-items:center;gap:6px;background:rgba(0,0,0,.55);padding:4px 10px;border-radius:99px;font-size:11px;font-weight:700;color:var(--text)}
+.pill::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--rose)}
+.ts{position:absolute;bottom:10px;right:12px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.evrow{display:grid;grid-template-columns:76px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;padding:8px;background:var(--surface-2);border:0;border-radius:14px;text-align:left}
+.thumb{height:46px;border-radius:9px;background:repeating-linear-gradient(135deg,#1f1d1b 0 8px,#2a2724 8px 16px);border:1px solid var(--line)}
+.new{font-size:10.5px;font-weight:700;color:#2a0f08;background:var(--rose);border-radius:99px;padding:2px 8px}
+.np{display:grid;grid-template-columns:64px minmax(0,1fr);gap:14px;align-items:center}
+.np .art{width:64px;height:64px;border-radius:16px}
+.np b{display:block;font-size:14px}
+.ctl{display:flex;align-items:center;justify-content:center;gap:14px}
+.ctl .rbtn{width:52px;height:52px}
+.note{font-size:12px;color:var(--muted);padding:0 4px}
+.menu-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.menu-grid button{display:grid;gap:8px;justify-items:center;padding:14px 4px;border:0;border-radius:16px;background:var(--surface-2);font-size:11.5px;font-weight:600}
+.toast{position:absolute;left:50%;bottom:108px;transform:translateX(-50%);z-index:40;background:var(--text);color:var(--bg);font-size:12.5px;font-weight:600;padding:10px 16px;border-radius:99px;max-width:86%;text-align:center}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+<symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.5 1 1.2 1 2.1h5c0-.9.4-1.6 1-2.1A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 2v5M15 2v5M6 7h12v4a6 6 0 0 1-12 0V7zM12 17v5"/></symbol>
+<symbol id="i-fan" viewBox="0 0 24 24"><circle cx="12" cy="12" r="1.8"/><path d="M12 10c-1-4 0-7 2-7s2 3-2 7zM14 12c4-1 7 0 7 2s-3 2-7-2zM12 14c1 4 0 7-2 7s-2-3 2-7zM10 12c-4 1-7 0-7-2s3-2 7 2z"/></symbol>
+<symbol id="i-wind" viewBox="0 0 24 24"><path d="M3 8h11a3 3 0 1 0-3-3M3 12h16a3 3 0 1 1-3 3M3 16h8"/></symbol>
+<symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 2 2 2 0-3-1-5 1-8z"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+<symbol id="i-robot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-sofa" viewBox="0 0 24 24"><path d="M4 11V8a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v3M3 13a2 2 0 0 1 4 0v2h10v-2a2 2 0 0 1 4 0v5H3v-5zM6 18v2M18 18v2"/></symbol>
+<symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18V6M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.5"/></symbol>
+<symbol id="i-desk" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 21h8M12 16v5"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.5 6.6 19.5l1.2-6L3.3 9.3l6.1-.7z"/></symbol>
+<symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20l4-1 11-11-3-3L5 16l-1 4zM14 6l3 3"/></symbol>
+<symbol id="i-camera" viewBox="0 0 24 24"><path d="M3 8a2 2 0 0 1 2-2h2l1.5-2h7L17 6h2a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+<symbol id="i-music" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
+<symbol id="i-speaker" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="6"/><path d="M10 9h4"/></symbol>
+<symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4"/><circle cx="12" cy="12" r="1.4"/><circle cx="19" cy="12" r="1.4"/></symbol>
+<symbol id="i-power" viewBox="0 0 24 24"><path d="M12 3v9M6.3 6.8a8 8 0 1 0 11.4 0"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+<symbol id="i-chevd" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+<symbol id="i-chevu" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+<symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M7 4l13 8-13 8z"/></symbol>
+<symbol id="i-pause" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M6 4h4v16H6zM14 4h4v16h-4z"/></symbol>
+<symbol id="i-skip" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M5 4l10 8-10 8zM17 5h2v14h-2z"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7z"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 0 0-14-4M4 4v4h4M4 13a8 8 0 0 0 14 4M20 20v-4h-4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+</svg>
+
+<main class="stage">
+  <div class="phone" id="phone">
+    <div class="home" id="home"></div>
+    <div class="dock" id="dock"></div>
+    <div class="layer" id="layer">
+      <div class="backdrop" data-do="close"></div>
+      <section class="sheet" id="sheet" role="dialog" aria-modal="true"></section>
+    </div>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </div>
+  <aside class="notes">
+    <h2>Wireframe notes</h2>
+    <ul>
+      <li>Dark mode, mobile. Devices, rooms and the bus lines come from your setup. Times, calendar rows and the maps are placeholders.</li>
+      <li>Sheets close with the X, the dimmed area or Esc. Hold a favorite tile to open its room.</li>
+    </ul>
+    <h2>Try</h2>
+    <ul>
+      <li>Flood light tile: flick colours, then Resend.</li>
+      <li>Air: Dyson Slower and Faster, heater target, auto-off timers.</li>
+      <li>Vacuum: start, pause, dock, pick a mode.</li>
+      <li>Bus 18: show the map. Weather map: tap to expand.</li>
+      <li>Camera: tap the driveway card at the top. Deep link: <code>#camera</code></li>
+    </ul>
+    <h2>Still to check</h2>
+    <ul>
+      <li>Sonarr calendar: cause found (an option in its feed URL). The fix is pending your OK.</li>
+      <li>Flood light colours use the Broadlink scripts.</li>
+      <li>Purifier timer options and the heater's extra settings need a live read.</li>
+    </ul>
+  </aside>
+</main>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s);
+const icon=n=>'<svg class="i" aria-hidden="true"><use href="#i-'+n+'"/></svg>';
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const nowHM=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+
+const ROOMS=[
+  {id:'lounge',name:'Lounge & Kitchen',icon:'sofa'},
+  {id:'office',name:'Office',icon:'desk'},
+  {id:'bedroom',name:'Bedroom',icon:'bed'},
+  {id:'lilly',name:"Kids' room",icon:'star'},
+  {id:'lillyoffice',name:"Kids' office",icon:'pencil'}
+];
+const POD={lounge:'Kitchen',office:'Office',bedroom:'Bedroom'};
+const CAL={family:{name:'Family calendar',c:'var(--amber)'},sonarr:{name:'Sonarr',c:'var(--blue)'},radarr:{name:'Radarr',c:'var(--green)'}};
+const EVENTS=[
+  {d:'Sat',n:'31 Oct',t:'18:00',title:'Family dinner',cal:'family'},
+  {d:'Sun',n:'1 Nov',t:'20:00',title:'Example Show S02E05',cal:'sonarr'},
+  {d:'Tue',n:'3 Nov',t:'15:40',title:'Parent-teacher interviews',cal:'family'},
+  {d:'Wed',n:'4 Nov',t:'20:30',title:'Example Show S01E08',cal:'sonarr'},
+  {d:'Fri',n:'6 Nov',t:'All day',title:'Example Film, digital release',cal:'radarr'},
+  {d:'Sat',n:'14 Nov',t:'10:00',title:'Grandparents visit',cal:'family'},
+  {d:'Fri',n:'20 Nov',t:'All day',title:'Example Film 2, Blu-ray release',cal:'radarr'}
+];
+const TRACKS=[
+  {t:'RNZ National',s:'Radio'},
+  {t:'Latest RNZ News Bulletin',s:'Podcast'},
+  {t:'Evening jazz',s:'Playlist'},
+  {t:'Focus',s:'Playlist'}
+];
+const BUS={
+  city:{name:'18 City',c:'#ff6d00',stop:'Stop 8143, towards Auckland City',mins:[7,19,31]},
+  nl:{name:'18 NL',c:'#00a86b',stop:'Stop 8140, towards New Lynn',mins:[12,24,37]}
+};
+const FCOL=[
+  ['red','Red','#d9423a','#fff'],['reddish','Reddish','#e4604f','#fff'],['orange','Orange','#ee8a2f','#2a1604'],['gold','Gold','#e3b02b','#2a1d04'],
+  ['yellow','Yellow','#efe03a','#2a2604'],['lime','Lime','#a6d93a','#1e2a04'],['green','Green','#3f9a5c','#fff'],['teal','Teal','#1f9a8f','#fff'],
+  ['aquamarine','Aqua','#52d3b4','#042a21'],['cyan','Cyan','#3cc9e6','#04202a'],['bluish','Bluish','#5a9fe0','#fff'],['blue','Blue','#3b6fd6','#fff'],
+  ['navy','Navy','#24356f','#fff'],['purple','Purple','#8a4fd0','#fff'],['lavender','Lavender','#b8a2ea','#1c1230'],['white','White','#f4efe6','#25221f']
+];
+const FFX=['smooth','flash','strobe'];
+const VSTATE={docked:'Docked',cleaning:'Cleaning',paused:'Paused',returning:'Returning'};
+
+const S={
+  devices:[
+    {id:'donut',name:'Doughnut lamp',room:'lounge',kind:'light',icon:'bulb',on:false},
+    {id:'blacklamp',name:'Black lamp',room:'lounge',kind:'light',icon:'bulb',dim:true,on:false,level:60},
+    {id:'bike',name:'Bike socket',room:'lounge',kind:'plug',icon:'plug',on:false},
+    {id:'desklamp',name:'Desk lamp',room:'office',kind:'light',icon:'bulb',dim:true,on:false,level:70},
+    {id:'keylight',name:'Elgato Key Light',room:'office',kind:'light',icon:'bulb',dim:true,on:false,level:50},
+    {id:'goldair',name:'Goldair heater',room:'office',kind:'air',air:'heater',icon:'flame',on:false,wall:true,now:18,target:23,level:3,swing:true,timer:0,tsrc:'ha'},
+    {id:'dyson',name:'Dyson fan',room:'office',kind:'air',air:'fan',icon:'fan',on:false,wall:false,speed:5,timer:0,tsrc:'ha'},
+    {id:'purifier',name:'Air purifier',room:'office',kind:'air',air:'purifier',icon:'wind',on:false,speed:2,timer:0,tsrc:'device'},
+    {id:'bedside',name:'Bedside lamp',room:'bedroom',kind:'light',icon:'bulb',on:false},
+    {id:'rainbow',name:'Rainbow lamp',room:'lilly',kind:'plug',icon:'plug',on:true},
+    {id:'s2',name:'Socket 2',room:'lilly',kind:'plug',icon:'plug',on:true,needsName:true},
+    {id:'s3',name:'Socket 3',room:'lilly',kind:'plug',icon:'plug',on:false,needsName:true},
+    {id:'s4',name:'Socket 4',room:'lilly',kind:'plug',icon:'plug',on:true,needsName:true},
+    {id:'s1',name:'Socket 1',room:'lillyoffice',kind:'plug',icon:'plug',on:true,needsName:true},
+    {id:'kirby',name:'Kirby light',room:'lillyoffice',kind:'light',icon:'bulb',on:false},
+    {id:'usb',name:'USB',room:'lillyoffice',kind:'plug',icon:'plug',on:false},
+    {id:'lheater',name:'Heater',room:'lillyoffice',kind:'air',air:'plug',icon:'flame',on:false,timer:0,tsrc:'ha'},
+    {id:'dehum',name:'Dehumidifier',room:'lillyoffice',kind:'air',air:'plug',icon:'drop',on:false,timer:0,tsrc:'ha'}
+  ],
+  flood:{mode:'off',wall:false,booting:false},
+  ir:{flood:{cmd:'Fade',t:'12:26'},dyson:{cmd:'Power',t:'09:12'}},
+  music:{track:-1,playing:false,rooms:['Kitchen'],vol:30},
+  vac:{state:'docked',mode:'auto',suction:'standard'},
+  camNew:true, notifIdx:0, calFilter:'all', busMap:false, wyze:{on:true,cyc:false}
+};
+
+const dev=id=>S.devices.find(d=>d.id===id);
+const roomDevs=r=>S.devices.filter(d=>d.room===r);
+const lightsOn=()=>S.devices.filter(d=>d.kind==='light'&&d.on).length;
+const plugsOn=()=>S.devices.filter(d=>d.kind==='plug'&&d.on).length;
+const airOn=()=>S.devices.filter(d=>d.kind==='air'&&d.on).length;
+const roomOn=r=>roomDevs(r).filter(d=>d.on).length;
+const MR=['Kitchen','Office','Bedroom','Lounge'];
+const roomsLabel=()=>S.music.rooms.length===MR.length?'All rooms':S.music.rooms.join(' + ');
+
+/* Flood light helpers */
+const fcol=id=>FCOL.find(c=>c[0]===id);
+function floodLabel(){
+  const f=S.flood;
+  if(f.booting) return 'Powering up';
+  if(f.mode==='off') return f.wall?'Off':'Off at the wall';
+  const c=fcol(f.mode); return c?c[1]:cap(f.mode);
+}
+function pvHTML(small){
+  const f=S.flood, c=fcol(f.mode);
+  const cls=f.booting?'pv-boot':(c?'':'pv-'+f.mode);
+  return '<div class="pv'+(small?' sm':'')+' '+cls+'"'+(c&&!f.booting?' style="background:'+c[2]+'"':'')+' aria-hidden="true"></div>';
+}
+function sendIR(k,cmd,quiet){
+  S.ir[k]={cmd:cmd,t:nowHM()};
+  if(!quiet) toast('Sent '+cmd+' by IR');
+}
+function floodSet(m){
+  const f=S.flood;
+  const c=fcol(m);
+  const lbl=m==='off'?'Off':m==='on'?'On':c?c[1]:cap(m);
+  if(m!=='off'&&!f.wall){
+    f.wall=true;f.booting=true;toast('Powering up, then sending '+lbl);
+    setTimeout(()=>{f.booting=false;f.mode=m;sendIR('flood',lbl,true);renderAll()},2200);
+    return;
+  }
+  f.mode=m; sendIR('flood',lbl);
+}
+
+/* Device rows */
+function sw(act,id,on,name,blue){
+  return '<button class="sw'+(blue?' blue':'')+'" role="switch" aria-checked="'+on+'" aria-label="'+name+'" data-do="'+act+'" data-a="'+id+'"></button>';
+}
+function sub(d){
+  if(d.kind==='light') return d.on?(d.dim?d.level+' %':'On'):'Off';
+  if(d.kind==='air'){
+    if(!d.on) return 'Off';
+    if(d.air==='heater') return 'Heating, '+d.now+'° now';
+    return d.timer?'On, off in '+d.timer+' h':'On';
+  }
+  return d.on?'On':'Off';
+}
+function row(d){
+  return '<div class="row"><div class="ico'+(d.on?' on':'')+'">'+icon(d.icon)+'</div>'+
+    '<div class="txt"><b>'+d.name+(d.needsName?'<em>needs a name</em>':'')+'</b><span>'+sub(d)+'</span></div>'+
+    sw('toggle',d.id,d.on,d.name)+
+    (d.kind==='light'&&d.dim&&d.on?'<input class="rng" type="range" min="1" max="100" value="'+d.level+'" style="--v:'+d.level+'%" data-lvl="'+d.id+'" aria-label="'+d.name+' brightness">':'')+
+    '</div>';
+}
+function linkRow(lead,name,subtxt,target){
+  return '<button class="row" style="border:0;text-align:left" data-do="open" data-a="'+target+'">'+lead+
+    '<div class="txt"><b>'+name+'</b><span>'+subtxt+'</span></div>'+icon('chev')+'</button>';
+}
+const leadIco=(ic,on,blue)=>'<div class="ico'+(blue?' blue':'')+(on?' on':'')+'">'+icon(ic)+'</div>';
+function head(title,extra){
+  return '<div class="sheet-head"><h2>'+title+'</h2><div class="acts">'+(extra||'')+
+    '<button class="x" data-do="close" aria-label="Close">'+icon('close')+'</button></div></div>';
+}
+
+/* Notifications card */
+function notifs(){
+  const a=[];
+  if(S.camNew) a.push({i:'camera',t:'Front driveway',s:'Motion at 12:04',o:'camera'});
+  if(dev('goldair').on) a.push({i:'flame',t:'Goldair heater',s:'Heating, '+dev('goldair').now+'° now',o:'air'});
+  if(S.vac.state==='cleaning') a.push({i:'robot',t:'Vacuum',s:'Cleaning',o:'vacuum'});
+  if(!a.length) a.push({i:'check',t:'All quiet',s:'Nothing needs you',o:'camera'});
+  return a;
+}
+function notifHTML(){
+  const a=notifs(), n=a[S.notifIdx%a.length];
+  return '<button class="notif" data-do="open" data-a="'+n.o+'">'+(a.length>1?'<span class="nbadge">'+a.length+'</span>':'')+
+    '<div class="ico on">'+icon(n.i)+'</div><div><b>'+n.t+'</b><span class="s">'+n.s+'</span></div></button>';
+}
+
+/* Home */
+function greeting(){
+  const h=new Date().getHours();
+  return h<12?'Good morning':h<18?'Good afternoon':'Good evening';
+}
+function houseSVG(){
+  const h=new Date().getHours(), night=h>=19||h<7;
+  return '<svg class="house3d'+(night?' night':'')+'" viewBox="0 0 200 130" aria-hidden="true">'+
+    '<ellipse class="gr" cx="108" cy="88" rx="86" ry="36"/>'+
+    '<polygon class="shd" points="166,79 194,93 150,116 100,112"/>'+
+    '<polygon class="wr" points="100,112 166,79 166,45 100,78"/>'+
+    '<polygon class="wl" points="100,112 52,88 52,54 100,78"/>'+
+    '<polygon class="gb" points="100,78 52,54 76,42"/>'+
+    '<polygon class="rf" points="100,78 166,45 142,9 76,42"/>'+
+    '<polyline class="edge" points="76,42 142,9 166,45 100,78 76,42"/>'+
+    '<polyline class="edge" points="52,54 76,42 100,78 52,54"/>'+
+    '<polygon class="win" points="109,93.5 124,86 124,72 109,79.5"/><polygon class="glow" points="109,93.5 124,86 124,72 109,79.5"/>'+
+    '<polygon class="win" points="133,95.5 145,89.5 145,67.5 133,73.5"/>'+
+    '<polygon class="win" points="152.5,71.75 163,66.5 163,52.5 152.5,57.75"/><polygon class="glow" points="152.5,71.75 163,66.5 163,52.5 152.5,57.75"/>'+
+    '<polygon class="win" points="85,90.5 70,83 70,69 85,76.5"/><polygon class="glow" points="85,90.5 70,83 70,69 85,76.5"/>'+
+    '<g class="cl"><ellipse cx="38" cy="20" rx="20" ry="9"/><ellipse cx="26" cy="24" rx="12" ry="7"/><ellipse cx="50" cy="24" rx="12" ry="7"/></g>'+
+    '<g class="rain"><path d="M26 34l-3 8M38 34l-3 8M50 34l-3 8"/></g></svg>';
+}
+function weatherHTML(){
+  return '<section class="wx" aria-label="Weather"><div><p class="small">Sunset 19:41</p><p class="t">18°</p><p class="small">Rainy, wind 29 km/h</p></div>'+houseSVG()+'</section>';
+}
+function favTiles(){
+  const lamp=id=>{const d=dev(id);return '<button class="tile'+(d.on?' on':'')+'" data-do="toggle" data-a="'+id+'" data-hold="room-'+d.room+'"><div class="ico'+(d.on?' on':'')+'">'+icon('bulb')+'</div><div class="txt"><b>'+d.name+'</b><span>'+sub(d)+'</span></div></button>'};
+  const fl=S.flood, flOn=fl.mode!=='off';
+  const v=S.vac, cl=v.state==='cleaning';
+  return lamp('donut')+lamp('blacklamp')+lamp('bedside')+
+    '<button class="tile'+(flOn?' on':'')+'" data-do="open" data-a="flood"><div class="ico'+(flOn?' on':'')+'">'+icon('bulb')+'</div><div class="txt"><b>Flood light</b><span>'+floodLabel()+'</span></div></button>'+
+    '<div class="tile wide'+(cl?' on':'')+'"><button class="tile-main" data-do="open" data-a="vacuum"><div class="ico'+(cl?' on':'')+'">'+icon('robot')+'</div><div class="txt"><b>Vacuum</b><span>'+VSTATE[v.state]+'</span></div></button>'+
+    '<button class="rbtn fill" data-do="vactoggle" aria-label="'+(cl?'Pause vacuum':'Start vacuum')+'">'+icon(cl?'pause':'play')+'</button></div>';
+}
+function evRow(e){
+  const c=CAL[e.cal];
+  return '<li class="ev"><div class="when"><b>'+e.d+' '+e.n.split(' ')[0]+'</b>'+e.t+'</div><div style="min-width:0"><div class="ttl">'+e.title+'</div><div class="src"><span class="dot" style="--c:'+c.c+'"></span>'+c.name+'</div></div></li>';
+}
+function roomsHTML(){
+  return ROOMS.map(r=>{
+    const n=roomOn(r.id), st=n?n+' on':'All off';
+    if(r.id==='lounge'){
+      return '<div class="room wide"><button class="room-main" data-do="open" data-a="room-lounge"><div class="ico'+(n?' on':'')+'">'+icon(r.icon)+'</div><div><b>'+r.name+'</b><span class="s">'+st+'</span></div>'+icon('chev')+'</button>'+
+        '<div class="chips">'+['blacklamp','donut','bike'].map(id=>{const d=dev(id);return '<button class="chip" aria-pressed="'+d.on+'" data-do="toggle" data-a="'+id+'">'+d.name+'</button>'}).join('')+'</div></div>';
+    }
+    return '<button class="room" data-do="open" data-a="room-'+r.id+'"><div class="room-top"><div class="ico'+(n?' on':'')+'">'+icon(r.icon)+'</div>'+icon('chev')+'</div><div><b>'+r.name+'</b><span class="s">'+st+'</span></div></button>';
+  }).join('');
+}
+function mapSVG(){
+  return '<svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><defs>'+
+    '<radialGradient id="r1"><stop offset="0" stop-color="#e9d44a" stop-opacity=".85"/><stop offset=".45" stop-color="#4fae6b" stop-opacity=".7"/><stop offset="1" stop-color="#3b6fd6" stop-opacity="0"/></radialGradient>'+
+    '<radialGradient id="r2"><stop offset="0" stop-color="#4fae6b" stop-opacity=".8"/><stop offset="1" stop-color="#3b6fd6" stop-opacity="0"/></radialGradient></defs>'+
+    '<rect width="400" height="300" fill="#16201f"/>'+
+    '<path d="M0 210 C60 190 90 230 150 215 C200 200 215 150 270 140 C320 130 360 90 400 70 L400 300 L0 300Z" fill="#1e2a28"/>'+
+    '<path d="M0 210 C60 190 90 230 150 215 C200 200 215 150 270 140 C320 130 360 90 400 70" fill="none" stroke="#35504c" stroke-width="1.5"/>'+
+    '<ellipse cx="120" cy="90" rx="95" ry="50" fill="url(#r1)"/><ellipse cx="300" cy="190" rx="80" ry="45" fill="url(#r2)"/><ellipse cx="210" cy="60" rx="55" ry="26" fill="url(#r2)"/>'+
+    '<circle cx="220" cy="170" r="6" fill="#e9b45f"/><circle cx="220" cy="170" r="12" fill="none" stroke="#e9b45f" stroke-opacity=".5"/></svg>';
+}
+function busHTML(){
+  const line=k=>{const b=BUS[k];return '<div class="bl"><span class="lc" style="--c:'+b.c+'">'+b.name+'</span><div class="mins">'+b.mins.map(m=>'<span><b>'+m+'</b> <small>min</small></span>').join('')+'</div><p class="stopn">'+b.stop+'</p></div>'};
+  return '<section><div class="sec"><h2>Bus 18</h2><span class="tag">Live, hides under 5 min</span></div><div class="bus">'+line('city')+line('nl')+
+    '<button class="more" data-do="busmap" aria-expanded="'+S.busMap+'">'+(S.busMap?'Hide map':'Show map')+icon(S.busMap?'chevu':'chevd')+'</button>'+
+    (S.busMap?'<div class="map-ph">'+mapSVG()+'<span class="mchip">Bus map, placeholder</span></div>':'')+'</div></section>';
+}
+function wmapHTML(){
+  return '<section><div class="sec"><h2>Weather map</h2><button class="link" data-do="open" data-a="weathermap">Expand'+icon('chev')+'</button></div>'+
+    '<button class="wmap" data-do="open" data-a="weathermap" aria-label="Expand weather map">'+mapSVG()+'<span class="mchip">Rain, ECMWF</span></button></section>';
+}
+function homeHTML(){
+  const e=EVENTS[0];
+  return '<header class="head"><div style="min-width:0"><p class="eyebrow">'+e.d+' '+e.t+' · '+e.title+'</p><h1>'+greeting()+'</h1></div><div id="notif">'+notifHTML()+'</div></header>'+
+  weatherHTML()+
+  '<section><div class="sec"><h2>Favorites</h2></div><div class="tiles">'+favTiles()+'</div></section>'+
+  '<section><div class="sec"><h2>Coming up</h2><span class="tag">Example data</span><button class="link" data-do="open" data-a="calendar">All'+icon('chev')+'</button></div><ul class="agenda">'+EVENTS.slice(0,3).map(evRow).join('')+'</ul></section>'+
+  '<section><div class="sec"><h2>Rooms</h2></div><div class="rooms">'+roomsHTML()+'</div></section>'+
+  busHTML()+wmapHTML();
+}
+
+/* Dock */
+function dockHTML(){
+  const m=S.music;
+  let h='';
+  if(m.track>=0){
+    h+='<div class="mini"><div class="art"></div><button class="mini-info" data-do="open" data-a="music"><b>'+TRACKS[m.track].t+'</b><span>'+roomsLabel()+'</span></button>'+
+      '<button class="rbtn fill" data-do="playpause" aria-label="'+(m.playing?'Pause':'Play')+'">'+icon(m.playing?'pause':'play')+'</button>'+
+      '<button class="rbtn" data-do="skip" aria-label="Next track">'+icon('skip')+'</button></div>';
+  }
+  const cur=curSheet();
+  const l=lightsOn(), a=airOn();
+  const items=[
+    {id:'lights',ic:'bulb',l:'Lights',on:l>0,b:l||''},
+    {id:'air',ic:'fan',l:'Air',on:a>0,b:a||'',blue:true},
+    {id:'music',ic:'music',l:'Music',on:m.playing,b:m.playing?'dot':'',blue:true},
+    {id:'camera',ic:'camera',l:'Camera',on:false,b:S.camNew?'dot':''},
+    {id:'menu',ic:'dots',l:'More',on:false,b:''}
+  ];
+  h+='<nav class="nav" aria-label="Main">'+items.map(i=>'<button class="nb'+(i.blue?' blue':'')+(i.on?' on':'')+'" data-do="open" data-a="'+i.id+'"'+(cur===i.id?' aria-current="true"':'')+'>'+
+    icon(i.ic)+'<span>'+i.l+'</span>'+(i.b?'<span class="b'+(i.b==='dot'?' dotb':'')+'">'+(i.b==='dot'?'':i.b)+'</span>':'')+'</button>').join('')+'</nav>';
+  return h;
+}
+
+/* Sheets */
+function lightsSheet(){
+  const l=lightsOn(), p=plugsOn();
+  let h=head('Lights & plugs','<button class="btn" data-do="lightsoff">All lights off</button>');
+  h+='<div class="sheet-body"><p class="sum">'+l+(l===1?' light':' lights')+' on, '+p+(p===1?' plug':' plugs')+' on</p>'+
+    linkRow('<div style="display:grid;place-items:center">'+pvHTML(true)+'</div>','Flood light',floodLabel()+', IR controlled','flood');
+  ROOMS.forEach(r=>{
+    const ds=roomDevs(r.id).filter(d=>d.kind!=='air');
+    if(ds.length) h+='<h3 class="grp">'+r.name+'</h3>'+ds.map(row).join('');
+  });
+  return h+'</div>';
+}
+function floodSheet(){
+  const f=S.flood, ir=S.ir.flood, m=f.mode;
+  const seg=(k,l)=>'<button aria-pressed="'+(m===k)+'" data-do="flood" data-a="'+k+'">'+l+'</button>';
+  return head('Flood light')+'<div class="sheet-body">'+
+    '<div class="card"><div class="flood-top"><div><h3 class="grp tight">'+floodLabel()+'</h3><p class="sub">'+(f.wall?'Wall power on':'Wall power off')+'</p></div>'+pvHTML(false)+'</div>'+
+    '<div class="irline"><span>IR, state assumed. Last sent: '+ir.cmd+' at '+ir.t+'</span><button class="btn" data-do="resend" data-a="flood">'+icon('refresh')+'Resend</button></div>'+
+    '<div class="seg" role="group" aria-label="Flood light mode">'+seg('off','Off')+seg('on','On')+seg('fade','Fade')+'</div></div>'+
+    '<div class="card"><div class="lab-row"><span class="lab">Colours</span><button class="btn" data-do="floodnext">'+icon('refresh')+'Next colour</button></div>'+
+    '<div class="swgrid">'+FCOL.map(c=>'<button class="swc" style="--c:'+c[2]+';--ink:'+c[3]+'" aria-pressed="'+(m===c[0])+'" data-do="flood" data-a="'+c[0]+'">'+c[1]+'</button>').join('')+'</div></div>'+
+    '<div class="card"><span class="lab">Effects</span><div class="chips">'+FFX.map(k=>'<button class="chip" aria-pressed="'+(m===k)+'" data-do="flood" data-a="'+k+'">'+cap(k)+'</button>').join('')+'</div>'+
+    '<div class="lab-row"><span class="lab">Brightness</span><div class="pair" style="width:150px"><button class="btn" data-do="fbright" data-a="-1" aria-label="Dimmer">'+icon('minus')+'</button><button class="btn" data-do="fbright" data-a="1" aria-label="Brighter">'+icon('plus')+'</button></div></div></div>'+
+    '<div class="card"><div class="walln"><span>Wall power</span>'+sw('floodwall','x',f.wall,'Flood light wall power')+'</div>'+
+    '<p class="note" style="padding:0">Turning the wall power on sends On, then Fade, after a short pause.</p></div></div>';
+}
+function timerRow(d){
+  const t=d.timer;
+  return '<div class="lab-row"><span class="lab">Auto-off</span><span class="ptag">'+(d.tsrc==='device'?'Built into the device':'Home Assistant timer')+'</span></div>'+
+    '<div class="seg" role="group" aria-label="Auto-off timer">'+[[0,'Off'],[1,'1 h'],[3,'3 h'],[5,'5 h']].map(x=>'<button aria-pressed="'+(t===x[0])+'" data-do="timer" data-a="'+d.id+'" data-b="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>';
+}
+function airCard(d){
+  const room=ROOMS.find(r=>r.id===d.room).name;
+  let state=sub(d), extra='';
+  if(d.air==='heater'){
+    state=!d.wall?'No power at the wall':d.on?'Heating, '+d.now+'° now':'Off';
+    extra='<div class="stepper"><button data-do="tgt" data-a="'+d.id+'" data-b="-1" aria-label="Lower target">'+icon('minus')+'</button><b>'+d.target+'°<small>Target, now '+d.now+'°</small></b><button data-do="tgt" data-a="'+d.id+'" data-b="1" aria-label="Raise target">'+icon('plus')+'</button></div>'+
+      '<div class="lab-row"><span class="lab">Heat level</span></div><div class="seg" role="group" aria-label="Heat level">'+[1,2,3].map(n=>'<button aria-pressed="'+(d.level===n)+'" data-do="hl" data-a="'+d.id+'" data-b="'+n+'">'+n+'</button>').join('')+'</div>'+
+      '<div class="walln"><span>Rotate</span>'+sw('swing',d.id,d.swing,'Heater rotation',true)+'</div>';
+  }
+  if(d.air==='fan'){
+    const ir=S.ir.dyson;
+    state=d.on?'Speed '+d.speed+' of 10 (assumed)':'Off';
+    extra='<div class="pair"><button class="btn" data-do="dspeed" data-a="'+d.id+'" data-b="-1">'+icon('minus')+'Slower</button><button class="btn" data-do="dspeed" data-a="'+d.id+'" data-b="1">'+icon('plus')+'Faster</button></div>'+
+      '<div class="irline"><span>IR, state assumed. Last sent: '+ir.cmd+' at '+ir.t+'</span><button class="btn" data-do="resend" data-a="dyson">'+icon('refresh')+'Resend</button></div>';
+  }
+  if(d.air==='purifier'){
+    extra='<div class="lab-row"><span class="lab">Speed</span></div><div class="seg" role="group" aria-label="Speed">'+[[1,'Low'],[2,'Medium'],[3,'High']].map(x=>'<button aria-pressed="'+(d.speed===x[0])+'" data-do="spd" data-a="'+d.id+'" data-b="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>';
+  }
+  const wall=(d.wall!==undefined)?'<div class="walln"><span>Wall power</span>'+sw('wall',d.id,d.wall,d.name+' wall power',true)+'</div>':'';
+  return '<div class="card'+(d.on?'':' dim')+'"><div class="air-top"><div class="ico blue'+(d.on?' on':'')+'">'+icon(d.icon)+'</div><div class="txt"><b>'+d.name+'</b><span>'+room+', '+state+'</span></div>'+
+    '<button class="pwr" aria-pressed="'+d.on+'" aria-label="'+d.name+' power" data-do="airpower" data-a="'+d.id+'">'+icon('power')+'</button></div>'+
+    '<div class="opts">'+extra+timerRow(d)+wall+'</div></div>';
+}
+function airSheet(){
+  const g=(label,ids)=>'<h3 class="grp">'+label+'</h3>'+ids.map(id=>airCard(dev(id))).join('');
+  return head('Air')+'<div class="sheet-body">'+g('Heating',['goldair','lheater'])+g('Fans and purifier',['dyson','purifier'])+g('Dehumidifier',['dehum'])+
+    '<p class="note">Heaters also switch off at 23:00 every night.</p></div>';
+}
+function musicSheet(){
+  const m=S.music, all=m.rooms.length===MR.length;
+  const t=m.track>=0?TRACKS[m.track]:null;
+  return head('Music')+'<div class="sheet-body"><div class="lab" style="padding:0 4px">Play in</div><div class="chips">'+
+    MR.map(r=>'<button class="chip" aria-pressed="'+m.rooms.includes(r)+'" data-do="mroom" data-a="'+r+'">'+r+'</button>').join('')+
+    '<button class="chip" aria-pressed="'+all+'" data-do="mroom" data-a="All">All rooms</button></div>'+
+    '<div class="card"><div class="np"><div class="art"></div><div><b>'+(t?t.t:'Nothing playing')+'</b><span class="sub">'+(t?(m.playing?'Playing in ':'Paused in ')+roomsLabel():'Pick something below')+'</span></div></div>'+
+    '<div class="ctl"><button class="rbtn fill" data-do="playpause" aria-label="'+(m.playing?'Pause':'Play')+'"'+(t?'':' disabled')+'>'+icon(m.playing?'pause':'play')+'</button><button class="rbtn" data-do="skip" aria-label="Next track"'+(t?'':' disabled')+'>'+icon('skip')+'</button></div>'+
+    '<input class="rng blue" type="range" min="0" max="100" value="'+m.vol+'" style="--v:'+m.vol+'%" data-vol="1" aria-label="Volume"></div>'+
+    '<h3 class="grp">Library</h3>'+TRACKS.map((x,i)=>'<button class="row" style="border:0;text-align:left" data-do="play" data-a="'+i+'"><div class="ico blue'+(m.track===i?' on':'')+'">'+icon('music')+'</div><div class="txt"><b>'+x.t+'</b><span>'+x.s+'</span></div>'+icon('play')+'</button>').join('')+'</div>';
+}
+function cameraSheet(){
+  const w=S.wyze;
+  const ev=[['12:04','Motion',S.camNew],['09:41','Motion',false],['07:12','Motion',false]];
+  return head('Front driveway')+'<div class="sheet-body"><div class="vid"><span class="pill">Live</span>Camera feed goes here<span class="ts">12:26</span></div>'+
+    '<div class="card"><div class="air-top"><div class="ico'+(w.on?' on':'')+'">'+icon('plug')+'</div><div class="txt"><b>Camera power</b><span>'+(w.cyc?'Power cycling, back in a moment':w.on?'On':'Off')+'</span></div>'+sw('wyzepower','x',w.on,'Camera power')+'</div><button class="btn" data-do="wyzecycle"'+(w.cyc||!w.on?' disabled':'')+'>'+icon('refresh')+'Power cycle camera</button><p class="note" style="padding:0">Use this if the camera has crashed. It switches the plug off for 10 seconds, then on.</p></div>'+
+    '<h3 class="grp">Today</h3>'+ev.map(e=>'<button class="evrow" data-do="toast" data-a="Plays the clip from '+e[0]+'"><div class="thumb"></div><div class="txt"><b>'+e[1]+'</b><span>'+e[0]+'</span></div>'+(e[2]?'<span class="new">New</span>':icon('chev'))+'</button>').join('')+'</div>';
+}
+function vacuumSheet(){
+  const v=S.vac, cl=v.state==='cleaning';
+  const chip=(grp,k,l)=>'<button class="chip" aria-pressed="'+(v[grp]===k)+'" data-do="vopt" data-a="'+grp+'" data-b="'+k+'">'+l+'</button>';
+  return head('Vacuum')+'<div class="sheet-body"><div class="card"><div class="air-top"><div class="ico'+(cl?' on':'')+'">'+icon('robot')+'</div><div class="txt"><b>'+VSTATE[v.state]+'</b><span>Whole home, no room selection</span></div></div>'+
+    '<div class="pair"><button class="btn primary" data-do="vactoggle">'+icon(cl?'pause':'play')+(cl?'Pause':v.state==='paused'?'Resume':'Start')+'</button><button class="btn" data-do="vacdock"'+(v.state==='docked'?' disabled':'')+'>Send to dock</button></div>'+
+    '<button class="btn" data-do="vlocate">'+icon('pin')+'Find the vacuum</button></div>'+
+    '<div class="lab" style="padding:0 4px">Mode</div><div class="chips">'+chip('mode','auto','Auto')+chip('mode','small_room','Small room')+chip('mode','spot','Spot')+chip('mode','edge','Edge')+'</div>'+
+    '<div class="lab" style="padding:0 4px">Suction</div><div class="chips">'+chip('suction','standard','Standard')+chip('suction','boost','Boost IQ')+chip('suction','max','Max')+'</div></div>';
+}
+function menuSheet(){
+  const b=(ic,l,msg)=>'<button data-do="toast" data-a="'+msg+'">'+icon(ic)+l+'</button>';
+  return head('Menu')+'<div class="sheet-body"><div class="menu-grid">'+b('folder','Files','Opens the file editor')+b('bolt','Automations','Opens automations')+b('menu','Sidebar','Opens the sidebar')+b('pencil','Edit','Edit this dashboard')+'</div>'+
+    '<p class="note">Files, Automations and Edit show for admins only.</p></div>';
+}
+function calendarSheet(){
+  const f=S.calFilter;
+  const list=EVENTS.filter(e=>f==='all'||e.cal===f);
+  return head('Coming up')+'<div class="sheet-body"><div class="chips">'+[['all','All'],['family','Family'],['sonarr','Sonarr'],['radarr','Radarr']].map(x=>'<button class="chip" aria-pressed="'+(f===x[0])+'" data-do="calfilter" data-a="'+x[0]+'">'+x[1]+'</button>').join('')+'</div>'+
+    '<ul class="agenda">'+list.map(evRow).join('')+'</ul><p class="note">Example events. Real ones come from the Family, Sonarr and Radarr calendars.</p></div>';
+}
+function weatherMapSheet(){
+  return head('Weather map')+'<div class="sheet-body"><div class="map-ph">'+mapSVG()+'<span class="mchip">Rain, ECMWF</span></div><p class="note">The existing Windy card goes here. Pan and zoom work in the real card.</p></div>';
+}
+function roomSheet(id){
+  const r=ROOMS.find(x=>x.id===id);
+  let h=head(r.name,'<button class="btn" data-do="roomoff" data-a="'+id+'">All off</button>')+'<div class="sheet-body">';
+  roomDevs(id).forEach(d=>{
+    h+=d.kind==='air'?linkRow(leadIco(d.icon,d.on,true),d.name,sub(d),'air'):row(d);
+  });
+  if(id==='office') h+=linkRow('<div style="display:grid;place-items:center">'+pvHTML(true)+'</div>','Flood light',floodLabel(),'flood');
+  if(POD[id]) h+=linkRow(leadIco('speaker',S.music.playing&&S.music.rooms.includes(POD[id]),true),POD[id]+' HomePod',S.music.playing&&S.music.rooms.includes(POD[id])?'Playing':'Idle','music');
+  return h+'</div>';
+}
+const BUILD={
+  lights:()=>({v:'',h:lightsSheet()}),
+  flood:()=>({v:'',h:floodSheet()}),
+  air:()=>({v:'',h:airSheet()}),
+  music:()=>({v:'',h:musicSheet()}),
+  camera:()=>({v:'full',h:cameraSheet()}),
+  vacuum:()=>({v:'',h:vacuumSheet()}),
+  menu:()=>({v:'top',h:menuSheet()}),
+  calendar:()=>({v:'',h:calendarSheet()}),
+  weathermap:()=>({v:'',h:weatherMapSheet()})
+};
+ROOMS.forEach(r=>{BUILD['room-'+r.id]=()=>({v:'',h:roomSheet(r.id)})});
+
+function curSheet(){const h=location.hash.slice(1);return BUILD[h]?h:null}
+let lastSheet=null;
+
+/* Rendering */
+function renderHome(){const el=$('#home');const t=el.scrollTop;el.innerHTML=homeHTML();el.scrollTop=t}
+function renderDock(){$('#dock').innerHTML=dockHTML()}
+function renderSheet(){
+  const id=curSheet(), layer=$('#layer'), sheet=$('#sheet');
+  if(!id){layer.classList.remove('open');return}
+  const s=BUILD[id]();
+  const b=sheet.querySelector('.sheet-body'), st=b?b.scrollTop:0;
+  if(sheet.dataset.id!==id){
+    sheet.className='sheet '+s.v; sheet.dataset.id=id; sheet.innerHTML=s.h; void sheet.offsetWidth;
+  }else{
+    sheet.innerHTML=s.h;
+    const nb=sheet.querySelector('.sheet-body'); if(nb) nb.scrollTop=st;
+  }
+  layer.classList.add('open');
+}
+function renderAll(){renderHome();renderDock();renderSheet()}
+function onHash(){
+  const id=curSheet();
+  if(lastSheet==='camera'&&id!=='camera') S.camNew=false;
+  lastSheet=id;
+  renderAll();
+}
+let toastT=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.hidden=false;
+  clearTimeout(toastT); toastT=setTimeout(()=>{t.hidden=true},1900);
+}
+
+/* Actions */
+let vacT=[];
+function vacClear(){vacT.forEach(clearTimeout);vacT=[]}
+function vacDock(){
+  vacClear(); S.vac.state='returning';
+  vacT.push(setTimeout(()=>{S.vac.state='docked';toast('Vacuum is docked');renderAll()},5000));
+}
+const A={
+  open:a=>{location.hash=a},
+  close:()=>{location.hash=''},
+  toggle:a=>{const d=dev(a);d.on=!d.on},
+  lightsoff:()=>{S.devices.forEach(d=>{if(d.kind==='light')d.on=false})},
+  roomoff:a=>{roomDevs(a).forEach(d=>{d.on=false;if(d.kind==='air')d.timer=0})},
+  flood:a=>{floodSet(a)},
+  floodnext:()=>{
+    const ids=FCOL.map(c=>c[0]); const i=ids.indexOf(S.flood.mode);
+    floodSet(ids[(i+1)%ids.length]);
+  },
+  floodwall:()=>{const f=S.flood;f.wall=!f.wall;if(!f.wall)f.mode='off'},
+  fbright:a=>{sendIR('flood',+a>0?'Brighter':'Dimmer')},
+  resend:a=>{const l=S.ir[a];sendIR(a,l.cmd);},
+  airpower:a=>{
+    const d=dev(a);
+    if(d.air==='heater'){ if(!d.wall){toast('Wall power is off. Switch it on below.');return} d.on=!d.on }
+    else if(d.air==='fan'){ d.on=!d.on; if(d.on)d.wall=true; sendIR('dyson','Power') }
+    else d.on=!d.on;
+    if(!d.on)d.timer=0;
+  },
+  wall:a=>{const d=dev(a);d.wall=!d.wall;if(!d.wall){d.on=false;d.timer=0}},
+  timer:(a,b)=>{const d=dev(a);d.timer=+b;if(+b>0){d.on=true;if(d.wall===false)d.wall=true}},
+  tgt:(a,b)=>{const d=dev(a);d.target=Math.max(16,Math.min(30,d.target+(+b)))},
+  hl:(a,b)=>{dev(a).level=+b},
+  swing:a=>{const d=dev(a);d.swing=!d.swing},
+  dspeed:(a,b)=>{
+    const d=dev(a);
+    if(!d.on){toast('Dyson fan is off. Turn it on first.');return}
+    d.speed=Math.max(1,Math.min(10,d.speed+(+b)));
+    sendIR('dyson',+b>0?'Faster':'Slower');
+  },
+  spd:(a,b)=>{const d=dev(a);d.speed=+b;d.on=true},
+  mroom:a=>{
+    const m=S.music;
+    if(a==='All'){m.rooms=m.rooms.length===MR.length?['Kitchen']:MR.slice()}
+    else if(m.rooms.includes(a)){if(m.rooms.length>1)m.rooms=m.rooms.filter(x=>x!==a)}
+    else m.rooms=m.rooms.concat(a);
+  },
+  play:a=>{S.music.track=+a;S.music.playing=true},
+  playpause:()=>{if(S.music.track>=0)S.music.playing=!S.music.playing},
+  skip:()=>{if(S.music.track>=0){S.music.track=(S.music.track+1)%TRACKS.length;S.music.playing=true}},
+  vactoggle:()=>{
+    const v=S.vac;
+    if(v.state==='cleaning'){vacClear();v.state='paused'}
+    else{
+      vacClear();v.state='cleaning';
+      vacT.push(setTimeout(()=>{vacDock();renderAll()},30000));
+    }
+  },
+  vacdock:()=>{vacDock()},
+  vlocate:()=>{toast('The vacuum is beeping')},
+  wyzepower:()=>{if(!S.wyze.cyc)S.wyze.on=!S.wyze.on},
+  wyzecycle:()=>{
+    const w=S.wyze; w.cyc=true; w.on=false;
+    setTimeout(()=>{w.on=true;w.cyc=false;toast('Camera is back on');renderAll()},3500);
+  },
+  vopt:(a,b)=>{S.vac[a]=b},
+  busmap:()=>{S.busMap=!S.busMap},
+  calfilter:a=>{S.calFilter=a},
+  toast:a=>{toast(a)}
+};
+
+const phone=$('#phone');
+let held=false, holdT=null;
+phone.addEventListener('pointerdown',e=>{
+  held=false; clearTimeout(holdT);
+  const t=e.target.closest('[data-hold]');
+  if(!t) return;
+  holdT=setTimeout(()=>{held=true;location.hash=t.dataset.hold},500);
+});
+['pointerup','pointercancel'].forEach(ev=>phone.addEventListener(ev,()=>clearTimeout(holdT)));
+phone.addEventListener('contextmenu',e=>{if(e.target.closest('[data-hold]'))e.preventDefault()});
+phone.addEventListener('click',e=>{
+  if(held){held=false;return}
+  const t=e.target.closest('[data-do]');
+  if(!t||t.disabled) return;
+  const fn=A[t.dataset.do];
+  if(!fn) return;
+  fn(t.dataset.a,t.dataset.b);
+  if(t.dataset.do!=='open'&&t.dataset.do!=='close') renderAll();
+});
+phone.addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.lvl){
+    const d=dev(t.dataset.lvl); d.level=+t.value; t.style.setProperty('--v',t.value+'%');
+    const s=t.closest('.row').querySelector('.txt span'); if(s)s.textContent=t.value+' %';
+  }
+  if(t.dataset.vol){S.music.vol=+t.value;t.style.setProperty('--v',t.value+'%')}
+});
+phone.addEventListener('change',e=>{if(e.target.dataset.lvl){renderHome();renderDock()}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&curSheet())location.hash=''});
+window.addEventListener('hashchange',onHash);
+
+/* Rotate the notification card */
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  setInterval(()=>{
+    S.notifIdx++;
+    const n=$('#notif'); if(n) n.innerHTML=notifHTML();
+  },3500);
+}
+
+onHash();
+})();
+</script>
+
+</body></html>
