@@ -1,0 +1,2 @@
+{% comment %}Screened-back page image behind the nav and header. Put inside a header with class "hero-image-header".{% endcomment %}
+{% if page.image %}<div class="article-hero-bg" style="background-image:url('{{ page.image | relative_url }}')" aria-hidden="true"></div>{% endif %}

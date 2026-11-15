@@ -3,13 +3,18 @@ layout: default
 title: Blog
 description: Writing about product management, delivery, AI tooling, and whatever I'm currently building.
 permalink: /blog/
+image: /assets/images/og/page-blog.jpg
+image_alt: "A dark desk with a glowing computer monitor and keyboard"
+image_credit: "Photo by Nikita Kachanovsky on Unsplash"
 ---
 
 <div class="container">
 
-  <div class="blog-header">
+  <div class="blog-header hero-image-header">
+    {% include hero-bg.html %}
     <h1>Blog</h1>
     <p>Notes on product management, delivery, AI tooling, and whatever I'm currently building.</p>
+    {% include hero-credit.html %}
   </div>
 
   <div class="blog-list">

@@ -3,14 +3,19 @@ layout: default
 title: About
 description: Product manager and project manager with 20+ years of hands-on digital experience. Based in Auckland, NZ.
 permalink: /about/
+image: /assets/images/og/page-about.jpg
+image_alt: "A vintage beige desktop computer on a wooden desk"
+image_credit: "Photo by Marissa Lewis on Unsplash"
 ---
 
 <div class="container">
 
   <!-- PAGE HEADER -->
-  <header class="page-header">
+  <header class="page-header hero-image-header">
+    {% include hero-bg.html %}
     <h1>From Amstrad<br>to <em>AI.</em></h1>
     <p class="page-header-lede">I've spent 20+ years in digital across the full stack: graphic design, web development, production and product.</p>
+    {% include hero-credit.html %}
   </header>
 
   <!-- MAIN LAYOUT -->

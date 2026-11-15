@@ -3,14 +3,19 @@ layout: default
 title: Contact
 description: Get in touch with Jacob Pearson.
 permalink: /contact/
+image: /assets/images/og/page-contact.jpg
+image_alt: "The Auckland skyline and Sky Tower at night, reflected in the harbour"
+image_credit: "Photo by Sam Ferrara on Unsplash"
 ---
 
 <div class="container">
-  <div class="blog-header">
+  <div class="blog-header hero-image-header">
+    {% include hero-bg.html %}
     <h1>Get in touch</h1>
     <p>
       Fill in the form below, or reach me directly on <a href="https://www.linkedin.com/in/jacobpearson" target="_blank" style="color:var(--accent);">LinkedIn</a>.
     </p>
+    {% include hero-credit.html %}
   </div>
 
   <form id="contact-form" action="https://formspree.io/f/mkoenbjv" method="POST" class="contact-form" data-reveal>

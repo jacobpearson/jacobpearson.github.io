@@ -69,6 +69,7 @@ I had examples of what I had seen online that visually looked neat. They used th
 Mobile prototypes looked amaaaaazing.
 
 <div class="scene-embed scene-embed--tall" id="ha-embed">
+  <p class="scene-embed-note">Best viewed on desktop. This prototype was designed for a full phone screen, so it gets squeezed by the margins here. Tap <strong>Full screen</strong> to see it properly.</p>
   <iframe src="/assets/experiments/home-dashboard.html" title="Interactive Home Assistant dashboard prototype" allow="fullscreen" loading="lazy"></iframe>
   <div class="scene-embed-bar">
     <span class="scene-embed-hint">Tap around: tiles, the bottom nav and the sheets all work.</span>
