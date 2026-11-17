@@ -146,11 +146,15 @@ body.has-post-image nav:not(.nav--scrolled){background:transparent;border-bottom
 a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
 .form-group input:focus-visible,.form-group textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
 
-/* 21. Contact page: the three kinds of work */
+/* 21. Contact page: intro on the left, form on the right */
+.contact-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start;padding:48px 0 80px;}
+.contact-layout .contact-form{max-width:none;padding:0;}
+.contact-intro-lede{font-size:17px;line-height:1.65;color:var(--text-primary);}
+.contact-intro-note{font-size:15px;line-height:1.6;color:var(--text-secondary);}
 .contact-roles{list-style:none;margin:20px 0;display:flex;flex-direction:column;gap:1px;background:var(--border);border:1px solid var(--border);}
 .contact-roles li{background:var(--bg-surface);padding:14px 18px;font-size:15px;line-height:1.6;color:var(--text-secondary);}
 .contact-roles strong{color:var(--text-primary);font-weight:700;}
-.blog-header .contact-roles + p{margin-top:0;}
+@media (max-width:768px){.contact-layout{grid-template-columns:1fr;gap:40px;padding:32px 0 64px;}}
 
 /* 22. Work with me page */
 .wwm-section{padding:64px 0 0;}

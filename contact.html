@@ -13,14 +13,18 @@ image_credit: "Photo by Sam Ferrara on Unsplash"
   <div class="blog-header hero-image-header">
     {% include hero-bg.html %}
     <h1>Get in touch</h1>
-    <p>I'm free from November and keen to get stuck in. If one of these sounds like you, say hello and tell me about it, timing included:</p>
+    {% include hero-credit.html %}
+  </div>
+
+  <div class="contact-layout">
+  <div class="contact-intro">
+    <p class="contact-intro-lede">I'm free from November and keen to get stuck in. If one of these sounds like you, say hello and tell me about it, timing included:</p>
     <ul class="contact-roles">
       <li><strong>Permanent, full-time product manager</strong> roles in a product team</li>
       <li><strong>Contract product management or product owner work</strong>, for a defined piece of product, usually a few months</li>
       <li><strong>Part-time product lead</strong> for a small team without a senior product person, including as its sole product person</li>
     </ul>
-    <p>Based in Auckland, happy remote or on-site. I reply within 2 working days, usually quicker.</p>
-    {% include hero-credit.html %}
+    <p class="contact-intro-note">Based in Auckland, happy remote or on-site. I reply within 2 working days, usually quicker.</p>
   </div>
 
   <form id="contact-form" action="https://formspree.io/f/mkoenbjv" method="POST" class="contact-form" data-reveal>
@@ -41,6 +45,7 @@ image_credit: "Photo by Sam Ferrara on Unsplash"
     </div>
     <button type="submit" class="btn-primary">Send message →</button>
   </form>
+  </div>
 </div>
 
 <script src="https://www.google.com/recaptcha/api.js?render=6Lfl9e8sAAAAAKW4FJuwGK2aaEWdlWZfO1wrk_8H"></script>
