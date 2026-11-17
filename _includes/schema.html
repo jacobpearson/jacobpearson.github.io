@@ -1,0 +1,37 @@
+{% comment %}JSON-LD structured data. Set `schema: person` or `schema: webpage` in a page's front matter.{% endcomment %}
+{% capture person_json %}{
+    "@type": "Person",
+    "@id": {{ '/#person' | absolute_url | jsonify }},
+    "name": {{ site.author.name | jsonify }},
+    "jobTitle": "Product Manager",
+    "url": {{ '/' | absolute_url | jsonify }},
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Auckland",
+      "addressCountry": "NZ"
+    },
+    "sameAs": ["https://www.linkedin.com/in/jacobpearson"]
+  }{% endcapture %}
+{% if page.schema == "person" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    {{ person_json | remove_first: "{" | strip }}
+  </script>
+{% elsif page.schema == "webpage" %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": {{ seo_title | jsonify }},
+    "description": {{ seo_description | jsonify }},
+    "url": {{ page.url | absolute_url | jsonify }},
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": {{ site.title | jsonify }},
+      "url": {{ '/' | absolute_url | jsonify }}
+    },
+    "about": {{ person_json }}
+  }
+  </script>
+{% endif %}
