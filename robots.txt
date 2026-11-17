@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jacobpearson.com/sitemap.xml
+Sitemap: https://www.jacobpearson.com/sitemap.xml
