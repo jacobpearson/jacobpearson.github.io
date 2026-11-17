@@ -168,3 +168,10 @@ h2.section-title{margin:0;}
 .wwm-section .posts-grid{border:1px solid var(--border);}
 .contact-strip--ruled{margin-top:64px;border-top:1px solid var(--border);}
 @media (max-width:768px){.wwm-cards,.wwm-grid-2{grid-template-columns:1fr;}.wwm-section{padding-top:48px;}}
+
+/* 23. Homepage: summary, roles strip, then stats and skills */
+.about-grid > .about-left:only-child{grid-column:1 / -1;max-width:720px;}
+.roles-strip{padding:72px 0;border-bottom:1px solid var(--border);}
+.about-strip--stats .about-right{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+.about-strip--stats .stat-grid{margin-bottom:0;}
+@media (max-width:768px){.roles-strip{padding:56px 0;}.about-strip--stats .about-right{grid-template-columns:1fr;gap:40px;}}
