@@ -151,3 +151,20 @@ a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-off
 .contact-roles li{background:var(--bg-surface);padding:14px 18px;font-size:15px;line-height:1.6;color:var(--text-secondary);}
 .contact-roles strong{color:var(--text-primary);font-weight:700;}
 .blog-header .contact-roles + p{margin-top:0;}
+
+/* 22. Work with me page */
+.wwm-section{padding:64px 0 0;}
+.wwm-section .section-header{margin-bottom:24px;}
+h2.section-title{margin:0;}
+.wwm-lede{font-size:15px;line-height:1.6;color:var(--text-secondary);margin:-8px 0 24px;}
+.wwm-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.wwm-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);border:1px solid var(--border);}
+.wwm-card{background:var(--bg-surface);padding:28px 24px;display:flex;flex-direction:column;gap:10px;}
+.wwm-card-title{font-size:18px;font-weight:800;letter-spacing:-0.02em;line-height:1.25;color:var(--text-primary);}
+.wwm-card-body{font-size:15px;line-height:1.65;color:var(--text-secondary);}
+.wwm-card-link{margin-top:auto;padding-top:6px;font-size:14px;font-weight:600;color:var(--accent);text-decoration:none;align-self:flex-start;border-bottom:1px solid transparent;transition:border-color 0.15s;}
+.wwm-card-link:hover{border-bottom-color:currentColor;}
+.wwm-note{font-size:14px;color:var(--text-secondary);margin-top:16px;}
+.wwm-section .posts-grid{border:1px solid var(--border);}
+.contact-strip--ruled{margin-top:64px;border-top:1px solid var(--border);}
+@media (max-width:768px){.wwm-cards,.wwm-grid-2{grid-template-columns:1fr;}.wwm-section{padding-top:48px;}}

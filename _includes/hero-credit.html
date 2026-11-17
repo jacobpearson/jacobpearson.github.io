@@ -1,1 +1,1 @@
-{% if page.image_credit %}<p class="article-image-credit">{{ page.image_credit }}</p>{% endif %}
+{% assign hero_image_found = site.static_files | where: "path", page.image | size %}{% if page.image_credit and hero_image_found > 0 %}<p class="article-image-credit">{{ page.image_credit }}</p>{% endif %}

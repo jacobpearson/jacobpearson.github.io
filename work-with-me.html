@@ -1,0 +1,125 @@
+---
+layout: default
+title: Work with me
+description: Product manager in Auckland, available from November for permanent, contract and part-time product roles, remote or on-site.
+permalink: /work-with-me/
+image: /assets/images/og/page-work-with-me.jpg
+image_alt: "A hand-drawn website wireframe sketched on paper, with an orange pen on a desk"
+image_credit: "Photo by Compagnons on Unsplash"
+case_studies:
+  - /blog/access-plus-rollout/
+  - /blog/solarcity-suitability/
+  - /blog/solarcity-hamburger-nav/
+  - /blog/fat-boy-ar/
+  - /blog/42below-website/
+  - /blog/working-with-ai/
+---
+
+<div class="container">
+
+  <div class="blog-header hero-image-header">
+    {% include hero-bg.html %}
+    <h1>Work with me</h1>
+    <p>I'm a product manager with more than five years in-house at ICT, and a career that started in design and production. I'm available from November for permanent, contract and part-time roles, in Auckland, remote or on-site.</p>
+    {% include hero-credit.html %}
+  </div>
+
+  <section class="wwm-section" aria-labelledby="wwm-roles" data-reveal>
+    <div class="section-header">
+      <h2 class="section-title" id="wwm-roles">Roles I'm open to</h2>
+    </div>
+    <div class="wwm-cards">
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Permanent product manager</h3>
+        <p class="wwm-card-body">A full-time role in a product team, owning a product from discovery through to release.</p>
+      </div>
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Contract product manager or product owner</h3>
+        <p class="wwm-card-body">I own a defined area for a few months, run the backlog and keep the team and stakeholders aligned.</p>
+      </div>
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Part-time product lead</h3>
+        <p class="wwm-card-body">One to three days a week for a team without a senior product person, including as its sole product person.</p>
+      </div>
+    </div>
+    <p class="wwm-note">Titles I'd consider: Product Manager, Product Owner, Head of Product, Product Lead.</p>
+  </section>
+
+  <section class="wwm-section" aria-labelledby="wwm-cases" data-reveal>
+    <div class="section-header">
+      <h2 class="section-title" id="wwm-cases">Case studies from the blog</h2>
+      <a href="/blog/" class="section-link">All writing on the blog →</a>
+    </div>
+    <p class="wwm-lede">Written up in full on this site. Each links to its post.</p>
+    <div class="posts-grid">
+      {% for case_url in page.case_studies %}
+      {% assign case_post = site.posts | where: "url", case_url | first %}
+      {% if case_post %}
+      <a href="{{ case_post.url }}" class="post-card">
+        {% if case_post.image %}
+        <img class="post-card-image" src="{{ case_post.image | relative_url }}" alt="" width="1200" height="630" loading="lazy" decoding="async">
+        {% endif %}
+        <div class="post-meta">
+          <span class="post-tag">{{ case_post.category | default: "Article" }}</span>
+        </div>
+        <h3 class="post-title">{{ case_post.title }}</h3>
+        <p class="post-excerpt">{{ case_post.excerpt | strip_html | truncatewords: 25 }}</p>
+        <span class="post-readmore">Read more →</span>
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+
+  <section class="wwm-section" aria-labelledby="wwm-how" data-reveal>
+    <div class="section-header">
+      <h2 class="section-title" id="wwm-how">How I work</h2>
+    </div>
+    <div class="wwm-grid-2">
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Discovery to delivery</h3>
+        <p class="wwm-card-body">I work across the whole product lifecycle, from customer research and prototyping to release and go-to-market.</p>
+      </div>
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Method agnostic</h3>
+        <p class="wwm-card-body">I adapt the framework to the team and the project, not the other way round.</p>
+      </div>
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Customers and data first</h3>
+        <p class="wwm-card-body">I talk to users and look at the numbers before deciding what to build.</p>
+      </div>
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Clear communication</h3>
+        <p class="wwm-card-body">Stakeholders and the team hear the same thing, up and down, with risks raised early.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wwm-section" aria-labelledby="wwm-fit" data-reveal>
+    <h2 class="visually-hidden" id="wwm-fit">Where I fit</h2>
+    <div class="wwm-grid-2">
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">A good fit</h3>
+        <p class="wwm-card-body">B2B software, hardware plus software, mobile apps, web portals, access control, security and IoT.</p>
+      </div>
+      <div class="wwm-card">
+        <h3 class="wwm-card-title">Probably not a fit</h3>
+        <p class="wwm-card-body">Finance and insurance, telecommunications and other domains that take a long time to learn, when there is no room to get up to speed first. I would rather say so and point you to someone better.</p>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<section class="contact-strip contact-strip--ruled" data-reveal>
+  <div class="container">
+    <div class="contact-inner">
+      <div>
+        <h2 class="contact-headline">Tell me about the role or project</h2>
+      </div>
+      <div class="contact-actions">
+        <a href="/contact/" class="btn-primary">Get in touch →</a>
+      </div>
+    </div>
+  </div>
+</section>
